@@ -1,6 +1,7 @@
-import api from "../services/api";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
+import api from "../services/api";
 
 import "./../styles/login.css";
 
@@ -9,32 +10,32 @@ import Input from "../components/Input";
 import Button from "../components/Button";
 
 function Login() {
-
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-  const handleSubmit = async (e) => {
+    const navigate = useNavigate();
 
-    e.preventDefault();
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
-    try {
+        try {
+            const response = await api.post("/auth/login", {
+                email,
+                password,
+            });
 
-        const response = await api.post("/auth/login", {
-            email,
-            password,
-        });
+            localStorage.setItem("token", response.data.token);
 
-        console.log(response.data);
+            console.log("Token Saved Successfully");
 
-    } catch (error) {
+            navigate("/dashboard");
 
-        console.error(error.response?.data || error.message);
+        } catch (error) {
+            console.error(error.response?.data || error.message);
+        }
+    };
 
-    }
-
-};
     return (
-
         <div className="login-page">
 
             <div className="background-circle circle1"></div>
@@ -47,7 +48,6 @@ function Login() {
                 <form onSubmit={handleSubmit}>
 
                     <div className="form-group">
-
                         <label>Email Address</label>
 
                         <Input
@@ -56,11 +56,9 @@ function Login() {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                         />
-
                     </div>
 
                     <div className="form-group">
-
                         <label>Password</label>
 
                         <Input
@@ -69,7 +67,6 @@ function Login() {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                         />
-
                     </div>
 
                     <p className="forgot-password">
@@ -91,9 +88,7 @@ function Login() {
             </div>
 
         </div>
-
     );
-
 }
 
 export default Login;

@@ -2,7 +2,7 @@ import "./Input.css";
 
 import { FaEnvelope, FaLock, FaUser } from "react-icons/fa";
 
-function Input({ type, placeholder }) {
+function Input({ type, placeholder , value, onChange }) {
 
     let icon;
 
@@ -21,6 +21,8 @@ function Input({ type, placeholder }) {
                 className="input-field"
                 type={type}
                 placeholder={placeholder}
+                value={value}
+                onChange={onChange}
             />
 
         </div>

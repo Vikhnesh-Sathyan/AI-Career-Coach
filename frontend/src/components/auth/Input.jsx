@@ -1,4 +1,4 @@
-import "./Input.css";
+import "../../styles/input.css";
 
 import { FaEnvelope, FaLock, FaUser } from "react-icons/fa";
 

@@ -1,9 +1,8 @@
-import "./../styles/login.css";
+import "../styles/register.css";
 
-import Logo from "../components/Logo";
-import Input from "../components/Input";
-import Button from "../components/Button";
-
+import Button from "../components/auth/Button";
+import Input from "../components/auth/Input";
+import Logo from "../components/auth/Logo";
 import { Link } from "react-router-dom";
 
 function Register() {

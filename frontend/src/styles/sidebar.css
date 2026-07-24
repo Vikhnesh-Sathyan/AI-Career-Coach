@@ -1,0 +1,113 @@
+.sidebar{
+
+    width:270px;
+    height:100vh;
+
+    position:fixed;
+    left:0;
+    top:0;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+
+    padding:30px 20px;
+
+    background:rgba(255,255,255,.08);
+
+    backdrop-filter:blur(18px);
+
+    border-right:1px solid rgba(255,255,255,.12);
+
+}
+
+.sidebar-logo{
+
+    display:flex;
+    align-items:center;
+    gap:14px;
+
+    color:white;
+
+    font-size:24px;
+    font-weight:700;
+}
+
+.robot-icon{
+
+    color:#60A5FA;
+    font-size:34px;
+}
+
+.sidebar-menu{
+
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.menu-item{
+
+    display:flex;
+    align-items:center;
+    gap:18px;
+
+    padding:15px 18px;
+
+    border-radius:16px;
+
+    color:#CBD5E1;
+
+    cursor:pointer;
+
+    transition:.35s;
+}
+
+.menu-item:hover{
+
+    background:rgba(255,255,255,.08);
+
+    color:white;
+
+    transform:translateX(6px);
+}
+
+.menu-item.active{
+
+    background:linear-gradient(
+        135deg,
+        #3B82F6,
+        #8B5CF6
+    );
+
+    color:white;
+
+    box-shadow:0 15px 35px rgba(59,130,246,.35);
+}
+
+.menu-item svg{
+
+    font-size:18px;
+}
+
+.logout-btn{
+
+    display:flex;
+    align-items:center;
+    gap:16px;
+
+    padding:15px 18px;
+
+    color:#F87171;
+
+    cursor:pointer;
+
+    border-radius:16px;
+
+    transition:.3s;
+}
+
+.logout-btn:hover{
+
+    background:rgba(248,113,113,.15);
+}

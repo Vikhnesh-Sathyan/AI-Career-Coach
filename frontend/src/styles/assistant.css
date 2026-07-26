@@ -1,0 +1,128 @@
+.assistant-card {
+    background: #1E293B;
+    border-radius: 24px;
+    padding: 30px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    border: 1px solid rgba(255, 255, 255, .08);
+    height: 100%;
+    width: 100%;
+}
+
+.assistant-header {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.assistant-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #2563EB, #7C3AED);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 24px;
+    flex-shrink: 0;
+}
+
+.assistant-header h2 {
+    color: white;
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0 0 4px;
+}
+
+.assistant-header p {
+    color: #94A3B8;
+    font-size: 14px;
+    margin: 0;
+}
+
+.assistant-message h3 {
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0 0 8px;
+}
+
+.assistant-message p {
+    color: #CBD5E1;
+    font-size: 15px;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.assistant-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.assistant-actions button {
+    border: none;
+    border-radius: 16px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: white;
+    cursor: pointer;
+    transition: .3s;
+    font-size: 15px;
+    font-weight: 500;
+    width: 100%;
+}
+
+.assistant-btn-primary {
+    background: linear-gradient(135deg, #2563EB, #7C3AED);
+}
+
+.assistant-btn-primary:hover {
+    transform: translateX(6px);
+    box-shadow: 0 8px 24px rgba(37, 99, 235, .35);
+}
+
+.assistant-btn-secondary {
+    background: #334155;
+}
+
+.assistant-btn-secondary:hover {
+    background: #475569;
+    transform: translateX(6px);
+}
+
+.assistant-tip {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    padding: 18px;
+    border-radius: 18px;
+    background: #0F172A;
+    color: #CBD5E1;
+    margin-top: auto;
+}
+
+.assistant-tip svg {
+    color: #FACC15;
+    font-size: 22px;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.assistant-tip h4 {
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    margin: 0 0 6px;
+}
+
+.assistant-tip p {
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 0;
+    color: #94A3B8;
+}

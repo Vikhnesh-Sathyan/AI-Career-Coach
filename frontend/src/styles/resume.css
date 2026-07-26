@@ -1,0 +1,29 @@
+.resume-container{
+
+    padding:40px;
+
+}
+
+.resume-header{
+
+    margin-bottom:35px;
+
+}
+
+.resume-header h1{
+
+    color:white;
+
+    font-size:38px;
+
+    margin-bottom:8px;
+
+}
+
+.resume-header p{
+
+    color:#94A3B8;
+
+    font-size:18px;
+
+}

@@ -1,0 +1,83 @@
+.loading-card{
+
+    margin-top:35px;
+
+    background:#1E293B;
+
+    border-radius:25px;
+
+    padding:35px;
+
+    border:1px solid rgba(255,255,255,.08);
+
+}
+
+.loading-card h2{
+
+    color:white;
+
+    margin-bottom:30px;
+
+}
+
+.progress{
+
+    width:100%;
+
+    height:12px;
+
+    background:#334155;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+    margin-bottom:30px;
+
+}
+
+.progress-bar{
+
+    width:0;
+
+    height:100%;
+
+    background:linear-gradient(90deg,#2563EB,#7C3AED);
+
+    animation:loading 2.5s linear forwards;
+
+}
+
+@keyframes loading{
+
+    from{
+
+        width:0;
+
+    }
+
+    to{
+
+        width:100%;
+
+    }
+
+}
+
+.steps{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:18px;
+
+}
+
+.steps p{
+
+    color:#CBD5E1;
+
+    font-size:16px;
+
+}

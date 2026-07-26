@@ -11,48 +11,102 @@ import {
     FaRobot
 } from "react-icons/fa";
 
+import { NavLink } from "react-router-dom";
+
 function Sidebar() {
 
     const menu = [
-        { icon: <FaHome />, title: "Dashboard" },
-        { icon: <FaFileAlt />, title: "Resume" },
-        { icon: <FaChartLine />, title: "ATS Score" },
-        { icon: <FaMicrophone />, title: "Interviews" },
-        { icon: <FaBriefcase />, title: "Jobs" },
-        { icon: <FaCog />, title: "Settings" }
+
+        {
+            icon: <FaHome />,
+            title: "Dashboard",
+            path: "/dashboard"
+        },
+
+        {
+            icon: <FaFileAlt />,
+            title: "Resume",
+            path: "/resume"
+        },
+
+        {
+            icon: <FaChartLine />,
+            title: "ATS Score",
+            path: "/ats"
+        },
+
+        {
+            icon: <FaMicrophone />,
+            title: "Interviews",
+            path: "/interviews"
+        },
+
+        {
+            icon: <FaBriefcase />,
+            title: "Jobs",
+            path: "/jobs"
+        },
+
+        {
+            icon: <FaCog />,
+            title: "Settings",
+            path: "/settings"
+        }
+
     ];
 
     return (
+
         <aside className="sidebar">
 
             <div className="sidebar-logo">
+
                 <FaRobot className="robot-icon" />
+
                 <span>AI Coach</span>
+
             </div>
 
             <nav className="sidebar-menu">
 
                 {
-                    menu.map((item, index) => (
-                        <div
-                            className={`menu-item ${index === 0 ? "active" : ""}`}
-                            key={index}
+
+                    menu.map((item) => (
+
+                        <NavLink
+                            key={item.title}
+                            to={item.path}
+                            className={({ isActive }) =>
+                                isActive
+                                    ? "menu-item active"
+                                    : "menu-item"
+                            }
                         >
+
                             {item.icon}
+
                             <span>{item.title}</span>
-                        </div>
+
+                        </NavLink>
+
                     ))
+
                 }
 
             </nav>
 
             <div className="logout-btn">
+
                 <FaSignOutAlt />
+
                 <span>Logout</span>
+
             </div>
 
         </aside>
+
     );
+
 }
 
 export default Sidebar;

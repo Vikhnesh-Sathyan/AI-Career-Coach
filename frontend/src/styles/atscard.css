@@ -1,0 +1,77 @@
+.ats-card{
+
+    background:#1E293B;
+
+    border-radius:28px;
+
+    padding:35px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    transition:.4s;
+
+}
+
+.ats-card:hover{
+
+    transform:translateY(-8px);
+
+}
+
+.progress-wrapper{
+
+    width:170px;
+
+    height:170px;
+
+    position:relative;
+
+    margin-bottom:25px;
+
+}
+
+.progress-text{
+
+    position:absolute;
+
+    inset:0;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    color:white;
+
+    font-size:38px;
+
+    font-weight:bold;
+
+}
+
+.ats-card h2{
+
+    color:white;
+
+    margin-bottom:10px;
+
+}
+
+.ats-card p{
+
+    color:#60A5FA;
+
+    font-size:17px;
+
+    font-weight:600;
+
+}

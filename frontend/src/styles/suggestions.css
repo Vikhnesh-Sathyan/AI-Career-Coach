@@ -1,0 +1,39 @@
+.suggestions-card{
+
+    background:#1E293B;
+
+    border-radius:24px;
+
+    padding:30px;
+
+    border:1px solid rgba(255,255,255,.08);
+
+}
+
+.suggestions-card h2{
+
+    color:white;
+
+    margin-bottom:25px;
+
+}
+
+.tip{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    color:white;
+
+    margin-bottom:18px;
+
+}
+
+.tip svg{
+
+    color:#22C55E;
+
+}

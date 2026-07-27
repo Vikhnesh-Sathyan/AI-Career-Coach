@@ -1,25 +1,38 @@
-const express = require("express");
-const dotenv = require("dotenv");
-const cors = require("cors");
-const connectDB = require("./src/config/db");
-const authRoutes = require("./src/routes/authRoutes");
+import express from "express";
+import dotenv from "dotenv";
+import cors from "cors";
+
+import connectDB from "./src/config/db.js";
+import authRoutes from "./src/routes/authRoutes.js";
+import resumeRoutes from "./src/routes/resumeRoutes.js";
+
 
 dotenv.config();
+
 connectDB();
 
 const app = express();
 
-app.use(cors());
-app.use(express.json());
-app.use("/api/auth", authRoutes);
 
+// Middleware
+app.use(express.json());
+app.use(cors());
+
+
+// Routes
+app.use("/api/auth", authRoutes);
+app.use("/api/resume", resumeRoutes);
+
+
+// Test Route
 app.get("/", (req, res) => {
-    res.send("API is running...");  
+    res.send("API is running...");
 });
+
 
 const PORT = process.env.PORT || 5000;
 
+
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
-
 });

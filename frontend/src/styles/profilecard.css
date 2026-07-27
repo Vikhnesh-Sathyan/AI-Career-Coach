@@ -1,0 +1,165 @@
+.profile-card{
+
+    background:#1E293B;
+
+    border-radius:24px;
+
+    padding:30px;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:28px;
+
+}
+
+.profile-top{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+
+}
+
+.profile-avatar{
+
+    font-size:70px;
+
+    color:#60A5FA;
+
+}
+
+.profile-top h2{
+
+    color:white;
+
+    margin:0;
+
+    font-size:28px;
+
+}
+
+.profile-top span{
+
+    color:#94A3B8;
+
+}
+
+.profile-stats{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:18px;
+
+}
+
+.profile-stats div{
+
+    background:#334155;
+
+    border-radius:16px;
+
+    padding:18px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:8px;
+
+}
+
+.profile-stats svg{
+
+    color:#60A5FA;
+
+    font-size:20px;
+
+}
+
+.profile-stats span{
+
+    color:#94A3B8;
+
+    font-size:14px;
+
+}
+
+.profile-stats strong{
+
+    color:white;
+
+    font-size:24px;
+
+}
+
+.career-level{
+
+    background:#0F172A;
+
+    border-radius:18px;
+
+    padding:20px;
+
+}
+
+.level-title{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    color:#FACC15;
+
+    font-weight:600;
+
+}
+
+.career-level h3{
+
+    margin:15px 0;
+
+    color:white;
+
+}
+
+.level-bar{
+
+    height:10px;
+
+    background:#334155;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+}
+
+.level-fill{
+
+    width:72%;
+
+    height:100%;
+
+    background:linear-gradient(90deg,#3B82F6,#8B5CF6);
+
+}
+
+.career-level small{
+
+    display:block;
+
+    margin-top:12px;
+
+    color:#94A3B8;
+
+}

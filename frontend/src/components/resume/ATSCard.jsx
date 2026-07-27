@@ -7,13 +7,61 @@ import {
     buildStyles
 } from "react-circular-progressbar";
 
-import "react-circular-progressbar/dist/styles.css";
+import { useEffect, useState } from "react";
 
-import CountUp from "react-countup";
+import "react-circular-progressbar/dist/styles.css";
 
 function ATSCard() {
 
-    const score = 84;
+    const finalScore = 84;
+
+const [score, setScore] = useState(0);
+
+useEffect(() => {
+
+    let current = 0;
+
+    const timer = setInterval(() => {
+
+        current++;
+
+        setScore(current);
+
+        if (current >= finalScore) {
+
+            clearInterval(timer);
+
+        }
+
+    }, 30);
+
+    return () => clearInterval(timer);
+
+}, []);
+
+    const stats = [
+
+        {
+            title: "Keyword Match",
+            value: 89
+        },
+
+        {
+            title: "Formatting",
+            value: 82
+        },
+
+        {
+            title: "Readability",
+            value: 91
+        },
+
+        {
+            title: "Projects",
+            value: 80
+        }
+
+    ];
 
     return (
 
@@ -21,61 +69,113 @@ function ATSCard() {
 
             className="ats-card"
 
-            initial={{ opacity:0, scale:.8 }}
+            initial={{ opacity: 0, y: 30 }}
 
-            animate={{ opacity:1, scale:1 }}
+            animate={{ opacity: 1, y: 0 }}
 
-            transition={{ duration:.7 }}
+            transition={{ duration: .7 }}
 
         >
 
-            <div className="progress-wrapper">
+            <div className="ats-top">
 
-                <CircularProgressbar
+                <div className="progress-wrapper">
 
-                    value={score}
+                    <CircularProgressbar
 
-                    strokeWidth={10}
+                        value={score}
 
-                    styles={buildStyles({
+                        strokeWidth={10}
 
-                        pathColor:"#3B82F6",
+                        styles={buildStyles({
 
-                        trailColor:"#334155",
+                            pathColor: "#3B82F6",
 
-                        pathTransitionDuration:2.5
+                            trailColor: "#334155",
 
-                    })}
+                            pathTransitionDuration: 2.5
 
-                />
-
-                <div className="progress-text">
-
-                    <CountUp
-
-                        end={score}
-
-                        duration={2.5}
+                        })}
 
                     />
 
-                    %
+                    <div className="progress-text">
+
+                            {score}%
+
+                    </div>
+
+                </div>
+
+                <div>
+
+                    <h2>ATS Score</h2>
+
+                    <span className="excellent">
+
+                        Excellent Resume
+
+                    </span>
 
                 </div>
 
             </div>
 
-            <h2>
+            <div className="score-details">
 
-                ATS Score
+                {
 
-            </h2>
+                    stats.map((item) => (
 
-            <p>
+                        <div
 
-                Excellent Resume
+                            key={item.title}
 
-            </p>
+                            className="score-item"
+
+                        >
+
+                            <div className="score-header">
+
+                                <span>
+
+                                    {item.title}
+
+                                </span>
+
+                                <strong>
+
+                                    {item.value}%
+
+                                </strong>
+
+                            </div>
+
+                            <div className="progress-line">
+
+                                <div
+
+                                    className="progress-fill"
+
+                                    style={{
+
+                                        width: `${item.value}%`
+
+                                    }}
+
+                                >
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    ))
+
+                }
+
+            </div>
 
         </motion.div>
 
@@ -84,3 +184,5 @@ function ATSCard() {
 }
 
 export default ATSCard;
+
+

@@ -14,6 +14,12 @@ import {
     FaCode
 } from "react-icons/fa";
 
+import DashboardHero from "../components/dashboard/DashboardHero";
+
+import TodayGoals from "../components/dashboard/TodayGoals";
+
+import ProfileCard from "../components/dashboard/ProfileCard";
+
 function Dashboard() {
 
     return (
@@ -25,6 +31,8 @@ function Dashboard() {
             <div className="dashboard-content">
 
                 <Topbar />
+
+                <DashboardHero />
 
                 <WelcomeCard />
 
@@ -60,12 +68,20 @@ function Dashboard() {
 
                 </div>
 
-                <div className="dashboard-panels">
+                <div className="dashboard-grid">
 
-                    <AIAssistant />
-                    <ActivityTimeline />
+                        <TodayGoals />
+
+                        <AIAssistant />
 
                 </div>
+
+                <div className="dashboard-grid">
+
+                        <ActivityTimeline />
+
+                            <ProfileCard />
+                </div>      
 
             </div>
 

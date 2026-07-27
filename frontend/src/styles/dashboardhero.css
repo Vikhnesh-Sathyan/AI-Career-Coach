@@ -1,0 +1,109 @@
+.dashboard-hero{
+
+    background:linear-gradient(135deg,#2563EB,#7C3AED);
+
+    padding:40px;
+
+    border-radius:28px;
+
+    color:white;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    overflow:hidden;
+
+    position:relative;
+
+    margin-bottom:35px;
+
+}
+
+.dashboard-hero::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:350px;
+
+    height:350px;
+
+    right:-120px;
+
+    top:-120px;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.08);
+
+}
+
+.hero-greeting{
+
+    font-size:18px;
+
+    opacity:.9;
+
+    margin-bottom:10px;
+
+}
+
+.dashboard-hero h1{
+
+    font-size:42px;
+
+    margin-bottom:15px;
+
+}
+
+.hero-quote{
+
+    max-width:550px;
+
+    font-size:18px;
+
+    line-height:1.7;
+
+    opacity:.95;
+
+}
+
+.hero-start-btn{
+
+    margin-top:30px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    padding:15px 30px;
+
+    border:none;
+
+    border-radius:15px;
+
+    background:white;
+
+    color:#2563EB;
+
+    cursor:pointer;
+
+    font-size:16px;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.hero-start-btn:hover{
+
+    transform:translateY(-4px);
+
+}

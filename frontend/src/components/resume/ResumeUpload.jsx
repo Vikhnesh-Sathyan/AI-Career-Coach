@@ -1,3 +1,4 @@
+
 import "../../styles/resumeupload.css";
 
 import { motion } from "framer-motion";
@@ -9,6 +10,9 @@ import ATSCard from "./ATSCard";
 import SkillsCard from "./SkillsCard";
 import SuggestionsCard from "./SuggestionsCard";
 import LoadingAnalysis from "./LoadingAnalysis";
+
+import { uploadResume } from "../../services/resumeService";
+
 
 function ResumeUpload() {
 
@@ -34,11 +38,27 @@ function ResumeUpload() {
 
     };
 
-    const handleAnalyse = () => {
+    const handleAnalyse = async () => {
+
+    if (!file) {
+
+        alert("Please select a resume.");
+
+        return;
+
+    }
+
+    try {
 
         setLoading(true);
 
-        setShowAnalysis(false);
+        const formData = new FormData();
+
+        formData.append("resume", file);
+
+        const response = await uploadResume(formData);
+
+        console.log(response);
 
         setTimeout(() => {
 
@@ -46,10 +66,21 @@ function ResumeUpload() {
 
             setShowAnalysis(true);
 
-        }, 2500);
+        }, 1500);
 
-    };
+    }
 
+    catch (error) {
+
+        console.log(error);
+
+        setLoading(false);
+
+        alert("Upload Failed");
+
+    }
+
+};
     return (
 
         <>

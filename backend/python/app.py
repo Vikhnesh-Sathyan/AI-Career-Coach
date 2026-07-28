@@ -1,15 +1,11 @@
 from flask import Flask, request, jsonify
 import fitz
 import re
-import spacy
 
 app = Flask(__name__)
 
-nlp = spacy.load("en_core_web_sm")
-
 
 SKILLS = [
-
     "React",
     "Angular",
     "Node.js",
@@ -24,82 +20,194 @@ SKILLS = [
     "CSS",
     "Git",
     "REST API"
-
 ]
+
+
+def calculate_ats(skills):
+
+    score = 50
+
+    score += len(skills) * 4
+
+    if score > 100:
+        score = 100
+
+    suggestions = []
+
+    if "Git" not in skills:
+        suggestions.append("Add Git to your resume.")
+
+    if "REST API" not in skills:
+        suggestions.append("Mention REST API experience.")
+
+    if "MongoDB" not in skills:
+        suggestions.append("Add database technologies.")
+
+    if len(skills) < 8:
+        suggestions.append("Add more technical skills.")
+
+    return score, suggestions
+
 
 
 @app.route("/analyze", methods=["POST"])
 def analyze():
 
-    file = request.files["resume"]
+    try:
 
-    pdf = fitz.open(stream=file.read(), filetype="pdf")
+        if "resume" not in request.files:
+            return jsonify({
+                "success": False,
+                "message": "No resume file uploaded"
+            }), 400
 
-    text = ""
 
-    for page in pdf:
+        file = request.files["resume"]
 
-        text += page.get_text()
 
-    doc = nlp(text)
+        pdf = fitz.open(
+            stream=file.read(),
+            filetype="pdf"
+        )
 
-    email = ""
 
-    phone = ""
+        text = ""
 
-    name = ""
+        for page in pdf:
+            text += page.get_text()
 
-    email_match = re.search(
-        r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}",
-        text
-    )
 
-    if email_match:
+        pdf.close()
 
-        email = email_match.group()
 
-    phone_match = re.search(
-        r"\+?\d[\d\s-]{8,}",
-        text
-    )
+        lines = [
+            re.sub(r"\s+", " ", line).strip()
+            for line in text.split("\n")
+            if line.strip()
+        ]
 
-    if phone_match:
 
-        phone = phone_match.group()
+        # Extract Name
+        name = ""
 
-    for ent in doc.ents:
+        for line in lines:
 
-        if ent.label_ == "PERSON":
+            clean_line = line.strip(" .-|:_")
 
-            name = ent.text
+            if not clean_line:
+                continue
 
-            break
+            # Skip email
+            if "@" in clean_line:
+                continue
 
-    found_skills = []
+            # Skip phone number
+            if re.search(r"\d{8,}", clean_line):
+                continue
 
-    lower_text = text.lower()
+            # Skip URLs
+            if (
+                "linkedin" in clean_line.lower()
+                or "github" in clean_line.lower()
+                or "http" in clean_line.lower()
+            ):
+                continue
 
-    for skill in SKILLS:
+            # Skip headings
+            if clean_line.lower() in [
+                "resume",
+                "curriculum vitae",
+                "cv",
+                "profile"
+            ]:
+                continue
 
-        if skill.lower() in lower_text:
+            # Name should be 1-4 words
+            if 1 <= len(clean_line.split()) <= 4:
 
-            found_skills.append(skill)
+                if re.match(r"^[A-Za-z .]+$", clean_line):
+                    name = clean_line
+                    break
 
-    return jsonify({
 
-    "name": name,
 
-    "email": email,
+        # Extract Email
+        email = ""
 
-    "phone": phone,
+        email_match = re.search(
+            r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}",
+            text
+        )
 
-    "skills": found_skills,
+        if email_match:
+            email = email_match.group().strip()
 
-    "text": text[:500]
 
-    })
+
+        # Extract Phone
+        phone = ""
+
+        phone_match = re.search(
+            r"\+?\d[\d\s-]{8,}",
+            text
+        )
+
+        if phone_match:
+            phone = phone_match.group().strip()
+
+
+
+        # Extract Skills
+        found_skills = []
+
+        lower_text = text.lower()
+
+        for skill in SKILLS:
+
+            if skill.lower() in lower_text:
+                found_skills.append(skill)
+
+
+
+        # Calculate ATS Score
+        score, suggestions = calculate_ats(found_skills)
+
+
+
+        return jsonify({
+
+            "success": True,
+
+            "name": name,
+
+            "email": email,
+
+            "phone": phone,
+
+            "skills": found_skills,
+
+            "atsScore": score,
+
+            "suggestions": suggestions
+
+        })
+
+
+    except Exception as error:
+
+        return jsonify({
+
+            "success": False,
+
+            "message": str(error)
+
+        }), 500
+
 
 
 if __name__ == "__main__":
 
-    app.run(port=5001)
+    app.run(
+        host="0.0.0.0",
+        port=5001
+    )

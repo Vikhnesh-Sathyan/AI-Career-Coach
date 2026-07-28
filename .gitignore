@@ -16,3 +16,13 @@ Thumbs.db
 # Build folders
 frontend/dist/
 backend/dist/
+
+# Uploaded resume files
+backend/uploads/
+
+# Python cache
+backend/python/__pycache__/
+backend/python/*.pyc
+
+# Python virtual environment
+backend/python/venv/

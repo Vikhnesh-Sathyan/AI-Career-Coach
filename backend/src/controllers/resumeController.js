@@ -41,13 +41,11 @@ export const uploadResume = async (req, res) => {
 
         );
 
-        res.json({
+       res.json({
 
-            success: true,
+                success: true,
 
-            filename: req.file.filename,
-
-            extractedText: pythonResponse.data.text
+                ...pythonResponse.data
 
         });
 

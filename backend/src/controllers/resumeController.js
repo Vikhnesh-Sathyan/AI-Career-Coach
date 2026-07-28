@@ -1,3 +1,7 @@
+import axios from "axios";
+import fs from "fs";
+import FormData from "form-data";
+
 export const uploadResume = async (req, res) => {
 
     try {
@@ -7,31 +11,51 @@ export const uploadResume = async (req, res) => {
             return res.status(400).json({
 
                 success: false,
-                message: "Please upload a PDF resume"
+                message: "Please upload a PDF"
 
             });
 
         }
 
-        res.status(200).json({
+        const formData = new FormData();
 
-            success: true,
+        formData.append(
 
-            message: "Resume uploaded successfully",
+            "resume",
 
-            file: {
+            fs.createReadStream(req.file.path)
 
-                filename: req.file.filename,
+        );
 
-                originalName: req.file.originalname,
+        const pythonResponse = await axios.post(
 
-                size: req.file.size
+            "http://127.0.0.1:5001/analyze",
+
+            formData,
+
+            {
+
+                headers: formData.getHeaders()
 
             }
 
+        );
+
+        res.json({
+
+            success: true,
+
+            filename: req.file.filename,
+
+            extractedText: pythonResponse.data.text
+
         });
 
-    } catch (error) {
+    }
+
+    catch (error) {
+
+        console.log(error);
 
         res.status(500).json({
 

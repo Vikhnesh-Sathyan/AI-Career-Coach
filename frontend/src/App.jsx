@@ -18,6 +18,7 @@ function App() {
                 <Route path="/dashboard" element={<Dashboard />} />
 
                 <Route path="/resume" element={<Resume />} />
+                
 
             </Routes>
         </BrowserRouter>

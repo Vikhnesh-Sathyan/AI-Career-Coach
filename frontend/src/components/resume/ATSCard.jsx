@@ -11,33 +11,35 @@ import { useEffect, useState } from "react";
 
 import "react-circular-progressbar/dist/styles.css";
 
-function ATSCard() {
+function ATSCard({ analysis }) {
 
-    const finalScore = 84;
+    const finalScore = analysis?.atsScore || 0;
 
-const [score, setScore] = useState(0);
+    const [score, setScore] = useState(0);
 
-useEffect(() => {
+    useEffect(() => {
 
-    let current = 0;
+        setScore(0);
 
-    const timer = setInterval(() => {
+        let current = 0;
 
-        current++;
+        const timer = setInterval(() => {
 
-        setScore(current);
+            current++;
 
-        if (current >= finalScore) {
+            setScore(current);
 
-            clearInterval(timer);
+            if (current >= finalScore) {
 
-        }
+                clearInterval(timer);
 
-    }, 30);
+            }
 
-    return () => clearInterval(timer);
+        }, 25);
 
-}, []);
+        return () => clearInterval(timer);
+
+    }, [finalScore]);
 
     const stats = [
 
@@ -91,9 +93,7 @@ useEffect(() => {
 
                             pathColor: "#3B82F6",
 
-                            trailColor: "#334155",
-
-                            pathTransitionDuration: 2.5
+                            trailColor: "#334155"
 
                         })}
 
@@ -101,7 +101,7 @@ useEffect(() => {
 
                     <div className="progress-text">
 
-                            {score}%
+                        {score}%
 
                     </div>
 
@@ -128,26 +128,15 @@ useEffect(() => {
                     stats.map((item) => (
 
                         <div
-
                             key={item.title}
-
                             className="score-item"
-
                         >
 
                             <div className="score-header">
 
-                                <span>
+                                <span>{item.title}</span>
 
-                                    {item.title}
-
-                                </span>
-
-                                <strong>
-
-                                    {item.value}%
-
-                                </strong>
+                                <strong>{item.value}%</strong>
 
                             </div>
 
@@ -158,14 +147,10 @@ useEffect(() => {
                                     className="progress-fill"
 
                                     style={{
-
                                         width: `${item.value}%`
-
                                     }}
 
-                                >
-
-                                </div>
+                                ></div>
 
                             </div>
 
@@ -184,5 +169,3 @@ useEffect(() => {
 }
 
 export default ATSCard;
-
-

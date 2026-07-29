@@ -1,36 +1,23 @@
 import "../../styles/suggestions.css";
 
 import { motion } from "framer-motion";
-
 import { FaCheckCircle } from "react-icons/fa";
 
-function SuggestionsCard(){
+function SuggestionsCard({ analysis }) {
 
-    const tips=[
+    const suggestions = analysis?.suggestions || [];
 
-        "Add measurable achievements",
-
-        "Mention Docker",
-
-        "Include AWS",
-
-        "Improve Resume Summary",
-
-        "Use stronger action verbs"
-
-    ];
-
-    return(
+    return (
 
         <motion.div
 
             className="suggestions-card"
 
-            initial={{opacity:0,y:30}}
+            initial={{ opacity: 0, y: 30 }}
 
-            animate={{opacity:1,y:0}}
+            animate={{ opacity: 1, y: 0 }}
 
-            transition={{duration:.7}}
+            transition={{ duration: .7 }}
 
         >
 
@@ -42,27 +29,39 @@ function SuggestionsCard(){
 
             {
 
-                tips.map((tip,index)=>(
+                suggestions.length > 0 ? (
 
-                    <div
+                    suggestions.map((tip, index) => (
 
-                        className="tip"
+                        <div
 
-                        key={index}
+                            className="tip"
 
-                    >
+                            key={index}
 
-                        <FaCheckCircle/>
+                        >
 
-                        <span>
+                            <FaCheckCircle />
 
-                            {tip}
+                            <span>
 
-                        </span>
+                                {tip}
 
-                    </div>
+                            </span>
 
-                ))
+                        </div>
+
+                    ))
+
+                ) : (
+
+                    <p className="no-suggestions">
+
+                        No suggestions available.
+
+                    </p>
+
+                )
 
             }
 

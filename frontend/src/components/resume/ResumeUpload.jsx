@@ -24,6 +24,8 @@ function ResumeUpload() {
 
     const [showAnalysis, setShowAnalysis] = useState(false);
 
+    const [analysis, setAnalysis] = useState(null);
+    
     const handleFile = (e) => {
 
         if (e.target.files.length > 0) {
@@ -58,7 +60,7 @@ function ResumeUpload() {
 
         const response = await uploadResume(formData);
 
-        console.log(response);
+        setAnalysis(response);
 
         setTimeout(() => {
 
@@ -165,11 +167,11 @@ function ResumeUpload() {
 
                 <div className="analysis-grid">
 
-                    <ATSCard />
+                    <ATSCard analysis={analysis} />
 
-                    <SkillsCard />
+                    <SkillsCard analysis={analysis} />
 
-                    <SuggestionsCard />
+                    <SuggestionsCard analysis={analysis} />
 
                 </div>
 

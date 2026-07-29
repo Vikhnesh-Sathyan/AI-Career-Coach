@@ -1,38 +1,142 @@
 import "../../styles/skillscard.css";
 
 import { motion } from "framer-motion";
+import {
+    FaCode,
+    FaServer,
+    FaDatabase,
+    FaLaptopCode,
+    FaBrain,
+    FaTools
 
-function SkillsCard(){
 
-    const skills=[
+} from "react-icons/fa";
+
+
+function SkillsCard({ analysis }) {
+
+    const skills = analysis?.skills || [];
+
+    const frontend = [
 
         "React",
-
-        "Node.js",
-
-        "MongoDB",
-
-        "Express",
-
+        "React.js",
+        "Angular",
+        "TypeScript",
         "JavaScript",
-
         "HTML",
-
-        "CSS"
+        "CSS",
+        "Tailwind CSS",
+        "Bootstrap"
+        
 
     ];
+    const backend = [
 
-    return(
+         "Node.js",
+         "Express",
+         "Express.js",
+         "REST API",
+         "JWT"
+
+
+    ];
+    const database = [
+
+         "MongoDB",
+         "MySQL",
+         "SQL",
+         "PostgreSQL",
+         "Firebase"
+
+    ];
+    const programming = [
+
+         "Java",
+         "Python",
+         "C",
+         "C++",
+         "C#",
+         "JavaScript",
+         "TypeScript",
+         "Go",
+
+    ];
+    const ai = [
+
+        "NLP",
+        "spaCy",
+        "Machine Learning",
+        "Artificial Intelligence"
+
+    ];
+const tools = [
+
+    "Git",
+    "GitHub",
+    "Postman",
+    "VS Code"
+
+];
+    const renderGroup = (title, icon, list) => {
+
+        const filtered = list.filter(skill => skills.includes(skill));
+
+        if (filtered.length === 0) return null;
+
+        return (
+
+            <div className="skill-group">
+
+                <div className="group-title">
+
+                    {icon}
+
+                    <span>{title}</span>
+
+                </div>
+
+                <div className="skill-badges">
+
+                    {
+
+                        filtered.map(skill => (
+
+                            <span
+
+                                key={skill}
+
+                                className="skill-badge"
+
+                            >
+
+                                {skill}
+
+                            </span>
+
+                        ))
+
+                    }
+
+                </div>
+
+            </div>
+
+        );
+
+    };
+
+    return (
 
         <motion.div
 
             className="skills-card"
 
-            initial={{opacity:0,y:30}}
+            initial={{ opacity:0,y:30 }}
 
-            animate={{opacity:1,y:0}}
+            animate={{ opacity:1,y:0 }}
 
-            transition={{duration:.6}}
+            transition={{ duration:.7 }}
 
         >
 
@@ -42,21 +146,25 @@ function SkillsCard(){
 
             </h2>
 
-            <div className="skills-grid">
+            {renderGroup("Frontend",<FaLaptopCode/>,frontend)}
 
-                {
+            {renderGroup("Backend",<FaServer/>,backend)}
 
-                    skills.map(skill=>(
+            {renderGroup("Database",<FaDatabase/>,database)}
 
-                        <span key={skill}>
+            {renderGroup("Programming",<FaCode/>,programming)}
 
-                            {skill}
+            {renderGroup("AI / ML", <FaBrain />, ai)}
 
-                        </span>
+            {renderGroup("Tools", <FaTools />, tools)}
 
-                    ))
+            <div className="skills-footer">
 
-                }
+                <span>
+
+                    ✓ {skills.length} Skills Detected
+
+                </span>
 
             </div>
 

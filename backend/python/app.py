@@ -4,24 +4,69 @@ import re
 
 app = Flask(__name__)
 
+# -------------------------------
+# Skill Categories
+# -------------------------------
 
-SKILLS = [
-    "React",
+FRONTEND_SKILLS = [
+    "React.js",
     "Angular",
-    "Node.js",
-    "Express",
-    "MongoDB",
-    "MySQL",
-    "SQL",
-    "Java",
-    "Python",
+    "TypeScript",
     "JavaScript",
     "HTML",
     "CSS",
-    "Git",
-    "REST API"
+    "Tailwind CSS",
+    "Bootstrap"
 ]
 
+BACKEND_SKILLS = [
+    "Node.js",
+    "Express.js",
+    "REST API",
+    "JWT"
+]
+
+DATABASE_SKILLS = [
+    "MongoDB",
+    "MySQL",
+    "SQL",
+    "PostgreSQL",
+    "Workbench"
+]
+
+PROGRAMMING_LANGUAGES = [
+    "Java",
+    "Python",
+    "javaScript",
+]
+
+AI_SKILLS = [
+    "NLP",
+    "spaCy",
+    "Machine Learning",
+    "Artificial Intelligence"
+]
+
+TOOLS = [
+    "Git",
+    "GitHub",
+    "VS Code",
+    "Postman"
+]
+
+SKILLS = (
+    FRONTEND_SKILLS
+    + BACKEND_SKILLS
+    + DATABASE_SKILLS
+    + PROGRAMMING_LANGUAGES
+    + AI_SKILLS
+    + TOOLS
+)
+
+
+# -------------------------------
+# ATS Score
+# -------------------------------
 
 def calculate_ats(skills):
 
@@ -40,7 +85,7 @@ def calculate_ats(skills):
     if "REST API" not in skills:
         suggestions.append("Mention REST API experience.")
 
-    if "MongoDB" not in skills:
+    if not any(db in skills for db in DATABASE_SKILLS):
         suggestions.append("Add database technologies.")
 
     if len(skills) < 8:
@@ -49,6 +94,9 @@ def calculate_ats(skills):
     return score, suggestions
 
 
+# -------------------------------
+# Resume Analysis API
+# -------------------------------
 
 @app.route("/analyze", methods=["POST"])
 def analyze():
@@ -61,24 +109,19 @@ def analyze():
                 "message": "No resume file uploaded"
             }), 400
 
-
         file = request.files["resume"]
-
 
         pdf = fitz.open(
             stream=file.read(),
             filetype="pdf"
         )
 
-
         text = ""
 
         for page in pdf:
             text += page.get_text()
 
-
         pdf.close()
-
 
         lines = [
             re.sub(r"\s+", " ", line).strip()
@@ -86,8 +129,10 @@ def analyze():
             if line.strip()
         ]
 
+        # -----------------------
+        # Name
+        # -----------------------
 
-        # Extract Name
         name = ""
 
         for line in lines:
@@ -97,15 +142,12 @@ def analyze():
             if not clean_line:
                 continue
 
-            # Skip email
             if "@" in clean_line:
                 continue
 
-            # Skip phone number
             if re.search(r"\d{8,}", clean_line):
                 continue
 
-            # Skip URLs
             if (
                 "linkedin" in clean_line.lower()
                 or "github" in clean_line.lower()
@@ -113,25 +155,28 @@ def analyze():
             ):
                 continue
 
-            # Skip headings
             if clean_line.lower() in [
                 "resume",
                 "curriculum vitae",
                 "cv",
-                "profile"
+                "profile",
+                "summary",
+                "objective"
             ]:
                 continue
 
-            # Name should be 1-4 words
             if 1 <= len(clean_line.split()) <= 4:
 
                 if re.match(r"^[A-Za-z .]+$", clean_line):
-                    name = clean_line
+
+                    name = clean_line.title()
+
                     break
 
+        # -----------------------
+        # Email
+        # -----------------------
 
-
-        # Extract Email
         email = ""
 
         email_match = re.search(
@@ -140,11 +185,12 @@ def analyze():
         )
 
         if email_match:
-            email = email_match.group().strip()
+            email = email_match.group()
 
+        # -----------------------
+        # Phone
+        # -----------------------
 
-
-        # Extract Phone
         phone = ""
 
         phone_match = re.search(
@@ -155,24 +201,27 @@ def analyze():
         if phone_match:
             phone = phone_match.group().strip()
 
-
-
-        # Extract Skills
-        found_skills = []
+        # -----------------------
+        # Skills
+        # -----------------------
 
         lower_text = text.lower()
+
+        found_skills = []
 
         for skill in SKILLS:
 
             if skill.lower() in lower_text:
+
                 found_skills.append(skill)
 
+        found_skills = list(dict.fromkeys(found_skills))
 
+        # -----------------------
+        # ATS Score
+        # -----------------------
 
-        # Calculate ATS Score
         score, suggestions = calculate_ats(found_skills)
-
-
 
         return jsonify({
 
@@ -192,7 +241,6 @@ def analyze():
 
         })
 
-
     except Exception as error:
 
         return jsonify({
@@ -204,6 +252,9 @@ def analyze():
         }), 500
 
 
+# -------------------------------
+# Run
+# -------------------------------
 
 if __name__ == "__main__":
 

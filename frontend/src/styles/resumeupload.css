@@ -131,17 +131,27 @@
 
 .analysis-grid{
 
-    margin-top:35px;
-
     display:grid;
 
     grid-template-columns:1fr 1fr;
 
     gap:25px;
 
+    margin-top:35px;
+
 }
 
-.analysis-grid .suggestions-card{
+@media(max-width:1000px){
+
+    .analysis-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+
+.suggestions-card{
 
     grid-column:1 / 3;
 

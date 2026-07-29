@@ -13,6 +13,10 @@ import LoadingAnalysis from "./LoadingAnalysis";
 
 import { uploadResume } from "../../services/resumeService";
 
+import ResumeOverview from "./ResumeOverview";
+
+import ResumeHealth from "./ResumeHealth";
+
 
 function ResumeUpload() {
 
@@ -167,11 +171,15 @@ function ResumeUpload() {
 
                 <div className="analysis-grid">
 
-                    <ATSCard analysis={analysis} />
+                    <ResumeOverview analysis={analysis}/>
 
-                    <SkillsCard analysis={analysis} />
+                    <ATSCard analysis={analysis}/>
 
-                    <SuggestionsCard analysis={analysis} />
+                    <SkillsCard analysis={analysis}/>
+
+                    <ResumeHealth analysis={analysis}/>
+
+                    <SuggestionsCard analysis={analysis}/>
 
                 </div>
 

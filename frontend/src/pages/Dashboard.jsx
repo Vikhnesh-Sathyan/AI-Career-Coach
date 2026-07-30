@@ -6,6 +6,7 @@ import StatCard from "../components/dashboard/StatCard";
 import AIAssistant from "../components/dashboard/AIAssistant";
 import ActivityTimeline from "../components/dashboard/ActivityTimeline";
 import QuickActions from "../components/dashboard/QuickActions";
+import WelcomeCard from "../components/dashboard/WelcomeCard";
 
 
 import {
@@ -35,6 +36,8 @@ function Dashboard() {
 
                 <DashboardHero />
 
+                <WelcomeCard />
+
                 <QuickActions />
 
 
@@ -42,23 +45,32 @@ function Dashboard() {
 
                     <StatCard
                         title="ATS Score"
-                        value="84%"
+                        value="94%"
                         subtitle="Excellent Resume"
                         icon={<FaChartLine />}
+                        color="#3B82F6"
+                        progress={94}
+                        trend="+6%"
                     />
 
                     <StatCard
-                        title="Applications"
-                        value="18"
-                        subtitle="Jobs Applied"
-                        icon={<FaBriefcase />}
+                         title="Applications"
+                         value="18"
+                         subtitle="Jobs Applied"
+                         icon={<FaBriefcase />}
+                         color="#10B981"
+                         progress={72}
+                         trend="+12%"
                     />
 
                     <StatCard
-                        title="Mock Interviews"
-                        value="12"
-                        subtitle="Completed"
-                        icon={<FaMicrophone />}
+                         title="Mock Interviews"
+                         value="12"
+                         subtitle="Completed"
+                         icon={<FaMicrophone />}
+                         color="#F59E0B"
+                         progress={60}
+                         trend="+8%"
                     />
 
                     <StatCard
@@ -66,8 +78,10 @@ function Dashboard() {
                         value="24"
                         subtitle="Technologies"
                         icon={<FaCode />}
+                        color="#8B5CF6"
+                        progress={96}
+                        trend="+18%"
                     />
-
                 </div>
 
                 <div className="dashboard-grid">

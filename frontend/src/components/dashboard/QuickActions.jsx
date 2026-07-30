@@ -48,62 +48,56 @@ function QuickActions() {
     ];
 
     return (
+<div className="quick-actions-section">
 
-        <div className="quick-actions">
+    <div className="section-header">
 
-            {
+        <h2>Quick Actions</h2>
 
-                actions.map((action, index) => (
+        <p>Jump into your most-used AI tools</p>
 
-                    <motion.div
+    </div>
 
-                        key={action.title}
+    <div className="quick-actions">
 
-                        className="action-card"
+        {actions.map((action, index) => (
 
-                        initial={{ opacity: 0, y: 30 }}
+            <motion.div
+                key={action.title}
+                className="action-card"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.08 }}
+                whileHover={{
+                    y: -10,
+                    scale: 1.02
+                }}
+                onClick={() => navigate(action.path)}
+            >
 
-                        animate={{ opacity: 1, y: 0 }}
+                <div className="action-icon">
 
-                        transition={{
-                            delay: index * 0.1
-                        }}
+                    {action.icon}
 
-                        whileHover={{
-                            y: -8,
-                            scale: 1.03
-                        }}
+                </div>
 
-                        onClick={() => navigate(action.path)}
+                <div className="action-content">
 
-                    >
+                    <h3>{action.title}</h3>
 
-                        <div className="action-icon">
+                    <p>{action.subtitle}</p>
 
-                            {action.icon}
+                </div>
 
-                        </div>
+                <FaArrowRight className="arrow" />
 
-                        <div className="action-content">
+            </motion.div>
 
-                            <h3>{action.title}</h3>
+        ))}
 
-                            <p>{action.subtitle}</p>
+    </div>
 
-                        </div>
-
-                        <FaArrowRight className="arrow" />
-
-                    </motion.div>
-
-                ))
-
-            }
-
-        </div>
-
+</div>
     );
-
 }
-
 export default QuickActions;

@@ -1,8 +1,11 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import fitz
 import re
 
 app = Flask(__name__)
+
+CORS(app)
 
 # -------------------------------
 # Skill Categories
@@ -255,31 +258,120 @@ def analyze():
 # -------------------------------
 # Run
 # -------------------------------
-
+    
 @app.route("/job-match", methods=["POST"])
 def job_match():
 
-    data = request.get_json()
+    try:
 
-    job_description = data.get("jobDescription", "")
+        if "resume" not in request.files:
 
-    lower_text = job_description.lower()
+            return jsonify({
+                "success": False,
+                "message": "Resume missing"
+            }),400
 
-    found_skills = []
+        resume=request.files["resume"]
 
-    for skill in SKILLS:
+        job_description=request.form.get("jobDescription","")
 
-        if skill.lower() in lower_text:
+        pdf=fitz.open(
+            stream=resume.read(),
+            filetype="pdf"
+        )
 
-            found_skills.append(skill)
+        resume_text=""
 
-    return jsonify({
+        for page in pdf:
 
-        "success": True,
+            resume_text+=page.get_text()
 
-        "jobSkills": found_skills
+        pdf.close()
 
-    })
+        resume_text=resume_text.lower()
+        jd_text=job_description.lower()
+
+        resume_skills=[]
+
+        jd_skills=[]
+
+        for skill in SKILLS:
+
+            if skill.lower() in resume_text:
+
+                resume_skills.append(skill)
+
+            if skill.lower() in jd_text:
+
+                jd_skills.append(skill)
+
+        matched=[]
+
+        missing=[]
+
+        for skill in jd_skills:
+
+            if skill in resume_skills:
+
+                matched.append(skill)
+
+            else:
+
+                missing.append(skill)
+
+        if len(jd_skills)==0:
+
+            score=0
+
+        else:
+
+            score=round(
+                (len(matched)/len(jd_skills))*100
+            )
+
+        suggestions=[]
+
+        if len(missing)>0:
+
+            suggestions.append(
+                "Add missing skills to your resume if you have experience."
+            )
+
+        if score<70:
+
+            suggestions.append(
+                "Resume needs better keyword optimization."
+            )
+
+        if score>=85:
+
+            suggestions.append(
+                "Excellent match. Apply confidently."
+            )
+
+        return jsonify({
+
+            "success":True,
+
+            "matchScore":score,
+
+            "matchedSkills":matched,
+
+            "missingSkills":missing,
+
+            "suggestions":suggestions
+
+        })
+
+    except Exception as e:
+
+        return jsonify({
+
+            "success":False,
+
+            "message":str(e)
+
+        }),500
 
 if __name__ == "__main__":
 

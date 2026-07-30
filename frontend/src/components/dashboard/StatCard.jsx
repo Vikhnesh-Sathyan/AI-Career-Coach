@@ -5,7 +5,10 @@ function StatCard({
     title,
     value,
     subtitle,
-    icon
+    icon,
+    color = "#3B82F6",
+    progress = 80,
+    trend = "+12%"
 }) {
 
     return (
@@ -13,23 +16,28 @@ function StatCard({
         <motion.div
             className="stat-card"
             whileHover={{
-                y: -8,
-                scale: 1.02
+                y: -10,
+                scale: 1.03
             }}
             transition={{
-                duration: .25
+                duration: 0.25
             }}
         >
 
             <div className="stat-top">
 
-                <div className="stat-icon">
+                <div
+                    className="stat-icon"
+                    style={{
+                        background: `linear-gradient(135deg, ${color}, ${color}99)`
+                    }}
+                >
                     {icon}
                 </div>
 
                 <div className="trend">
 
-                    ▲ +12%
+                    ▲ {trend}
 
                 </div>
 
@@ -45,7 +53,10 @@ function StatCard({
 
                 <div
                     className="stat-progress-fill"
-                    style={{ width: "80%" }}
+                    style={{
+                        width: `${progress}%`,
+                        background: `linear-gradient(90deg, ${color}, ${color}AA)`
+                    }}
                 />
 
             </div>

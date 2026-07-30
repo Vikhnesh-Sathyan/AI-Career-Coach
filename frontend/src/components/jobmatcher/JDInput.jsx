@@ -1,96 +1,174 @@
 import "../../styles/jdinput.css";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
-import { FaClipboardList } from "react-icons/fa";
 
-import { analyzeJob } from "../../services/jobService";
+import {
+    FaUpload,
+    FaSearch,
+    FaFileAlt
+} from "react-icons/fa";
 
+import { analyzeJobMatch } from "../../services/jobMatcherService";
+
+import MatchResult from "./MatchResult";
 
 function JDInput() {
 
+    const [jobDescription, setJobDescription] = useState("");
 
-    const [jobDescription,setJobDescription] = useState("");
+    const [resume, setResume] = useState(null);
 
-    const [loading,setLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
 
-    const [result,setResult] = useState(null);
+    const [result, setResult] = useState(null);
 
+    const handleAnalyze = async () => {
 
+        if (!resume) {
 
-    const handleAnalyse = async()=>{
+            alert("Please upload your resume.");
 
-        if(!jobDescription.trim()) return;
+            return;
 
-        setLoading(true);
+        }
 
-        try{
+        if (jobDescription.trim() === "") {
 
-            const data = await analyzeJob(jobDescription);
+            alert("Please paste a Job Description.");
 
-            console.log(data);
+            return;
+
+        }
+
+        try {
+
+            setLoading(true);
+
+            const data = await analyzeJobMatch(
+                resume,
+                jobDescription
+            );
 
             setResult(data);
 
+        } catch (error) {
+
+            console.error(error);
+
+            alert("Failed to analyze job match.");
+
+        } finally {
+
+            setLoading(false);
+
         }
-        catch(error){
-
-            console.log(error);
-
-        }
-
-        setLoading(false);
 
     };
 
+    return (
 
+        <div className="jd-card">
 
-    return(
+            <h2>
 
-        <motion.div
+                Job Description
 
-            className="jd-card"
+            </h2>
 
-            initial={{opacity:0,y:30}}
+            <p>
 
-            animate={{opacity:1,y:0}}
+                Paste the Job Description and upload your resume.
 
-        >
-
-            <div className="jd-header">
-
-                <FaClipboardList/>
-
-                <h2>
-                    Job Description Matcher
-                </h2>
-
-            </div>
-
+            </p>
 
             <textarea
 
-                placeholder="Paste the Job Description here..."
+                placeholder="Paste Job Description here..."
 
                 value={jobDescription}
 
-                onChange={(e)=>setJobDescription(e.target.value)}
+                onChange={(e) => setJobDescription(e.target.value)}
 
             />
 
+            <div className="upload-section">
 
-            <button onClick={handleAnalyse}>
+                <label className="upload-btn">
 
-                {loading ? "Analysing..." : "Analyse Match"}
+                    <FaUpload />
+
+                    Upload Resume
+
+                    <input
+
+                        type="file"
+
+                        accept=".pdf"
+
+                        hidden
+
+                        onChange={(e) => setResume(e.target.files[0])}
+
+                    />
+
+                </label>
+
+                {
+
+                    resume && (
+
+                        <div className="resume-name">
+
+                            <FaFileAlt />
+
+                            {resume.name}
+
+                        </div>
+
+                    )
+
+                }
+
+            </div>
+
+            <button
+
+                className="analyze-btn"
+
+                onClick={handleAnalyze}
+
+                disabled={loading}
+
+            >
+
+                <FaSearch />
+
+                {
+
+                    loading
+
+                        ? "Analyzing..."
+
+                        : "Analyze Match"
+
+                }
 
             </button>
 
+            {
 
-        </motion.div>
+                result && result.success && (
+
+                    <MatchResult analysis={result} />
+
+                )
+
+            }
+
+        </div>
 
     );
 
 }
-
 
 export default JDInput;

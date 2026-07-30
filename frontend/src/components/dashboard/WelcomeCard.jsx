@@ -1,8 +1,13 @@
 import "../../styles/welcome.css";
 import { motion } from "framer-motion";
-import { FaRocket } from "react-icons/fa";
+import {
+    FaCheckCircle,
+    FaArrowRight
+} from "react-icons/fa";
 
 function WelcomeCard() {
+
+    const score = 94;
 
     return (
 
@@ -10,48 +15,134 @@ function WelcomeCard() {
             className="welcome-card"
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: .7 }}
+            transition={{ duration: .6 }}
         >
 
-            <div>
+            <div className="welcome-left">
 
-                <p className="welcome-tag">
-                    AI Career Coach
-                </p>
+                <span className="welcome-tag">
+
+                    🤖 AI Career Insights
+
+                </span>
 
                 <h2>
-                    Build Your Dream Career 🚀
+
+                    Your Resume is Looking Great 🚀
+
                 </h2>
 
                 <p className="welcome-description">
 
-                    Track your ATS score, prepare for interviews,
-                    analyse resumes and land your next opportunity
-                    with AI-powered guidance.
+                    Your profile is above average. Keep improving your
+                    resume to maximize interview opportunities.
 
                 </p>
 
+                <div className="insights-list">
+
+                    <div className="insight">
+
+                        <FaCheckCircle />
+
+                        ATS Score above average
+
+                    </div>
+
+                    <div className="insight">
+
+                        <FaCheckCircle />
+
+                        Resume uploaded successfully
+
+                    </div>
+
+                    <div className="insight">
+
+                        <FaCheckCircle />
+
+                        18 Skills detected
+
+                    </div>
+
+                </div>
+
                 <button className="hero-button">
 
-                    <FaRocket />
+                    Improve Resume
 
-                    Get Started
+                    <FaArrowRight />
 
                 </button>
 
             </div>
 
-            <div className="hero-score">
+            <div className="welcome-right">
 
-                <h3>ATS Score</h3>
+                <h3>
 
-                <div className="score-circle">
+                    Resume Score
 
-                    84%
+                </h3>
+
+                <div className="score-value">
+
+                    {score}%
 
                 </div>
 
-                <span>Excellent Progress</span>
+                <span>
+
+                    Excellent
+
+                </span>
+
+                <div className="progress">
+
+                    <div
+                        className="progress-fill"
+                        style={{
+                            width: `${score}%`
+                        }}
+                    />
+
+                </div>
+
+                <div className="score-stats">
+
+                    <div>
+
+                        <h4>
+
+                            18
+
+                        </h4>
+
+                        <p>
+
+                            Skills
+
+                        </p>
+
+                    </div>
+
+                    <div>
+
+                        <h4>
+
+                            12
+
+                        </h4>
+
+                        <p>
+
+                            Interviews
+
+                        </p>
+
+                    </div>
+
+                </div>
 
             </div>
 

@@ -1,16 +1,48 @@
+.quick-actions-section{
+
+    margin:40px 0;
+
+}
+
+.section-header{
+
+    margin-bottom:22px;
+
+}
+
+.section-header h2{
+
+    color:white;
+
+    font-size:28px;
+
+    font-weight:700;
+
+    margin-bottom:6px;
+
+}
+
+.section-header p{
+
+    color:#94A3B8;
+
+    font-size:15px;
+
+}
+
 .quick-actions{
 
     display:grid;
 
     grid-template-columns:repeat(4,1fr);
 
-    gap:20px;
-
-    margin:30px 0;
+    gap:22px;
 
 }
 
 .action-card{
+
+    position:relative;
 
     display:flex;
 
@@ -18,37 +50,61 @@
 
     gap:18px;
 
-    padding:22px;
+    padding:26px;
+
+    min-height:145px;
+
+    overflow:hidden;
 
     cursor:pointer;
 
-    border-radius:22px;
+    border-radius:24px;
 
-    background:rgba(255,255,255,.05);
+    background:#1E293B;
 
-    backdrop-filter:blur(20px);
+    border:1px solid rgba(255,255,255,.06);
 
-    border:1px solid rgba(255,255,255,.08);
+    transition:.35s ease;
 
-    transition:.35s;
+}
+
+.action-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:-60px;
+
+    right:-60px;
+
+    width:120px;
+
+    height:120px;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.04);
 
 }
 
 .action-card:hover{
 
+    transform:translateY(-8px);
+
     border-color:#4F8BFF;
 
-    box-shadow:0 15px 40px rgba(59,130,246,.2);
+    box-shadow:0 20px 45px rgba(59,130,246,.18);
 
 }
 
 .action-icon{
 
-    width:60px;
+    width:72px;
 
-    height:60px;
+    height:72px;
 
-    border-radius:18px;
+    border-radius:22px;
 
     display:flex;
 
@@ -56,11 +112,13 @@
 
     justify-content:center;
 
-    font-size:24px;
+    font-size:30px;
 
     color:white;
 
     background:linear-gradient(135deg,#3B82F6,#8B5CF6);
+
+    flex-shrink:0;
 
 }
 
@@ -74,9 +132,11 @@
 
     color:white;
 
-    font-size:18px;
+    font-size:20px;
 
-    margin-bottom:6px;
+    font-weight:700;
+
+    margin-bottom:10px;
 
 }
 
@@ -84,7 +144,9 @@
 
     color:#94A3B8;
 
-    font-size:14px;
+    line-height:1.5;
+
+    font-size:15px;
 
 }
 
@@ -92,7 +154,7 @@
 
     color:#6EA8FF;
 
-    font-size:18px;
+    font-size:24px;
 
     transition:.3s;
 
@@ -100,26 +162,26 @@
 
 .action-card:hover .arrow{
 
-    transform:translateX(6px);
+    transform:translateX(8px);
 
 }
 
 @media(max-width:1200px){
 
-.quick-actions{
+    .quick-actions{
 
-grid-template-columns:repeat(2,1fr);
+        grid-template-columns:repeat(2,1fr);
 
-}
+    }
 
 }
 
 @media(max-width:700px){
 
-.quick-actions{
+    .quick-actions{
 
-grid-template-columns:1fr;
+        grid-template-columns:1fr;
 
-}
+    }
 
 }

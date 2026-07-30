@@ -256,6 +256,31 @@ def analyze():
 # Run
 # -------------------------------
 
+@app.route("/job-match", methods=["POST"])
+def job_match():
+
+    data = request.get_json()
+
+    job_description = data.get("jobDescription", "")
+
+    lower_text = job_description.lower()
+
+    found_skills = []
+
+    for skill in SKILLS:
+
+        if skill.lower() in lower_text:
+
+            found_skills.append(skill)
+
+    return jsonify({
+
+        "success": True,
+
+        "jobSkills": found_skills
+
+    })
+
 if __name__ == "__main__":
 
     app.run(

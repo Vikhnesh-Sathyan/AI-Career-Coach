@@ -1,22 +1,24 @@
 .dashboard-hero{
 
-    background:linear-gradient(135deg,#2563EB,#7C3AED);
-
-    padding:40px;
-
-    border-radius:28px;
-
-    color:white;
-
     display:flex;
 
     justify-content:space-between;
 
     align-items:center;
 
-    overflow:hidden;
+    gap:40px;
+
+    padding:45px;
+
+    border-radius:28px;
+
+    background:linear-gradient(135deg,#2563EB,#7C3AED);
+
+    color:white;
 
     position:relative;
+
+    overflow:hidden;
 
     margin-bottom:35px;
 
@@ -28,11 +30,11 @@
 
     position:absolute;
 
-    width:350px;
+    width:400px;
 
-    height:350px;
+    height:400px;
 
-    right:-120px;
+    right:-150px;
 
     top:-120px;
 
@@ -42,47 +44,71 @@
 
 }
 
-.hero-greeting{
+.hero-left{
 
-    font-size:18px;
+    width:60%;
 
-    opacity:.9;
-
-    margin-bottom:10px;
+    z-index:2;
 
 }
 
-.dashboard-hero h1{
+.hero-tag{
 
-    font-size:42px;
+    display:inline-block;
 
-    margin-bottom:15px;
+    padding:8px 18px;
+
+    border-radius:30px;
+
+    background:rgba(255,255,255,.15);
+
+    margin-bottom:18px;
+
+    font-size:14px;
+
+}
+
+.hero-left h1{
+
+    font-size:44px;
+
+    margin-bottom:18px;
 
 }
 
 .hero-quote{
 
-    max-width:550px;
+    max-width:620px;
 
     font-size:18px;
 
-    line-height:1.7;
+    line-height:1.8;
 
     opacity:.95;
 
 }
 
-.hero-start-btn{
+.hero-buttons{
 
-    margin-top:30px;
+    display:flex;
+
+    gap:15px;
+
+    margin-top:35px;
+
+    flex-wrap:wrap;
+
+}
+
+.hero-buttons button{
 
     display:flex;
 
     align-items:center;
 
-    gap:12px;
+    gap:10px;
 
-    padding:15px 30px;
+    padding:14px 22px;
 
     border:none;
 
@@ -92,18 +118,114 @@
 
     color:#2563EB;
 
-    cursor:pointer;
-
-    font-size:16px;
-
     font-weight:600;
+
+    cursor:pointer;
 
     transition:.3s;
 
 }
 
-.hero-start-btn:hover{
+.hero-buttons button:hover{
 
     transform:translateY(-4px);
+
+}
+
+.hero-right{
+
+    width:320px;
+
+    z-index:2;
+
+}
+
+.hero-mini-card{
+
+    background:rgba(255,255,255,.12);
+
+    backdrop-filter:blur(20px);
+
+    padding:25px;
+
+    border-radius:22px;
+
+}
+
+.hero-mini-card h2{
+
+    font-size:40px;
+
+    margin:10px 0;
+
+}
+
+.hero-progress{
+
+    height:10px;
+
+    border-radius:20px;
+
+    background:rgba(255,255,255,.15);
+
+    overflow:hidden;
+
+    margin:20px 0;
+
+}
+
+.hero-progress-fill{
+
+    height:100%;
+
+    background:white;
+
+}
+
+.hero-stats{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    margin-top:25px;
+
+}
+
+.hero-stats strong{
+
+    display:block;
+
+    font-size:24px;
+
+}
+
+.hero-stats span{
+
+    font-size:13px;
+
+    opacity:.8;
+
+}
+
+@media(max-width:1100px){
+
+.dashboard-hero{
+
+flex-direction:column;
+
+}
+
+.hero-left{
+
+width:100%;
+
+}
+
+.hero-right{
+
+width:100%;
+
+}
 
 }

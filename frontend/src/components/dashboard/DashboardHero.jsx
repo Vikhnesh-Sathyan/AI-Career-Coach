@@ -1,43 +1,17 @@
 import "../../styles/dashboardhero.css";
 
 import { motion } from "framer-motion";
-import { FaRocket } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+
+import {
+    FaFileAlt,
+    FaSearch,
+    FaMicrophone
+} from "react-icons/fa";
 
 function DashboardHero() {
 
-    const hour = new Date().getHours();
-
-    let greeting = "";
-
-    if (hour < 12) {
-
-        greeting = "Good Morning ☀️";
-
-    } else if (hour < 17) {
-
-        greeting = "Good Afternoon 🌤";
-
-    } else {
-
-        greeting = "Good Evening 🌙";
-
-    }
-
-    const quotes = [
-
-        "Every application brings you closer to your dream career.",
-
-        "Small improvements every day create big opportunities.",
-
-        "Success begins with a single application.",
-
-        "Consistency beats talent when talent doesn't stay consistent.",
-
-        "Your future employer could be one click away."
-
-    ];
-
-    const quote = quotes[Math.floor(Math.random() * quotes.length)];
+    const navigate = useNavigate();
 
     return (
 
@@ -45,41 +19,103 @@ function DashboardHero() {
 
             className="dashboard-hero"
 
-            initial={{ opacity:0, y:30 }}
+            initial={{ opacity:0,y:30 }}
 
-            animate={{ opacity:1, y:0 }}
+            animate={{ opacity:1,y:0 }}
 
             transition={{ duration:.6 }}
 
         >
 
-            <div>
+            <div className="hero-left">
 
-                <p className="hero-greeting">
+                <span className="hero-tag">
 
-                    {greeting},
+                    🤖 AI Career Coach
 
-                </p>
+                </span>
 
                 <h1>
 
-                    Vikhnesh 👋
+                    Build Your Dream Career 🚀
 
                 </h1>
 
                 <p className="hero-quote">
 
-                    {quote}
+                    Analyse resumes, match jobs, prepare interviews,
+                    and land your next opportunity with AI-powered guidance.
 
                 </p>
 
-                <button className="hero-start-btn">
+                <div className="hero-buttons">
 
-                    <FaRocket />
+                    <button onClick={() => navigate("/resume")}>
 
-                    Continue Building Career
+                        <FaFileAlt />
 
-                </button>
+                        Resume Analyzer
+
+                    </button>
+
+                    <button onClick={() => navigate("/job-matcher")}>
+
+                        <FaSearch />
+
+                        Job Matcher
+
+                    </button>
+
+                    <button onClick={() => navigate("/interviews")}>
+
+                        <FaMicrophone />
+
+                        Mock Interview
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div className="hero-right">
+
+                <div className="hero-mini-card">
+
+                    <h3>Profile Strength</h3>
+
+                    <h2>94%</h2>
+
+                    <div className="hero-progress">
+
+                        <div
+                            className="hero-progress-fill"
+                            style={{width:"94%"}}
+                        />
+
+                    </div>
+
+                    <div className="hero-stats">
+
+                        <div>
+
+                            <strong>18</strong>
+
+                            <span>Applications</span>
+
+                        </div>
+
+                        <div>
+
+                            <strong>12</strong>
+
+                            <span>Interviews</span>
+
+                        </div>
+
+                    </div>
+
+                </div>
 
             </div>
 

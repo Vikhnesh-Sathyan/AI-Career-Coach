@@ -1,0 +1,79 @@
+.resume-preview{
+
+    background:#1E293B;
+
+    border-radius:20px;
+
+    padding:30px;
+
+    color:white;
+
+    border:1px solid rgba(255,255,255,.08);
+
+}
+
+.resume-top{
+
+    display:flex;
+
+    gap:20px;
+
+    align-items:center;
+
+}
+
+.pdf-icon{
+
+    font-size:55px;
+
+    color:#EF4444;
+
+}
+
+.resume-top h3{
+
+    margin:0;
+
+}
+
+.resume-top span{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    color:#22C55E;
+
+    margin-top:8px;
+
+}
+
+.resume-stats{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    margin:35px 0;
+
+}
+
+.resume-stats h2{
+
+    font-size:34px;
+
+}
+
+.resume-stats p{
+
+    color:#94A3B8;
+
+}
+
+.change-btn{
+
+    width:100%;
+
+}

@@ -2,10 +2,11 @@ import "../styles/dashboard.css";
 
 import Sidebar from "../components/dashboard/Sidebar";
 import Topbar from "../components/dashboard/Topbar";
-import WelcomeCard from "../components/dashboard/WelcomeCard";
 import StatCard from "../components/dashboard/StatCard";
 import AIAssistant from "../components/dashboard/AIAssistant";
 import ActivityTimeline from "../components/dashboard/ActivityTimeline";
+import QuickActions from "../components/dashboard/QuickActions";
+
 
 import {
     FaChartLine,
@@ -34,7 +35,8 @@ function Dashboard() {
 
                 <DashboardHero />
 
-                <WelcomeCard />
+                <QuickActions />
+
 
                 <div className="stats-grid">
 

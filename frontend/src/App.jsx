@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Resume from "./pages/Resume";
+import JobMatcher from "./pages/JobMatcher";
 
 
 function App() {
@@ -18,6 +19,8 @@ function App() {
                 <Route path="/dashboard" element={<Dashboard />} />
 
                 <Route path="/resume" element={<Resume />} />
+
+                <Route path="/job-matcher" element={<JobMatcher />} />
                 
 
             </Routes>

@@ -5,6 +5,7 @@ import cors from "cors";
 import connectDB from "./src/config/db.js";
 import authRoutes from "./src/routes/authRoutes.js";
 import resumeRoutes from "./src/routes/resumeRoutes.js";
+import jobRoutes from "./src/routes/jobRoutes.js";
 
 
 dotenv.config();
@@ -22,6 +23,7 @@ app.use(cors());
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/resume", resumeRoutes);
+app.use("/api/job", jobRoutes);
 
 
 // Test Route

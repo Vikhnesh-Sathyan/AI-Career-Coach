@@ -10,19 +10,20 @@ import {
 
 import { analyzeJobMatch } from "../../services/jobMatcherService";
 
-import MatchResult from "./MatchResult";
+import { saveJobMatch } from "../../services/jobHistoryService";
 
-function JDInput() {
+
+function JDInput({ setResult, setLoading, loading }) {
+
 
     const [jobDescription, setJobDescription] = useState("");
 
     const [resume, setResume] = useState(null);
 
-    const [loading, setLoading] = useState(false);
 
-    const [result, setResult] = useState(null);
 
     const handleAnalyze = async () => {
+
 
         if (!resume) {
 
@@ -32,7 +33,8 @@ function JDInput() {
 
         }
 
-        if (jobDescription.trim() === "") {
+
+        if (!jobDescription.trim()) {
 
             alert("Please paste a Job Description.");
 
@@ -40,135 +42,354 @@ function JDInput() {
 
         }
 
+
+
         try {
+
 
             setLoading(true);
 
+
+
+            // Analyze with Flask AI Matcher
+
             const data = await analyzeJobMatch(
+
                 resume,
+
                 jobDescription
+
             );
 
-            setResult(data);
 
-        } catch (error) {
 
-            console.error(error);
+            console.log("Match Result:", data);
 
-            alert("Failed to analyze job match.");
 
-        } finally {
+
+            if(data.success){
+
+
+                // Display result
+
+                setResult(data);
+
+
+
+                // Save result into MongoDB
+
+                const token = localStorage.getItem("token");
+
+
+                if(token){
+
+
+                    const savedData = await saveJobMatch(
+
+                        {
+
+                            jobDescription,
+
+                            matchScore:data.matchScore,
+
+                            matchedSkills:data.matchedSkills,
+
+                            missingSkills:data.missingSkills,
+
+                            suggestions:data.suggestions
+
+                        },
+
+                        token
+
+                    );
+
+
+                    console.log(
+                        "Saved History:",
+                        savedData
+                    );
+
+
+                }
+                else{
+
+                    console.log(
+                        "No token found. Match not saved."
+                    );
+
+                }
+
+
+            }
+            else{
+
+
+                alert(data.message);
+
+
+            }
+
+
+
+        } 
+        catch(error) {
+
+
+            console.error(
+                "Job Match Error:",
+                error
+            );
+
+
+            alert(
+                "Failed to analyze job match."
+            );
+
+
+        }
+        finally {
+
 
             setLoading(false);
 
+
         }
 
+
     };
+
+
+
+
+    const handleReset = ()=>{
+
+
+        setResume(null);
+
+        setJobDescription("");
+
+        setResult(null);
+
+
+    };
+
+
+
 
     return (
 
         <div className="jd-card">
 
+
             <h2>
 
-                Job Description
+                Job Description Matcher
 
             </h2>
 
+
             <p>
 
-                Paste the Job Description and upload your resume.
+                Upload your resume and compare it with the job requirements.
 
             </p>
 
+
+
+
             <textarea
+
 
                 placeholder="Paste Job Description here..."
 
+
                 value={jobDescription}
 
-                onChange={(e) => setJobDescription(e.target.value)}
+
+                onChange={(e)=>
+
+                    setJobDescription(e.target.value)
+
+                }
+
 
             />
 
+
+
+
+
             <div className="upload-section">
+
 
                 <label className="upload-btn">
 
+
                     <FaUpload />
+
 
                     Upload Resume
 
+
+
+
                     <input
+
 
                         type="file"
 
+
                         accept=".pdf"
+
 
                         hidden
 
-                        onChange={(e) => setResume(e.target.files[0])}
+
+
+                        onChange={(e)=>{
+
+
+                            const file =
+                            e.target.files[0];
+
+
+
+                            if(
+
+                                file &&
+
+                                file.type === "application/pdf"
+
+                            ){
+
+                                setResume(file);
+
+                            }
+
+                            else{
+
+
+                                alert(
+                                    "Please upload PDF file only."
+                                );
+
+
+                            }
+
+
+                        }}
+
 
                     />
 
+
                 </label>
 
+
+
+
+
                 {
+
 
                     resume && (
 
+
                         <div className="resume-name">
+
 
                             <FaFileAlt />
 
+
                             {resume.name}
+
 
                         </div>
 
+
                     )
 
+
                 }
+
+
 
             </div>
 
+
+
+
+
             <button
+
 
                 className="analyze-btn"
 
+
                 onClick={handleAnalyze}
+
 
                 disabled={loading}
 
+
+
             >
+
 
                 <FaSearch />
 
+
+
                 {
+
 
                     loading
 
-                        ? "Analyzing..."
+                    ?
 
-                        : "Analyze Match"
+                    "Analyzing..."
+
+                    :
+
+                    "Analyze Match"
+
 
                 }
 
+
+
             </button>
 
-            {
 
-                result && result.success && (
 
-                    <MatchResult analysis={result} />
 
-                )
 
-            }
+
+            <button
+
+
+                className="reset-btn"
+
+
+                onClick={handleReset}
+
+
+            >
+
+
+                Reset
+
+
+            </button>
+
+
 
         </div>
 
     );
 
 }
+
 
 export default JDInput;

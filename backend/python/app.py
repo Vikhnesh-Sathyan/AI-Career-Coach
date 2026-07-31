@@ -40,7 +40,7 @@ DATABASE_SKILLS = [
 PROGRAMMING_LANGUAGES = [
     "Java",
     "Python",
-    "javaScript",
+    
 ]
 
 AI_SKILLS = [

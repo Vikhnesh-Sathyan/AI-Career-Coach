@@ -1,0 +1,72 @@
+.history-page{
+
+    padding:40px;
+
+}
+
+
+.history-page h1{
+
+    color:white;
+
+    margin-bottom:30px;
+
+}
+
+
+
+.history-card{
+
+    background:#111827;
+
+    padding:25px;
+
+    border-radius:20px;
+
+    margin-bottom:20px;
+
+    color:white;
+
+}
+
+
+
+.history-card span{
+
+    color:#22c55e;
+
+    margin-left:10px;
+
+}
+
+
+
+.skill{
+
+    display:inline-block;
+
+    background:#2563eb;
+
+    padding:8px 15px;
+
+    border-radius:20px;
+
+    margin:8px;
+
+    color:white;
+
+}
+
+
+
+.empty-history{
+
+    background:#111827;
+
+    color:white;
+
+    padding:30px;
+
+    border-radius:20px;
+
+}

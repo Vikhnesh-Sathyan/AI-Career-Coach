@@ -8,7 +8,8 @@ import {
     FaMicrophone,
     FaCog,
     FaSignOutAlt,
-    FaRobot
+    FaRobot,
+    FaHistory
 } from "react-icons/fa";
 
 import { NavLink } from "react-router-dom";
@@ -33,6 +34,12 @@ function Sidebar() {
             icon: <FaChartLine />,
             title: "ATS Score",
             path: "/ats"
+        },
+
+        {
+             icon: <FaHistory />,
+             title: "Match History",
+             path: "/match-history"
         },
 
         {

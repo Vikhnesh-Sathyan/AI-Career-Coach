@@ -1,0 +1,33 @@
+.ai-card{
+
+background:#111827;
+
+padding:25px;
+
+border-radius:20px;
+
+color:white;
+
+margin-top:20px;
+
+}
+
+
+.ai-card h2{
+
+display:flex;
+
+gap:10px;
+
+align-items:center;
+
+}
+
+
+.ai-card p{
+
+color:#cbd5e1;
+
+line-height:1.7;
+
+}

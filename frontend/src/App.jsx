@@ -5,7 +5,8 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Resume from "./pages/Resume";
 import JobMatcher from "./pages/JobMatcher";
-
+import MatchHistory from "./pages/MatchHistory";
+import ATS from "./pages/ATS";
 
 function App() {
     return (
@@ -21,6 +22,11 @@ function App() {
                 <Route path="/resume" element={<Resume />} />
 
                 <Route path="/job-matcher" element={<JobMatcher />} />
+
+                <Route path="/match-history" element={<MatchHistory />} />
+
+                <Route path="/ats" element={<ATS />} />
+
                 
 
             </Routes>

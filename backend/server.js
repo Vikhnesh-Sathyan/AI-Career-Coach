@@ -6,7 +6,7 @@ import connectDB from "./src/config/db.js";
 import authRoutes from "./src/routes/authRoutes.js";
 import resumeRoutes from "./src/routes/resumeRoutes.js";
 import jobRoutes from "./src/routes/jobRoutes.js";
-
+import jobMatchRoutes from "./src/routes/jobMatchRoutes.js";
 
 dotenv.config();
 
@@ -24,6 +24,7 @@ app.use(cors());
 app.use("/api/auth", authRoutes);
 app.use("/api/resume", resumeRoutes);
 app.use("/api/job", jobRoutes);
+app.use("/api/job-match",jobMatchRoutes);
 
 
 // Test Route

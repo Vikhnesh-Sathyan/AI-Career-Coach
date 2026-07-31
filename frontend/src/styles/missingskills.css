@@ -1,0 +1,33 @@
+.missing-card{
+
+background:#111827;
+
+padding:25px;
+
+border-radius:20px;
+
+color:white;
+
+}
+
+
+.missing-card h2{
+
+display:flex;
+
+gap:10px;
+
+}
+
+
+.missing-card .skill-list span{
+
+background:#7f1d1d;
+
+color:#fecaca;
+
+padding:8px 15px;
+
+border-radius:20px;
+
+}

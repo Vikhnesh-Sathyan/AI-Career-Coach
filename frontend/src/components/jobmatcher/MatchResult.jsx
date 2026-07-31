@@ -2,20 +2,14 @@ import "../../styles/matchresult.css";
 
 import { motion } from "framer-motion";
 
-import {
-    CircularProgressbar,
-    buildStyles
-} from "react-circular-progressbar";
+import MatchScore from "./MatchScore";
+import MatchingSkills from "./MatchingSkills";
+import MissingSkills from "./MissingSkills";
+import AIRecommendation from "./AIRecommendation";
 
-import "react-circular-progressbar/dist/styles.css";
-
-import {
-    FaCheckCircle,
-    FaTimesCircle,
-    FaRobot
-} from "react-icons/fa";
 
 function MatchResult({ analysis }) {
+
 
     return (
 
@@ -23,174 +17,55 @@ function MatchResult({ analysis }) {
 
             className="match-result"
 
-            initial={{ opacity: 0, y: 40 }}
+            initial={{
+                opacity:0,
+                y:40
+            }}
 
-            animate={{ opacity: 1, y: 0 }}
-
-            transition={{ duration: .6 }}
+            animate={{
+                opacity:1,
+                y:0
+            }}
 
         >
 
-            <div className="match-top">
+            <MatchScore 
+                score={analysis.matchScore}
+            />
 
-                <div className="score-circle">
-
-                    <CircularProgressbar
-
-                        value={analysis.matchScore}
-
-                        text={`${analysis.matchScore}%`}
-
-                        styles={buildStyles({
-
-                            textColor: "#fff",
-
-                            pathColor: "#3B82F6",
-
-                            trailColor: "#334155"
-
-                        })}
-
-                    />
-
-                </div>
-
-                <div>
-
-                    <h2>
-
-                        Resume Match Score
-
-                    </h2>
-
-                    <p>
-
-                        {
-
-                            analysis.matchScore >= 85
-
-                                ? "Excellent Match"
-
-                                : analysis.matchScore >= 70
-
-                                ? "Good Match"
-
-                                : "Needs Improvement"
-
-                        }
-
-                    </p>
-
-                </div>
-
-            </div>
 
             <div className="match-grid">
 
-                <div className="match-box">
 
-                    <h3>
+                <MatchingSkills
 
-                        <FaCheckCircle />
+                    skills={analysis.matchedSkills}
 
-                        Matched Skills
+                />
 
-                    </h3>
 
-                    <div className="chips">
+                <MissingSkills
 
-                        {
+                    skills={analysis.missingSkills}
 
-                            analysis.matchedSkills.map(skill => (
+                />
 
-                                <span
-
-                                    key={skill}
-
-                                    className="chip success"
-
-                                >
-
-                                    {skill}
-
-                                </span>
-
-                            ))
-
-                        }
-
-                    </div>
-
-                </div>
-
-                <div className="match-box">
-
-                    <h3>
-
-                        <FaTimesCircle />
-
-                        Missing Skills
-
-                    </h3>
-
-                    <div className="chips">
-
-                        {
-
-                            analysis.missingSkills.map(skill => (
-
-                                <span
-
-                                    key={skill}
-
-                                    className="chip danger"
-
-                                >
-
-                                    {skill}
-
-                                </span>
-
-                            ))
-
-                        }
-
-                    </div>
-
-                </div>
 
             </div>
 
-            <div className="ai-box">
 
-                <h3>
+            <AIRecommendation
 
-                    <FaRobot />
+                suggestions={analysis.suggestions}
 
-                    AI Suggestions
+            />
 
-                </h3>
-
-                {
-
-                    analysis.suggestions.map((item, index) => (
-
-                        <p key={index}>
-
-                            • {item}
-
-                        </p>
-
-                    ))
-
-                }
-
-            </div>
 
         </motion.div>
 
     );
 
 }
+
 
 export default MatchResult;

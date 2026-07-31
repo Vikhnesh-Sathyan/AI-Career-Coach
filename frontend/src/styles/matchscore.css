@@ -1,0 +1,31 @@
+.match-score-card{
+
+background:#111827;
+
+padding:30px;
+
+border-radius:20px;
+
+text-align:center;
+
+color:white;
+
+}
+
+
+.score-container{
+
+width:140px;
+
+margin:25px auto;
+
+}
+
+
+.match-score-card p{
+
+font-size:18px;
+
+font-weight:600;
+
+}

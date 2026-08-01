@@ -1,9 +1,7 @@
 .job-page{
-
-    max-width:1300px;
-
-    margin:auto;
-
-    padding:40px;
-
+    display:flex;
+    flex-direction:column;
+    gap:1px;
 }
+
+

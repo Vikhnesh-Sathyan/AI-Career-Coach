@@ -1,55 +1,116 @@
 .job-hero{
 
+    position:relative;
+
+
     display:flex;
+
 
     justify-content:space-between;
 
+
     align-items:center;
 
-    gap:50px;
 
     width:100%;
 
-    max-width:1400px;
 
-    margin:0 auto 40px;
+    max-width:2400px;
 
-    padding:50px 5%;
 
-    border-radius:28px;
+
+    padding:50px;
+
 
     background:
-        radial-gradient(circle at top left,#2563EB25,transparent 45%),
-        radial-gradient(circle at bottom right,#7C3AED25,transparent 45%),
-        #111827;
 
-    border:1px solid rgba(255,255,255,.08);
+
+ radial-gradient(
+    circle at top left,
+    rgba(16,185,129,.20),
+    transparent 45%
+),
+
+
+radial-gradient(
+    circle at bottom right,
+    rgba(20,184,166,.18),
+    transparent 45%
+),
+
+
+
+    linear-gradient(
+        145deg,
+        #020617,
+        #111827
+    );
+
+
+
+    border:
+
+    1px solid rgba(255,255,255,.08);
+
+
+
+    backdrop-filter:blur(20px);
+
+
+
+    box-shadow:
+
+
+    0 25px 60px rgba(0,0,0,.4);
+
+
 
     overflow:hidden;
 
-    position:relative;
+
 
     box-sizing:border-box;
 
+
 }
+
+
+
+
+
+
+/* subtle background effect */
+
 
 .job-hero::before{
 
+
     content:"";
+
 
     position:absolute;
 
-    width:450px;
-    height:450px;
 
-    background:#2563EB;
+    width:220px;
 
-    filter:blur(180px);
+
+    height:220px;
+
+
+    background:#10B981;
+
+
+    filter:blur(120px);
+
 
     opacity:.12;
 
-    top:-180px;
-    left:-150px;
+
+    top:-80px;
+
+
+    left:-60px;
+
 
 }
 
@@ -62,7 +123,7 @@
     width:400px;
     height:400px;
 
-    background:#8B5CF6;
+    background:#06B6D4;
 
     filter:blur(180px);
 
@@ -93,11 +154,11 @@
 
     border-radius:999px;
 
-    background:rgba(37,99,235,.15);
+    background:rgba(16,185,129,.15);
 
-    border:1px solid rgba(59,130,246,.25);
+    border:1px solid rgba(16,185,129,.25);
 
-    color:#93C5FD;
+    color:#6EE7B7;
 
     font-size:13px;
 
@@ -173,10 +234,10 @@
 
     transform:translateY(-5px);
 
-    border-color:#3B82F6;
+    border-color:#10B981;
 
-    box-shadow:0 12px 30px rgba(37,99,235,.25);
-
+box-shadow:
+0 12px 30px rgba(16,185,129,.25);
 }
 
 .hero-features svg{
@@ -272,10 +333,10 @@
 
     border-radius:50px;
 
-    background:linear-gradient(
-        90deg,
-        #3B82F6,
-        #8B5CF6
+  background:linear-gradient(
+    90deg,
+    #10B981,
+    #06B6D4
     );
 
 }

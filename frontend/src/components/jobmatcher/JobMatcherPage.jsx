@@ -10,8 +10,6 @@ import MatchResult from "./MatchResult";
 
 import LoadingMatch from "./LoadingMatch";
 
-import EmptyState from "./EmptyState";
-
 
 
 function JobMatcherPage(){
@@ -46,19 +44,6 @@ loading={loading}
 
 {
 
-!result && !loading && (
-
-<EmptyState/>
-
-)
-
-}
-
-
-
-
-{
-
 loading && (
 
 <LoadingMatch/>
@@ -66,8 +51,6 @@ loading && (
 )
 
 }
-
-
 
 
 {

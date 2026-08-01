@@ -8,16 +8,14 @@ import {
 import "react-circular-progressbar/dist/styles.css";
 
 
-function MatchScore({score}){
-
+function MatchScore({score}) {
 
 return (
 
-<div className="match-score">
+<div className="match-score-card">
 
 
-<div className="score-circle">
-
+<div className="score-container">
 
 <CircularProgressbar
 
@@ -27,23 +25,29 @@ text={`${score}%`}
 
 styles={buildStyles({
 
-textColor:"#fff",
+textColor:"#ffffff",
 
-pathColor:"#3B82F6",
+textSize:"24px",
 
-trailColor:"#334155"
+pathColor:"#22C55E",
+
+trailColor:"#1E293B",
+
+pathTransitionDuration:0.8
 
 })}
 
 />
 
-
 </div>
 
 
-<h2>
+<div className="score-info">
+
+
+<h1>
 Resume Match Score
-</h2>
+</h1>
 
 
 <p>
@@ -53,28 +57,35 @@ Resume Match Score
 score >= 85
 
 ?
-"Excellent Match"
+"🚀 Excellent Match"
 
 :
 
 score >=70
 
 ?
-"Good Match"
+"✨ Good Match"
 
 :
 
-"Needs Improvement"
+"⚡ Needs Improvement"
 
 }
 
 </p>
 
 
+<span>
+AI-powered resume compatibility analysis
+</span>
+
+
+</div>
+
+
 </div>
 
 );
-
 
 }
 

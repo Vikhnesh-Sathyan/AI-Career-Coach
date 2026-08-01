@@ -7,9 +7,7 @@ import MatchingSkills from "./MatchingSkills";
 import MissingSkills from "./MissingSkills";
 import AIRecommendation from "./AIRecommendation";
 
-
 function MatchResult({ analysis }) {
-
 
     return (
 
@@ -27,45 +25,37 @@ function MatchResult({ analysis }) {
                 y:0
             }}
 
+            transition={{
+                duration:0.6,
+                ease:"easeOut"
+            }}
+
         >
 
-            <MatchScore 
+            <MatchScore
                 score={analysis.matchScore}
             />
 
-
             <div className="match-grid">
 
-
                 <MatchingSkills
-
                     skills={analysis.matchedSkills}
-
                 />
-
 
                 <MissingSkills
-
                     skills={analysis.missingSkills}
-
                 />
-
 
             </div>
 
-
             <AIRecommendation
-
                 suggestions={analysis.suggestions}
-
             />
-
 
         </motion.div>
 
     );
 
 }
-
 
 export default MatchResult;

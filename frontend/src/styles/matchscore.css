@@ -1,31 +1,217 @@
 .match-score-card{
 
-background:#111827;
+    background:
+    radial-gradient(
+        circle at top left,
+        rgba(59,130,246,.18),
+        transparent 35%
+    ),
+    linear-gradient(
+        145deg,
+        #0F172A,
+        #111827
+    );
 
-padding:30px;
 
-border-radius:20px;
+    border:1px solid rgba(255,255,255,.08);
 
-text-align:center;
+    border-radius:28px;
 
-color:white;
+    padding:40px;
+
+    color:white;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:45px;
+
+    margin-bottom:30px;
+
+    position:relative;
+
+    overflow:hidden;
+
+    box-shadow:
+    0 25px 60px rgba(0,0,0,.45),
+    inset 0 1px 0 rgba(255,255,255,.05);
+
+}
+
+
+
+/* subtle glow */
+
+.match-score-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:220px;
+
+    height:220px;
+
+    background:#3B82F6;
+
+    filter:blur(120px);
+
+    opacity:.25;
+
+    top:-80px;
+
+    left:-60px;
+
+}
+
+
+
+
+
+.score-container{
+
+    width:180px;
+
+    height:180px;
+
+    flex-shrink:0;
+
+    padding:15px;
+
+    border-radius:50%;
+
+    background:
+
+    linear-gradient(
+        145deg,
+        #1E293B,
+        #0F172A
+    );
+
+    box-shadow:
+
+    inset 0 0 25px rgba(255,255,255,.05),
+
+    0 20px 40px rgba(0,0,0,.4);
+
+}
+
+
+
+
+.score-info{
+
+    flex:1;
+
+    position:relative;
+
+    z-index:2;
+
+}
+
+
+
+.score-info h1{
+
+    font-size:34px;
+
+    font-weight:800;
+
+    letter-spacing:-1px;
+
+    margin-bottom:15px;
+
+    background:
+
+    linear-gradient(
+        90deg,
+        #ffffff,
+        #94A3B8
+    );
+
+    -webkit-background-clip:text;
+
+    -webkit-text-fill-color:transparent;
+
+}
+
+
+
+.score-info p{
+
+    font-size:22px;
+
+    font-weight:800;
+
+    color:#22C55E;
+
+    margin-bottom:12px;
+
+}
+
+
+
+.score-info span{
+
+    color:#94A3B8;
+
+    font-size:15px;
+
+}
+
+
+
+
+
+/* Hover SaaS effect */
+
+.match-score-card:hover{
+
+    transform:translateY(-5px);
+
+    border-color:rgba(59,130,246,.4);
+
+    box-shadow:
+
+    0 35px 80px rgba(0,0,0,.55);
+
+    transition:.35s ease;
+
+}
+
+
+
+
+
+@media(max-width:900px){
+
+
+.match-score-card{
+
+    flex-direction:column;
+
+    text-align:center;
+
+    padding:30px;
 
 }
 
 
 .score-container{
 
-width:140px;
+    width:150px;
 
-margin:25px auto;
+    height:150px;
 
 }
 
 
-.match-score-card p{
+.score-info h1{
 
-font-size:18px;
+    font-size:28px;
 
-font-weight:600;
+}
+
 
 }

@@ -8,21 +8,68 @@
 
     gap:50px;
 
-    padding:45px;
+    width:100%;
+
+    max-width:1400px;
+
+    margin:0 auto 40px;
+
+    padding:50px 5%;
 
     border-radius:28px;
 
-    background:linear-gradient(
-        135deg,
-        rgba(37,99,235,.25),
-        rgba(124,58,237,.25)
-    );
-
-    backdrop-filter:blur(20px);
+    background:
+        radial-gradient(circle at top left,#2563EB25,transparent 45%),
+        radial-gradient(circle at bottom right,#7C3AED25,transparent 45%),
+        #111827;
 
     border:1px solid rgba(255,255,255,.08);
 
-    margin-bottom:35px;
+    overflow:hidden;
+
+    position:relative;
+
+    box-sizing:border-box;
+
+}
+
+.job-hero::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:450px;
+    height:450px;
+
+    background:#2563EB;
+
+    filter:blur(180px);
+
+    opacity:.12;
+
+    top:-180px;
+    left:-150px;
+
+}
+
+.job-hero::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:400px;
+    height:400px;
+
+    background:#8B5CF6;
+
+    filter:blur(180px);
+
+    opacity:.12;
+
+    right:-180px;
+    bottom:-180px;
 
 }
 
@@ -30,43 +77,59 @@
 
     flex:1;
 
+    min-width:0;
+
 }
 
 .job-tag{
 
-    display:inline-block;
+    display:inline-flex;
 
-    padding:8px 18px;
+    align-items:center;
 
-    border-radius:30px;
+    gap:8px;
 
-    background:rgba(59,130,246,.18);
+    padding:10px 18px;
+
+    border-radius:999px;
+
+    background:rgba(37,99,235,.15);
+
+    border:1px solid rgba(59,130,246,.25);
 
     color:#93C5FD;
 
     font-size:13px;
 
-    margin-bottom:20px;
+    font-weight:600;
+
+    margin-bottom:26px;
 
 }
 
 .job-hero-left h1{
 
+    font-size:clamp(2.2rem,5vw,4rem);
+
+    line-height:1.15;
+
+    margin-bottom:22px;
+
     color:white;
 
-    font-size:44px;
-
-    margin-bottom:18px;
+    max-width:700px;
 
 }
 
 .job-hero-left p{
 
-    color:#CBD5E1;
+    max-width:650px;
+
+    color:#94A3B8;
+
+    font-size:clamp(1rem,1.5vw,1.15rem);
 
     line-height:1.8;
-
-    max-width:650px;
 
 }
 
@@ -74,11 +137,11 @@
 
     display:flex;
 
+    flex-wrap:wrap;
+
     gap:18px;
 
-    margin-top:30px;
-
-    flex-wrap:wrap;
+    margin-top:40px;
 
 }
 
@@ -90,57 +153,86 @@
 
     gap:10px;
 
-    padding:12px 18px;
+    padding:14px 22px;
 
-    border-radius:14px;
+    border-radius:16px;
 
-    background:rgba(255,255,255,.05);
+    background:#1E293B;
+
+    border:1px solid rgba(255,255,255,.06);
 
     color:white;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.hero-features div:hover{
+
+    transform:translateY(-5px);
+
+    border-color:#3B82F6;
+
+    box-shadow:0 12px 30px rgba(37,99,235,.25);
 
 }
 
 .hero-features svg{
 
-    color:#60A5FA;
+    color:#3B82F6;
+
+    font-size:18px;
 
 }
 
 .job-hero-right{
 
-    width:320px;
+    width:360px;
+
+    max-width:340px;
+
+    width:100%;
 
 }
 
 .match-preview{
 
-    padding:35px;
+    background:#0F172A;
 
-    border-radius:24px;
+    border-radius:28px;
 
-    background:#1E293B;
-
-    text-align:center;
+    padding:40px;
 
     border:1px solid rgba(255,255,255,.08);
+
+    box-shadow:
+        0 25px 60px rgba(0,0,0,.45);
+
+    text-align:center;
 
 }
 
 .match-preview h3{
 
-    color:#CBD5E1;
+    color:white;
 
-    margin-bottom:20px;
+    font-size:18px;
+
+    margin-bottom:30px;
 
 }
 
 .preview-score{
 
-    font-size:64px;
+    font-size:72px;
 
     font-weight:800;
 
     color:white;
+
+    margin-bottom:8px;
 
 }
 
@@ -148,11 +240,11 @@
 
     display:block;
 
-    margin-top:10px;
-
     color:#22C55E;
 
-    font-weight:600;
+    font-size:22px;
+
+    font-weight:700;
 
 }
 
@@ -160,15 +252,15 @@
 
     width:100%;
 
-    height:10px;
+    height:12px;
 
-    background:rgba(255,255,255,.08);
+    border-radius:50px;
 
-    border-radius:20px;
+    background:#1E293B;
 
     overflow:hidden;
 
-    margin:25px 0;
+    margin:35px 0;
 
 }
 
@@ -178,7 +270,7 @@
 
     height:100%;
 
-    border-radius:20px;
+    border-radius:50px;
 
     background:linear-gradient(
         90deg,
@@ -192,21 +284,41 @@
 
     color:#94A3B8;
 
-    line-height:1.5;
+    font-size:15px;
+
+    line-height:1.8;
 
 }
 
-@media(max-width:1000px){
+@media(max-width:1100px){
 
     .job-hero{
 
         flex-direction:column;
+
+        text-align:center;
+
+        padding:45px;
+
+    }
+
+    .job-hero-left h1{
+
+        font-size:44px;
+
+    }
+
+    .hero-features{
+
+        justify-content:center;
 
     }
 
     .job-hero-right{
 
         width:100%;
+
+        max-width:400px;
 
     }
 

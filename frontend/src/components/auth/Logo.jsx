@@ -1,5 +1,3 @@
-import "../../styles/logo.css";
-
 import { FaRobot } from "react-icons/fa";
 
 function Logo() {

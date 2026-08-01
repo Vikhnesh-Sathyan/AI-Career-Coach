@@ -4,11 +4,13 @@ import { useState } from "react";
 
 import { FaPaperPlane } from "react-icons/fa";
 
+import { evaluateAnswer } from "../../services/interviewService";
+
 function AnswerBox({ question, setEvaluation }) {
 
     const [answer, setAnswer] = useState("");
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
 
         if (!answer.trim()) {
 
@@ -18,15 +20,33 @@ function AnswerBox({ question, setEvaluation }) {
 
         }
 
-        // Temporary demo evaluation
+        try {
 
-        setEvaluation({
+            const data = await evaluateAnswer(
 
-            score: 8,
+                question.question,
 
-            feedback: "Good explanation. Add more real-world examples to improve your answer."
+                answer
 
-        });
+            );
+
+            if (data.success) {
+
+                setEvaluation(data);
+
+            } else {
+
+                alert(data.message);
+
+            }
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert("Failed to evaluate answer.");
+
+        }
 
     };
 
@@ -40,7 +60,7 @@ function AnswerBox({ question, setEvaluation }) {
 
                 value={answer}
 
-                onChange={(e)=>setAnswer(e.target.value)}
+                onChange={(e) => setAnswer(e.target.value)}
 
                 placeholder="Type your answer here..."
 

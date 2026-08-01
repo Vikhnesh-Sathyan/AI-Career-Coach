@@ -7,6 +7,7 @@ import Resume from "./pages/Resume";
 import JobMatcher from "./pages/JobMatcher";
 import MatchHistory from "./pages/MatchHistory";
 import ATS from "./pages/ATS";
+import Settings from "./pages/Settings";
 
 function App() {
     return (
@@ -27,6 +28,7 @@ function App() {
 
                 <Route path="/ats" element={<ATS />} />
 
+                <Route path="/settings" element={<Settings />} />
                 
 
             </Routes>

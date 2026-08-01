@@ -1,0 +1,81 @@
+.evaluation-card{
+
+    background:#1E293B;
+
+    padding:30px;
+
+    border-radius:20px;
+
+    border:1px solid rgba(255,255,255,.08);
+
+}
+
+.evaluation-top{
+
+    display:flex;
+
+    gap:30px;
+
+    align-items:center;
+
+}
+
+.evaluation-progress{
+
+    width:130px;
+
+}
+
+.evaluation-top h2{
+
+    color:white;
+
+    display:flex;
+
+    gap:10px;
+
+    align-items:center;
+
+}
+
+.evaluation-top p{
+
+    color:#94A3B8;
+
+    margin-top:10px;
+
+}
+
+.feedback-box{
+
+    margin-top:30px;
+
+    padding:20px;
+
+    background:#0F172A;
+
+    border-radius:15px;
+
+}
+
+.feedback-box h3{
+
+    color:white;
+
+    display:flex;
+
+    gap:10px;
+
+    align-items:center;
+
+}
+
+.feedback-box p{
+
+    margin-top:15px;
+
+    color:#CBD5E1;
+
+    line-height:1.8;
+
+}

@@ -1,0 +1,65 @@
+.answer-card{
+
+    background:#1E293B;
+
+    padding:30px;
+
+    border-radius:20px;
+
+    border:1px solid rgba(255,255,255,.08);
+
+}
+
+.answer-card h2{
+
+    color:white;
+
+    margin-bottom:20px;
+
+}
+
+.answer-card textarea{
+
+    width:100%;
+
+    min-height:220px;
+
+    padding:20px;
+
+    resize:none;
+
+    border-radius:16px;
+
+    border:none;
+
+    outline:none;
+
+    background:#0F172A;
+
+    color:white;
+
+    margin-bottom:20px;
+
+}
+
+.submit-answer{
+
+    padding:15px 30px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:linear-gradient(135deg,#2563EB,#7C3AED);
+
+    color:white;
+
+    cursor:pointer;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+}

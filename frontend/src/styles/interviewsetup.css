@@ -1,0 +1,83 @@
+.interview-setup{
+
+    background:#1E293B;
+
+    padding:30px;
+
+    border-radius:20px;
+
+    border:1px solid rgba(255,255,255,.08);
+
+}
+
+.interview-setup h2{
+
+    color:white;
+
+    margin-bottom:25px;
+
+}
+
+.setup-grid{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:20px;
+
+}
+
+.setup-grid label{
+
+    display:block;
+
+    color:#CBD5E1;
+
+    margin-bottom:10px;
+
+}
+
+.setup-grid select{
+
+    width:100%;
+
+    padding:14px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#0F172A;
+
+    color:white;
+
+    outline:none;
+
+}
+
+.start-btn{
+
+    margin-top:25px;
+
+    padding:15px 25px;
+
+    border:none;
+
+    border-radius:14px;
+
+    cursor:pointer;
+
+    background:linear-gradient(135deg,#2563EB,#7C3AED);
+
+    color:white;
+
+    font-size:16px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+}

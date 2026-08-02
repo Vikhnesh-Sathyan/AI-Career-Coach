@@ -1,59 +1,24 @@
-const API = "http://localhost:5000/api/interview";
+const API = "http://localhost:5001";
 
-export async function generateQuestion(category, difficulty){
-
-    const response = await fetch(
-
-        `${API}/question`,
-
-        {
-
-            method:"POST",
-
-            headers:{
-
-                "Content-Type":"application/json"
-
-            },
-
-            body:JSON.stringify({
-
-                category,
-
-                difficulty
-
-            })
-
-        }
-
-    );
-
-    return await response.json();
-
-}
-
-
-
-export async function evaluateAnswer(question, answer){
+export async function evaluateAnswer(question, answer) {
 
     const response = await fetch(
 
-        `${API}/evaluate`,
+        `${API}/interview-evaluate`,
 
         {
 
-            method:"POST",
+            method: "POST",
 
-            headers:{
+            headers: {
 
-                "Content-Type":"application/json"
+                "Content-Type": "application/json"
 
             },
 
-            body:JSON.stringify({
+            body: JSON.stringify({
 
                 question,
-
                 answer
 
             })

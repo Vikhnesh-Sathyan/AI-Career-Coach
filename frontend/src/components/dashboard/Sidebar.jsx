@@ -58,8 +58,12 @@ function Sidebar() {
             icon: <FaCog />,
             title: "Settings",
             path: "/settings"
-        }
-
+        },
+        {
+              icon:<FaHistory />,
+              title:"Interview History",
+              path:"/interview-history"
+    }
     ];
 
     return (

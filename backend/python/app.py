@@ -372,6 +372,181 @@ def job_match():
             "message":str(e)
 
         }),500
+        
+# -------------------------------
+# Interview Evaluation
+# -------------------------------
+
+@app.route("/interview-evaluate", methods=["POST"])
+def interview_evaluate():
+
+    try:
+
+        data = request.get_json()
+
+        question = data.get("question", "")
+        answer = data.get("answer", "")
+
+        answer = answer.strip()
+
+        if answer == "":
+
+            return jsonify({
+
+                "success": False,
+                "message": "Answer cannot be empty"
+
+            }),400
+
+
+        score = 4
+        feedback = []
+        strengths = []
+        improvements = []
+
+
+        # Length check
+
+        if len(answer) > 80:
+
+            score += 2
+            strengths.append("Answer has good length.")
+
+        else:
+
+            improvements.append(
+                "Explain your answer in more detail."
+            )
+
+
+        # Technical keywords
+
+        keywords = [
+
+            "component",
+            "state",
+            "props",
+            "hook",
+            "useState",
+            "useEffect",
+            "javascript",
+            "virtual dom",
+            "render",
+            "react"
+
+        ]
+
+        found = 0
+
+        lower = answer.lower()
+
+        for word in keywords:
+
+            if word.lower() in lower:
+
+                found += 1
+
+
+        score += min(found,4)
+
+        if found >= 3:
+
+            strengths.append(
+                "Good technical terminology."
+            )
+
+        else:
+
+            improvements.append(
+                "Include more technical concepts."
+            )
+
+
+        # Practical examples
+
+        example_words = [
+
+            "example",
+            "project",
+            "application",
+            "used",
+            "implemented"
+
+        ]
+
+        has_example = False
+
+        for word in example_words:
+
+            if word in lower:
+
+                has_example = True
+                break
+
+
+        if has_example:
+
+            score += 1
+
+            strengths.append(
+                "Practical example included."
+            )
+
+        else:
+
+            improvements.append(
+                "Add a real-world example."
+            )
+
+
+        if score > 10:
+
+            score = 10
+
+
+        if score >= 9:
+
+            feedback.append(
+                "Excellent interview answer."
+            )
+
+        elif score >= 7:
+
+            feedback.append(
+                "Good answer with minor improvements."
+            )
+
+        else:
+
+            feedback.append(
+                "Needs improvement."
+            )
+
+
+        return jsonify({
+
+            "success": True,
+
+            "score": score,
+
+            "feedback": feedback,
+
+            "strengths": strengths,
+
+            "improvements": improvements
+
+        })
+
+
+    except Exception as e:
+
+        return jsonify({
+
+            "success": False,
+
+            "message": str(e)
+
+        }),500
 
 if __name__ == "__main__":
 

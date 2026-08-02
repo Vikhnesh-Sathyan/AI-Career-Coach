@@ -6,6 +6,8 @@ import { FaPaperPlane } from "react-icons/fa";
 
 import { evaluateAnswer } from "../../services/interviewService";
 
+import { saveInterview } from "../../services/interviewHistoryService";
+
 function AnswerBox({ question, setEvaluation }) {
 
     const [answer, setAnswer] = useState("");
@@ -30,11 +32,41 @@ function AnswerBox({ question, setEvaluation }) {
 
             );
 
-            if (data.success) {
+           if (data.success) {
 
-                setEvaluation(data);
+    setEvaluation(data);
 
-            } else {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+
+        const saveData = await saveInterview(
+
+            {
+
+                category: question.category,
+
+                difficulty: question.difficulty,
+
+                question: question.question,
+
+                answer,
+
+                score: data.score,
+
+                feedback: data.feedback
+
+            },
+
+            token
+
+        );
+
+        console.log("Interview Saved:", saveData);
+
+    }
+
+} else {
 
                 alert(data.message);
 

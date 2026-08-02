@@ -1,0 +1,37 @@
+.interview-history{
+
+    padding:40px;
+
+}
+
+.interview-history h1{
+
+    color:white;
+
+    margin-bottom:30px;
+
+}
+
+.history-card{
+
+    background:#1E293B;
+
+    color:white;
+
+    padding:25px;
+
+    border-radius:18px;
+
+    margin-bottom:20px;
+
+    border:1px solid rgba(255,255,255,.08);
+
+}
+
+.history-card p{
+
+    margin-top:10px;
+
+    color:#CBD5E1;
+
+}

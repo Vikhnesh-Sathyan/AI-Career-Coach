@@ -374,7 +374,7 @@ def job_match():
         }),500
         
 # -------------------------------
-# Interview Evaluation
+# Interview Evaluation API
 # -------------------------------
 
 @app.route("/interview-evaluate", methods=["POST"])
@@ -385,102 +385,140 @@ def interview_evaluate():
         data = request.get_json()
 
         question = data.get("question", "")
-        answer = data.get("answer", "")
-
-        answer = answer.strip()
+        answer = data.get("answer", "").strip()
 
         if answer == "":
 
             return jsonify({
 
                 "success": False,
-                "message": "Answer cannot be empty"
 
-            }),400
+                "message": "Answer cannot be empty."
 
+            }), 400
+
+
+        # -------------------------------
+        # Initial Score
+        # -------------------------------
 
         score = 4
-        feedback = []
+
+        feedback = ""
+
         strengths = []
+
         improvements = []
 
 
-        # Length check
+        # -------------------------------
+        # Answer Length
+        # -------------------------------
 
         if len(answer) > 80:
 
             score += 2
-            strengths.append("Answer has good length.")
+
+            strengths.append(
+
+                "Answer has good explanation."
+
+            )
 
         else:
 
             improvements.append(
+
                 "Explain your answer in more detail."
+
             )
 
 
-        # Technical keywords
+        # -------------------------------
+        # Technical Keywords
+        # -------------------------------
 
         keywords = [
 
+            "react",
             "component",
+            "components",
             "state",
             "props",
             "hook",
-            "useState",
-            "useEffect",
-            "javascript",
+            "hooks",
+            "usestate",
+            "useeffect",
             "virtual dom",
-            "render",
-            "react"
+            "javascript",
+            "jsx",
+            "render"
 
         ]
 
-        found = 0
 
         lower = answer.lower()
 
-        for word in keywords:
+        found = 0
 
-            if word.lower() in lower:
+
+        for keyword in keywords:
+
+            if keyword in lower:
 
                 found += 1
 
 
-        score += min(found,4)
+        score += min(found, 4)
+
 
         if found >= 3:
 
             strengths.append(
-                "Good technical terminology."
+
+                "Good technical terminology used."
+
             )
 
         else:
 
             improvements.append(
+
                 "Include more technical concepts."
+
             )
 
 
-        # Practical examples
+        # -------------------------------
+        # Practical Example
+        # -------------------------------
 
         example_words = [
 
             "example",
+
             "project",
+
             "application",
-            "used",
-            "implemented"
+
+            "implemented",
+
+            "developed",
+
+            "used"
 
         ]
 
+
         has_example = False
+
 
         for word in example_words:
 
             if word in lower:
 
                 has_example = True
+
                 break
 
 
@@ -489,43 +527,59 @@ def interview_evaluate():
             score += 1
 
             strengths.append(
+
                 "Practical example included."
+
             )
 
         else:
 
             improvements.append(
-                "Add a real-world example."
+
+                "Add a practical example."
+
             )
 
+
+        # -------------------------------
+        # Maximum Score
+        # -------------------------------
 
         if score > 10:
 
             score = 10
 
 
+        # -------------------------------
+        # Feedback
+        # -------------------------------
+
         if score >= 9:
 
-            feedback.append(
-                "Excellent interview answer."
-            )
+            feedback = "Excellent interview answer."
 
         elif score >= 7:
 
-            feedback.append(
-                "Good answer with minor improvements."
-            )
+            feedback = "Good answer with minor improvements."
+
+        elif score >= 5:
+
+            feedback = "Average answer. Add more technical details."
 
         else:
 
-            feedback.append(
-                "Needs improvement."
-            )
+            feedback = "Needs significant improvement."
 
+
+        # -------------------------------
+        # Response
+        # -------------------------------
 
         return jsonify({
 
             "success": True,
+
+            "question": question,
 
             "score": score,
 
@@ -546,7 +600,7 @@ def interview_evaluate():
 
             "message": str(e)
 
-        }),500
+        }), 500
 
 if __name__ == "__main__":
 

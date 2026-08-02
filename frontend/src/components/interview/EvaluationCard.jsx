@@ -83,9 +83,13 @@ function EvaluationCard({ result }) {
                 </h3>
 
                 <p>
-
-                    {result.feedback}
-
+                {   
+                     Array.isArray(result.feedback)
+                     ?
+                     result.feedback.join(" ")
+                     :
+                     result.feedback
+                }
                 </p>
 
             </div>

@@ -58,8 +58,6 @@ const interviewSchema = new mongoose.Schema(
 
             type:String,
 
-            required:true
-
         }
 
     },

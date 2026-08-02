@@ -54,8 +54,9 @@ function AnswerBox({ question, setEvaluation }) {
 
                 score: data.score,
 
-                feedback: data.feedback
-
+                feedback: Array.isArray(data.feedback)
+                ? data.feedback.join(" ")
+                : data.feedback
             },
 
             token

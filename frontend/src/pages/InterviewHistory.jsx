@@ -1,97 +1,160 @@
+import "../styles/interviewhistory.css";
+
 import { useEffect, useState } from "react";
 
 import { getInterviewHistory } from "../services/interviewHistoryService";
 
-import "../styles/interviewhistory.css";
+import {
+    FaHistory,
+    FaStar,
+    FaCode
+} from "react-icons/fa";
 
-function InterviewHistory() {
+function InterviewHistory(){
 
-    const [history, setHistory] = useState([]);
+    const [history,setHistory]=useState([]);
 
-    const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
+    useEffect(()=>{
 
-        fetchHistory();
-
-    }, []);
-
-    const fetchHistory = async () => {
-
-        try {
+        const fetchHistory = async()=>{
 
             const token = localStorage.getItem("token");
 
-            const data = await getInterviewHistory(token);
 
-            if (data.success) {
+            if(token){
 
-                setHistory(data.history || []);
+                const data = await getInterviewHistory(token);
+
+
+                if(data.success){
+
+                    setHistory(data.history);
+
+                }
 
             }
 
-        } catch (error) {
+        };
 
-            console.log(error);
 
-        } finally {
+        fetchHistory();
 
-            setLoading(false);
 
-        }
+    },[]);
 
-    };
 
-    if (loading) {
 
-        return <h2>Loading...</h2>;
+    return(
 
-    }
+        <div className="history-section">
 
-    return (
 
-        <div className="interview-history">
+            <div className="history-title">
 
-            <h1>Interview History</h1>
+                <FaHistory/>
+
+                <h2>
+                    Interview History
+                </h2>
+
+            </div>
+
+
 
             {
 
                 history.length === 0 ?
 
-                <p>No Interviews Found</p>
+                (
+
+                    <p className="empty-history">
+                        No interviews completed yet.
+                    </p>
+
+                )
 
                 :
 
-                history.map((item) => (
+                history.map((item)=>(
+
 
                     <div
-
-                        className="history-card"
-
-                        key={item._id}
-
+                    className="history-card"
+                    key={item._id}
                     >
 
-                        <h2>{item.category}</h2>
 
-                        <p><b>Difficulty:</b> {item.difficulty}</p>
+                        <div className="history-header">
 
-                        <p><b>Question:</b> {item.question}</p>
 
-                        <p><b>Score:</b> {item.score}/10</p>
+                            <h3>
 
-                        <p><b>Feedback:</b> {item.feedback}</p>
+                                <FaCode/>
+
+                                {item.category}
+
+                            </h3>
+
+
+                            <span>
+
+                                Score {item.score}/10
+
+                            </span>
+
+
+                        </div>
+
+
+
+                        <p className="difficulty">
+
+                            Difficulty: {item.difficulty}
+
+                        </p>
+
+
+
+                        <div className="history-question">
+
+                            <strong>
+                                Question
+                            </strong>
+
+                            <p>
+                                {item.question}
+                            </p>
+
+                        </div>
+
+
+
+                        <div className="history-feedback">
+
+                            <FaStar/>
+
+                            <p>
+                                {item.feedback}
+                            </p>
+
+                        </div>
+
+
 
                     </div>
+
 
                 ))
 
             }
+
 
         </div>
 
     );
 
 }
+
 
 export default InterviewHistory;

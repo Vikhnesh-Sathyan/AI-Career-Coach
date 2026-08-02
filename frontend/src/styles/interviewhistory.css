@@ -1,37 +1,451 @@
-.interview-history{
+.history-section {
+
+    padding:30px;
+
+    background:
+    radial-gradient(
+        circle at top left,
+        rgba(59,130,246,.15),
+        transparent 40%
+    );
+
+}
+
+
+
+/* Title */
+.history-title {
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:flex-start;
+
+    gap:12px;
+
+    margin-top:0;
+
+    margin-bottom:25px;
+
+    position:relative;
+
+    top:0;
+
+}
+
+
+.history-title svg {
+
+    color:#38BDF8;
+
+    font-size:32px;
+
+    filter:
+    drop-shadow(0 0 12px #38BDF8);
+
+}
+
+
+
+.history-title h2 {
+
+    margin:0;
+
+    padding:0;
+
+    font-size:32px;
+
+    line-height:1.2;
+
+    background:
+    linear-gradient(
+        90deg,
+        #38BDF8,
+        #A78BFA,
+        #F472B6
+    );
+
+    -webkit-background-clip:text;
+
+    background-clip:text;
+
+    color:transparent;
+
+    font-weight:800;
+
+}
+
+
+
+
+.empty-history {
+
+    color:#CBD5E1;
+
+    text-align:center;
 
     padding:40px;
 
-}
-
-.interview-history h1{
-
-    color:white;
-
-    margin-bottom:30px;
+    font-size:18px;
 
 }
 
-.history-card{
 
-    background:#1E293B;
+
+
+/* Cards */
+
+
+.history-card {
+
+
+    position:relative;
+
+    overflow:hidden;
+
+
+    background:
+
+    linear-gradient(
+        135deg,
+        rgba(30,41,59,.8),
+        rgba(15,23,42,.9)
+    );
+
+
+    backdrop-filter:blur(20px);
+
+
+    border:1px solid rgba(255,255,255,.12);
+
+
+    padding:30px;
+
+
+    margin-bottom:25px;
+
+
+    border-radius:28px;
+
+
+    box-shadow:
+
+    0 25px 70px rgba(0,0,0,.45);
+
+
+    transition:.4s;
+
+
+}
+
+
+
+
+.history-card::before {
+
+
+    content:"";
+
+
+    position:absolute;
+
+
+    width:180px;
+
+    height:180px;
+
+
+    top:-80px;
+
+    right:-80px;
+
+
+    background:
+
+    radial-gradient(
+        circle,
+        rgba(96,165,250,.4),
+        transparent 70%
+    );
+
+
+}
+
+
+
+
+.history-card:hover {
+
+
+    transform:
+
+    translateY(-8px)
+    scale(1.01);
+
+
+    border-color:#38BDF8;
+
+
+    box-shadow:
+
+    0 30px 80px rgba(56,189,248,.25);
+
+
+}
+
+
+
+
+
+/* Header */
+
+
+.history-header {
+
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    position:relative;
+
+}
+
+
+
+.history-header h3 {
+
 
     color:white;
 
-    padding:25px;
+    display:flex;
 
-    border-radius:18px;
+    align-items:center;
 
-    margin-bottom:20px;
+    gap:12px;
+
+    font-size:22px;
+
+}
+
+
+
+.history-header h3 svg {
+
+
+    color:#A78BFA;
+
+    font-size:25px;
+
+}
+
+
+
+
+.history-header span {
+
+
+    background:
+
+    linear-gradient(
+        135deg,
+        #22C55E,
+        #14B8A6
+    );
+
+
+    color:white;
+
+
+    padding:8px 18px;
+
+
+    border-radius:30px;
+
+
+    font-weight:700;
+
+
+    box-shadow:
+
+    0 8px 20px rgba(34,197,94,.35);
+
+}
+
+
+
+
+
+.difficulty {
+
+
+    margin-top:8px;
+
+
+    color:#94A3B8;
+
+}
+
+
+
+
+
+/* Question box */
+
+
+.history-question {
+
+
+    margin-top:25px;
+
+
+    padding:22px;
+
+
+    background:
+
+    linear-gradient(
+        135deg,
+        rgba(59,130,246,.12),
+        rgba(168,85,247,.12)
+    );
+
+
+    border-radius:20px;
+
 
     border:1px solid rgba(255,255,255,.08);
 
+
 }
 
-.history-card p{
+
+
+.history-question strong {
+
+
+    color:#38BDF8;
+
+    font-size:16px;
+
+}
+
+
+
+.history-question p {
+
+
+    color:#F1F5F9;
+
+
+    line-height:1.8;
+
 
     margin-top:10px;
 
-    color:#CBD5E1;
+}
+
+
+
+
+/* Feedback */
+
+
+.history-feedback {
+
+
+    margin-top:22px;
+
+
+    display:flex;
+
+
+    gap:15px;
+
+
+    align-items:flex-start;
+
+
+    padding:18px;
+
+
+    border-radius:18px;
+
+
+    background:
+
+    rgba(250,204,21,.08);
+
+
+    border-left:
+
+    4px solid #FACC15;
+
+
+    color:#E2E8F0;
+
+
+}
+
+
+
+
+
+.history-feedback svg {
+
+
+    color:#FACC15;
+
+
+    font-size:22px;
+
+    margin-top:3px;
+
+
+}
+
+
+
+
+
+
+/* Mobile */
+
+
+@media(max-width:700px){
+
+
+    .history-section{
+
+        padding:15px;
+
+    }
+
+
+    .history-header{
+
+
+        flex-direction:column;
+
+
+        align-items:flex-start;
+
+
+        gap:15px;
+
+
+    }
+
+
+
+    .history-title h2{
+
+        font-size:25px;
+
+    }
+
 
 }

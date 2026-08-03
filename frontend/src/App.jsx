@@ -35,6 +35,7 @@ function App() {
                 <Route path="/settings" element={<Settings />} />
 
                 <Route path="/interview-history" element={<InterviewHistory />} />
+
                 
 
             </Routes>

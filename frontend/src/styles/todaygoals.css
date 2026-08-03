@@ -7,7 +7,7 @@
 
     padding:30px;
 
-    /* border:1px solid rgba(255,255,255,.08); */
+    border:1px solid rgba(255,255,255,.08);
 
 }
 
@@ -105,7 +105,7 @@
 
     height:8px;
 
-    /* background:#334155; */
+    background:#334155;
 
     border-radius:20px;
 
@@ -118,7 +118,7 @@
 
     height:100%;
 
-    background:#22C55E;  /* green */
+    background:#3B82F6;
 
     border-radius:20px;
 

@@ -6,7 +6,8 @@ import { useNavigate } from "react-router-dom";
 import {
     FaFileAlt,
     FaSearch,
-    FaMicrophone
+    FaMicrophone,
+    FaRocket
 } from "react-icons/fa";
 
 function DashboardHero() {
@@ -35,11 +36,10 @@ function DashboardHero() {
 
                 </span>
 
-                <h1>
-
-                    Build Your Dream Career 🚀
-
-                </h1>
+              <h1>
+                    Build Your Dream Career 
+                    <FaRocket className="rocket-icon" />
+            </h1>
 
                 <p className="hero-quote">
 

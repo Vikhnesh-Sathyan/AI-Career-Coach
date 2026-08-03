@@ -208,6 +208,18 @@
 
 }
 
+.rocket-icon{
+
+    color:#FACC15;
+
+    margin-left:5px;
+
+    font-size:35px;
+
+    transform:translateY(5px);
+
+}
+
 @media(max-width:1100px){
 
 .dashboard-hero{

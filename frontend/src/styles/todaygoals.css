@@ -1,5 +1,6 @@
 .goals-card{
 
+
     background:#1E293B;
 
     border-radius:24px;
@@ -10,15 +11,23 @@
 
 }
 
+
+
 .goals-card h2{
+
 
     color:white;
 
     margin-bottom:25px;
 
+    font-size:22px;
+
 }
 
+
+
 .goal-item{
+
 
     display:flex;
 
@@ -32,20 +41,113 @@
 
 }
 
+
+
 .goal-item span{
+
 
     color:#CBD5E1;
 
     font-size:16px;
 
+    transition:.3s;
+
 }
 
+
+
+/* Strike completed goals */
+
+.goal-item input:checked + span{
+
+
+    text-decoration:line-through;
+
+    color:#64748B;
+
+
+}
+
+
+
 .goal-item input{
+
 
     width:18px;
 
     height:18px;
 
     accent-color:#3B82F6;
+
+    cursor:pointer;
+
+}
+
+
+
+/* Progress */
+
+.goal-progress{
+
+
+    margin-top:25px;
+
+
+}
+
+
+
+.progress-bar{
+
+
+    width:100%;
+
+    height:8px;
+
+    background:#334155;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+
+}
+
+
+
+.progress-fill{
+
+
+    height:100%;
+
+    background:linear-gradient(
+
+        90deg,
+
+        #3B82F6,
+
+        #8B5CF6
+
+    );
+
+
+    border-radius:20px;
+
+    transition:.4s;
+
+
+}
+
+
+
+.goal-progress p{
+
+
+    color:#94A3B8;
+
+    font-size:14px;
+
+    margin-top:10px;
+
 
 }

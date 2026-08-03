@@ -9,6 +9,8 @@ import AIAssistant from "../components/dashboard/AIAssistant";
 import ActivityTimeline from "../components/dashboard/ActivityTimeline";
 import QuickActions from "../components/dashboard/QuickActions";
 import WelcomeCard from "../components/dashboard/WelcomeCard";
+import InterviewChart from "../components/dashboard/InterviewChart";
+import ATSChart from "../components/dashboard/ATSChart";
 
 import {
     FaChartLine,
@@ -203,8 +205,13 @@ function Dashboard() {
 
                 </div>
 
+                <div className="dashboard-charts">
 
+                    <InterviewChart />
 
+                    <ATSChart />
+
+                    </div>
 
 
 

@@ -10,7 +10,8 @@ import jobMatchRoutes from "./src/routes/jobMatchRoutes.js";
 import interviewRoutes from "./src/routes/interviewRoutes.js";
 import dashboardRoutes from "./src/routes/dashboardRoutes.js";
 import settingsRoutes from "./src/routes/settingsRoutes.js"; 
-import jobApplicationRoutes from "./src/routes/jobApplicationRoutes.js";   
+import jobApplicationRoutes from "./src/routes/jobApplicationRoutes.js";  
+ 
 
 dotenv.config();
 
@@ -32,6 +33,7 @@ app.use("/api/job-match",jobMatchRoutes);
 app.use("/api/interview", interviewRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/settings", settingsRoutes);
+
 app.use("/api/job-application", jobApplicationRoutes);
 
 

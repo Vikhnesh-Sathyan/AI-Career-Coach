@@ -30,6 +30,7 @@ import ProfileCard from "../components/dashboard/ProfileCard";
 import {
     getDashboardStats
 } from "../services/dashboardService";
+import JobTracker from "./JobTracker";
 
 // import RecentActivity from "../components/dashboard/RecentActivity";
 
@@ -229,6 +230,7 @@ function Dashboard() {
 
 
                     <AIAssistant />
+
 
 
                 </div>

@@ -1,71 +1,53 @@
-import "../styles/jobtracker.css";
-
 import { useEffect, useState } from "react";
 
 import JobHero from "../components/jobtracker/JobHero";
 import ApplicationStats from "../components/jobtracker/ApplicationStats";
 import AddApplication from "../components/jobtracker/AddApplication";
-import ApplicationTable from "../components/jobtracker/ApplicationTable";
+import JobBoard from "../components/jobtracker/JobBoard";
 
 import {
 
-    getApplications,
-
-    getApplicationStats
+    getApplications
 
 } from "../services/jobTrackerService";
 
-function JobTracker() {
+import "../styles/jobtracker.css";
 
-    const [applications, setApplications] = useState([]);
+function JobTracker(){
 
-    const [stats, setStats] = useState({
+    const [applications,setApplications]=useState([]);
 
-        total: 0,
+    const [loading,setLoading]=useState(true);
 
-        applied: 0,
+    useEffect(()=>{
 
-        interview: 0,
+        loadApplications();
 
-        offer: 0,
+    },[]);
 
-        rejected: 0
+    const loadApplications=async()=>{
 
-    });
+        try{
 
-    const [loading, setLoading] = useState(true);
+            const token=localStorage.getItem("token");
 
-    const loadApplications = async () => {
+            const data=await getApplications(token);
 
-        try {
+            if(data.success){
 
-            const token = localStorage.getItem("token");
-
-            const appData = await getApplications(token);
-
-            const statData = await getApplicationStats(token);
-
-            if (appData.success) {
-
-                setApplications(appData.data);
-
-            }
-
-            if (statData.success) {
-
-                setStats(statData.data);
+                setApplications(data.data);
 
             }
 
         }
 
-        catch (error) {
+        catch(error){
 
             console.log(error);
 
         }
 
-        finally {
+        finally{
 
             setLoading(false);
 
@@ -73,27 +55,41 @@ function JobTracker() {
 
     };
 
-    useEffect(() => {
+    if(loading){
 
-        loadApplications();
+        return(
 
-    }, []);
+            <div className="loading-page">
 
-    return (
+                Loading Job Tracker...
+
+            </div>
+
+        );
+
+    }
+
+    return(
 
         <div className="jobtracker-page">
 
-            <JobHero />
+            <JobHero/>
 
-            <ApplicationStats stats={stats} />
-
-            <AddApplication refresh={loadApplications} />
-
-            <ApplicationTable
+            <ApplicationStats
 
                 applications={applications}
 
-                loading={loading}
+            />
+
+            <AddApplication
+
+                refresh={loadApplications}
+
+            />
+
+            <JobBoard
+
+                applications={applications}
 
                 refresh={loadApplications}
 

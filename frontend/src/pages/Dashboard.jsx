@@ -31,6 +31,7 @@ import {
     getDashboardStats
 } from "../services/dashboardService";
 
+// import RecentActivity from "../components/dashboard/RecentActivity";
 
 
 function Dashboard() {
@@ -217,7 +218,7 @@ function Dashboard() {
 
                     </div>
 
-                    
+                    {/* <RecentActivity/> */}
 
 
 

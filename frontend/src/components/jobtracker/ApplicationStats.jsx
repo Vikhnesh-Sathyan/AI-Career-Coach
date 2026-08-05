@@ -3,67 +3,56 @@ import "../../styles/applicationstats.css";
 import { motion } from "framer-motion";
 
 import {
-
     FaBriefcase,
-
     FaUserCheck,
-
     FaAward,
-
     FaTimesCircle
-
 } from "react-icons/fa";
 
-function ApplicationStats({ stats }) {
+function ApplicationStats({ applications }) {
+
+    const total = applications.length;
+
+    const interview = applications.filter(
+        app => app.status === "Interview"
+    ).length;
+
+    const offer = applications.filter(
+        app => app.status === "Offer"
+    ).length;
+
+    const rejected = applications.filter(
+        app => app.status === "Rejected"
+    ).length;
 
     const cards = [
 
         {
-
             title: "Applications",
-
-            value: stats.total,
-
+            value: total,
             icon: <FaBriefcase />,
-
             color: "blue"
-
         },
 
         {
-
             title: "Interviews",
-
-            value: stats.interview,
-
+            value: interview,
             icon: <FaUserCheck />,
-
             color: "purple"
-
         },
 
         {
-
             title: "Offers",
-
-            value: stats.offer,
-
+            value: offer,
             icon: <FaAward />,
-
             color: "green"
-
         },
 
         {
-
             title: "Rejected",
-
-            value: stats.rejected,
-
+            value: rejected,
             icon: <FaTimesCircle />,
-
             color: "red"
-
         }
 
     ];
@@ -78,37 +67,37 @@ function ApplicationStats({ stats }) {
 
                     <motion.div
 
-                        key={index}
+                        key={card.title}
 
                         className={`stat-card ${card.color}`}
 
                         initial={{
 
-                            opacity:0,
+                            opacity: 0,
 
-                            y:30
+                            y: 30
 
                         }}
 
                         animate={{
 
-                            opacity:1,
+                            opacity: 1,
 
-                            y:0
+                            y: 0
 
                         }}
 
                         transition={{
 
-                            delay:index*0.15
+                            delay: index * 0.15
 
                         }}
 
                         whileHover={{
 
-                            y:-8,
+                            y: -8,
 
-                            scale:1.03
+                            scale: 1.03
 
                         }}
 

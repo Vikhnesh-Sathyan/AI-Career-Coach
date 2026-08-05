@@ -10,6 +10,7 @@ import ATS from "./pages/ATS";
 import Settings from "./pages/Settings";
 import Interviews from "./pages/Interviews";
 import InterviewHistory from "./pages/InterviewHistory";
+import JobTracker from "./pages/JobTracker"; 
 
 function App() {
     return (
@@ -35,6 +36,8 @@ function App() {
                 <Route path="/settings" element={<Settings />} />
 
                 <Route path="/interview-history" element={<InterviewHistory />} />
+
+                <Route path="/jobs" element={<JobTracker />} />
 
 
                 

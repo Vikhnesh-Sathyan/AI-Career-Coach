@@ -17,7 +17,29 @@ overflow:hidden;
 backdrop-filter:blur(16px);
 
 }
+.hero-container {
 
+    width:100%;
+
+    max-width:1750px;
+
+    height:auto;
+
+    min-height:600px;
+
+    margin:auto;
+
+    padding:50px 60px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    border-radius:35px;
+
+}
 .job-card::before{
 
 content:"";
@@ -239,5 +261,127 @@ transition:.3s;
 .bottom a:hover{
 
 background:#8B5CF6;
+
+}
+
+.job-card {
+    position: relative;
+    overflow: visible !important;
+}
+
+
+.card-top {
+    position: relative;
+    z-index: 100;
+}
+
+
+.menu-container {
+    position: relative;
+}
+
+
+.more-btn {
+    cursor: pointer;
+    position: relative;
+    z-index: 200;
+}
+
+
+.job-menu {
+
+    position: absolute;
+
+    top: 45px;
+    right: 0;
+
+    width:180px;
+
+    background:#1E293B;
+
+    border-radius:16px;
+
+    padding:10px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:8px;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    box-shadow:
+    0 20px 45px rgba(0,0,0,.35);
+
+    z-index:9999;
+
+    animation:menuShow .25s ease;
+
+}
+
+
+.job-menu button,
+.job-menu a {
+
+    background:none;
+
+    border:none;
+
+    text-decoration:none;
+
+    color:#CBD5E1;
+
+    padding:12px;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    text-align:left;
+
+    font-size:14px;
+
+    transition:.3s;
+
+}
+
+
+.job-menu button:hover,
+.job-menu a:hover {
+
+    background:#334155;
+
+    color:white;
+
+}
+
+
+.delete-btn:hover {
+
+    background:#7F1D1D !important;
+
+    color:#FCA5A5 !important;
+
+}
+
+
+@keyframes menuShow {
+
+    from {
+
+        opacity:0;
+
+        transform:translateY(-10px);
+
+    }
+
+    to {
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
 
 }

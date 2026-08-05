@@ -1,72 +1,79 @@
 import "../../styles/jobcard.css";
 
+import { useState } from "react";
+
 import { motion } from "framer-motion";
 
 import {
-
     FaMapMarkerAlt,
-
     FaMoneyBillWave,
-
     FaCalendarAlt,
-
     FaExternalLinkAlt,
-
     FaEllipsisV
-
 } from "react-icons/fa";
 
+
 function JobCard({ job }) {
+
+    const [menuOpen, setMenuOpen] = useState(false);
+
 
     const gradients = [
 
         "linear-gradient(135deg,#3B82F6,#06B6D4)",
-
         "linear-gradient(135deg,#8B5CF6,#EC4899)",
-
         "linear-gradient(135deg,#F97316,#FACC15)",
-
         "linear-gradient(135deg,#10B981,#14B8A6)",
-
         "linear-gradient(135deg,#6366F1,#8B5CF6)"
 
     ];
 
-    const gradient = gradients[
-        job.company.length % gradients.length
-    ];
+
+    const gradient =
+        gradients[job.company.length % gradients.length];
+
 
     const progress = {
 
         Applied:20,
-
         Shortlisted:35,
-
         Assessment:55,
-
         Interview:75,
-
         Offer:100,
-
         Rejected:100
 
     };
 
+
     const aiScore = {
 
         Applied:62,
-
         Shortlisted:71,
-
         Assessment:79,
-
         Interview:88,
-
         Offer:100,
-
         Rejected:15
 
     };
+
+
+    const handleEdit = () => {
+
+        console.log("Edit job:", job._id);
+
+        // open edit modal here later
+
+    };
+
+
+    const handleDelete = () => {
+
+        console.log("Delete job:", job._id);
+
+        // delete API call here later
+
+    };
+
 
     return (
 
@@ -75,44 +82,121 @@ function JobCard({ job }) {
             className="job-card"
 
             whileHover={{
-
                 y:-8,
-
                 scale:1.02
-
             }}
 
         >
 
+
             <div className="card-top">
+
 
                 <div
 
                     className="company-avatar"
 
                     style={{
-
                         background:gradient
-
                     }}
 
                 >
 
                     {
-
-                        job.company.charAt(0).toUpperCase()
-
+                        job.company
+                        .charAt(0)
+                        .toUpperCase()
                     }
 
                 </div>
 
-                <button className="more-btn">
 
-                    <FaEllipsisV />
 
-                </button>
+                <div className="menu-container">
+
+
+                    <button
+
+                        className="more-btn"
+
+                        onClick={() =>
+                            setMenuOpen(!menuOpen)
+                        }
+
+                    >
+
+                        <FaEllipsisV />
+
+                    </button>
+
+
+
+                    {
+
+                    menuOpen && (
+
+                        <div className="job-menu">
+
+
+                            <button
+                                onClick={handleEdit}
+                            >
+
+                                ✏️ Edit
+
+                            </button>
+
+
+
+                            {
+
+                            job.jobUrl &&
+
+                            <a
+
+                                href={job.jobUrl}
+
+                                target="_blank"
+
+                                rel="noreferrer"
+
+                            >
+
+                                🔗 Open Job
+
+                            </a>
+
+                            }
+
+
+
+                            <button
+
+                                className="delete-btn"
+
+                                onClick={handleDelete}
+
+                            >
+
+                                🗑 Delete
+
+                            </button>
+
+
+                        </div>
+
+                    )
+
+                    }
+
+
+                </div>
+
 
             </div>
+
+
+
 
             <h2>
 
@@ -120,13 +204,20 @@ function JobCard({ job }) {
 
             </h2>
 
+
+
+
             <p className="role">
 
                 {job.role}
 
             </p>
 
+
+
+
             <div className="progress-header">
+
 
                 <span>
 
@@ -134,19 +225,21 @@ function JobCard({ job }) {
 
                 </span>
 
+
                 <span>
 
-                    {
-
-                        aiScore[job.status]
-
-                    }%
+                    {aiScore[job.status] || 0}%
 
                 </span>
 
+
             </div>
 
+
+
+
             <div className="progress">
+
 
                 <div
 
@@ -154,15 +247,21 @@ function JobCard({ job }) {
 
                     style={{
 
-                        width:`${progress[job.status]}%`
+                        width:`${progress[job.status] || 0}%`
 
                     }}
 
                 />
 
+
             </div>
 
+
+
+
+
             <div className="job-info">
+
 
                 <p>
 
@@ -172,6 +271,8 @@ function JobCard({ job }) {
 
                 </p>
 
+
+
                 <p>
 
                     <FaMoneyBillWave />
@@ -180,25 +281,37 @@ function JobCard({ job }) {
 
                 </p>
 
+
+
                 <p>
 
                     <FaCalendarAlt />
 
+
                     {
-
+                        job.appliedDate
+                        ?
                         new Date(
-
                             job.appliedDate
-
-                        ).toLocaleDateString()
-
+                        )
+                        .toLocaleDateString()
+                        :
+                        "No Date"
                     }
+
 
                 </p>
 
+
             </div>
 
+
+
+
+
+
             <div className="bottom">
+
 
                 <span className="priority">
 
@@ -206,32 +319,39 @@ function JobCard({ job }) {
 
                 </span>
 
+
+
+
                 {
 
-                    job.jobUrl &&
+                job.jobUrl &&
 
-                    <a
+                <a
 
-                        href={job.jobUrl}
+                    href={job.jobUrl}
 
-                        target="_blank"
+                    target="_blank"
 
-                        rel="noreferrer"
+                    rel="noreferrer"
 
-                    >
+                >
 
-                        <FaExternalLinkAlt />
+                    <FaExternalLinkAlt />
 
-                    </a>
+                </a>
 
                 }
 
+
             </div>
+
+
 
         </motion.div>
 
     );
 
 }
+
 
 export default JobCard;

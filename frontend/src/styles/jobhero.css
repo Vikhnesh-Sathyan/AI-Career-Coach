@@ -2,9 +2,11 @@
 
     position:relative;
 
-
+    border-radius:px;
+    
     display:flex;
 
+    border-radius:1px;
 
     justify-content:space-between;
 

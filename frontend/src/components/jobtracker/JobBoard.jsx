@@ -2,7 +2,15 @@ import "../../styles/jobboard.css";
 
 import StageColumn from "./StageColumn";
 
-function JobBoard({ applications, refresh }) {
+function JobBoard({
+
+    applications,
+
+    refresh,
+
+    setEditData
+
+}) {
 
     const stages = [
 
@@ -26,7 +34,7 @@ function JobBoard({ applications, refresh }) {
 
             {
 
-                stages.map(stage => (
+                stages.map((stage) => (
 
                     <StageColumn
 
@@ -34,17 +42,19 @@ function JobBoard({ applications, refresh }) {
 
                         title={stage}
 
-                        refresh={refresh}
-
                         jobs={
 
                             applications.filter(
 
-                                job => job.status === stage
+                                (job) => job.status === stage
 
                             )
 
                         }
+
+                        refresh={refresh}
+
+                        setEditData={setEditData}
 
                     />
 

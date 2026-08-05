@@ -10,7 +10,9 @@ function StageColumn({
 
     jobs,
 
-    refresh
+    refresh,
+
+    setEditData
 
 }) {
 
@@ -38,17 +40,23 @@ function StageColumn({
 
             initial={{
 
-                opacity:0,
+                opacity: 0,
 
-                y:30
+                y: 30
 
             }}
 
             animate={{
 
-                opacity:1,
+                opacity: 1,
 
-                y:0
+                y: 0
+
+            }}
+
+            transition={{
+
+                duration: 0.4
 
             }}
 
@@ -60,7 +68,7 @@ function StageColumn({
 
                 style={{
 
-                    borderColor:colors[title]
+                    borderColor: colors[title]
 
                 }}
 
@@ -72,7 +80,7 @@ function StageColumn({
 
                     style={{
 
-                        background:colors[title]
+                        background: colors[title]
 
                     }}
 
@@ -96,35 +104,37 @@ function StageColumn({
 
                 {
 
-                    jobs.length===0
+                    jobs.length === 0
 
-                    ?
+                        ?
 
-                    (
+                        (
 
-                        <div className="empty-stage">
+                            <div className="empty-stage">
 
-                            No Applications
+                                No Applications
 
-                        </div>
+                            </div>
 
-                    )
+                        )
 
-                    :
+                        :
 
-                    jobs.map(job=>(
+                        jobs.map((job) => (
 
-                        <JobCard
+                            <JobCard
 
-                            key={job._id}
+                                key={job._id}
 
-                            job={job}
+                                job={job}
 
-                            refresh={refresh}
+                                refresh={refresh}
 
-                        />
+                                setEditData={setEditData}
 
-                    ))
+                            />
+
+                        ))
 
                 }
 

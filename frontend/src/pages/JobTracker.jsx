@@ -5,51 +5,47 @@ import ApplicationStats from "../components/jobtracker/ApplicationStats";
 import AddApplication from "../components/jobtracker/AddApplication";
 import JobBoard from "../components/jobtracker/JobBoard";
 
-import {
-
-    getApplications
-
-} from "../services/jobTrackerService";
+import { getApplications } from "../services/jobTrackerService";
 
 import "../styles/jobtracker.css";
 
-function JobTracker(){
+function JobTracker() {
 
-    const [applications,setApplications]=useState([]);
+    const [applications, setApplications] = useState([]);
 
-    const [loading,setLoading]=useState(true);
+    const [loading, setLoading] = useState(true);
 
     const [editData, setEditData] = useState(null);
 
-    useEffect(()=>{
+    useEffect(() => {
 
         loadApplications();
 
-    },[]);
+    }, []);
 
-    const loadApplications=async()=>{
+    const loadApplications = async () => {
 
-        try{
+        try {
 
-            const token=localStorage.getItem("token");
+            const token = localStorage.getItem("token");
 
-            const data=await getApplications(token);
+            const data = await getApplications(token);
 
-            if(data.success){
+            if (data.success) {
 
-                setApplications(data.data);
+                setApplications(data.data || []);
 
             }
 
         }
 
-        catch(error){
+        catch (error) {
 
             console.log(error);
 
         }
 
-        finally{
+        finally {
 
             setLoading(false);
 
@@ -57,9 +53,9 @@ function JobTracker(){
 
     };
 
-    if(loading){
+    if (loading) {
 
-        return(
+        return (
 
             <div className="loading-page">
 
@@ -71,11 +67,11 @@ function JobTracker(){
 
     }
 
-    return(
+    return (
 
         <div className="jobtracker-page">
 
-            <JobHero/>
+            <JobHero />
 
             <ApplicationStats
 
@@ -83,17 +79,23 @@ function JobTracker(){
 
             />
 
-        <AddApplication
-    refresh={loadApplications}
-    editData={editData}
-    setEditData={setEditData}
-/>
+            <AddApplication
+
+                refresh={loadApplications}
+
+                editData={editData}
+
+                setEditData={setEditData}
+
+            />
 
             <JobBoard
 
                 applications={applications}
 
                 refresh={loadApplications}
+
+                setEditData={setEditData}
 
             />
 

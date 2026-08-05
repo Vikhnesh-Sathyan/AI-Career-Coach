@@ -4,6 +4,8 @@ import { useState } from "react";
 
 import { motion } from "framer-motion";
 
+import DeleteModal from "./DeleteModal";
+
 import {
     FaMapMarkerAlt,
     FaMoneyBillWave,
@@ -14,10 +16,19 @@ import {
 
 import { deleteApplication } from "../../services/jobTrackerService";
 
-function JobCard({ job, refresh }) {
+function JobCard({
+
+    job,
+
+    refresh,
+
+    setEditData
+
+}) {
 
     const [menuOpen, setMenuOpen] = useState(false);
 
+    const [deleteOpen, setDeleteOpen] = useState(false);
 
     const gradients = [
 
@@ -29,53 +40,40 @@ function JobCard({ job, refresh }) {
 
     ];
 
-
     const gradient =
         gradients[job.company.length % gradients.length];
 
-
     const progress = {
 
-        Applied:20,
-        Shortlisted:35,
-        Assessment:55,
-        Interview:75,
-        Offer:100,
-        Rejected:100
+        Applied: 20,
+        Shortlisted: 35,
+        Assessment: 55,
+        Interview: 75,
+        Offer: 100,
+        Rejected: 100
 
     };
-
 
     const aiScore = {
 
-        Applied:62,
-        Shortlisted:71,
-        Assessment:79,
-        Interview:88,
-        Offer:100,
-        Rejected:15
+        Applied: 62,
+        Shortlisted: 71,
+        Assessment: 79,
+        Interview: 88,
+        Offer: 100,
+        Rejected: 15
 
     };
-
 
     const handleEdit = () => {
 
-        console.log("Edit job:", job._id);
+        setEditData(job);
 
-        // open edit modal here later
+        setMenuOpen(false);
 
     };
 
-
-const handleDelete = async () => {
-
-    const confirmDelete = window.confirm(
-
-        "Delete this application?"
-
-    );
-
-    if (!confirmDelete) return;
+  const handleDelete = async () => {
 
     try {
 
@@ -91,7 +89,7 @@ const handleDelete = async () => {
 
         if (data.success) {
 
-            alert("Application deleted.");
+            setDeleteOpen(false);
 
             refresh();
 
@@ -109,8 +107,6 @@ const handleDelete = async () => {
 
         console.log(error);
 
-        alert("Delete failed.");
-
     }
 
 };
@@ -122,45 +118,47 @@ const handleDelete = async () => {
             className="job-card"
 
             whileHover={{
-                y:-8,
-                scale:1.02
+
+                y: -8,
+
+                scale: 1.02
+
             }}
 
         >
 
-
             <div className="card-top">
-
 
                 <div
 
                     className="company-avatar"
 
                     style={{
-                        background:gradient
+
+                        background: gradient
+
                     }}
 
                 >
 
                     {
-                        job.company
-                        .charAt(0)
-                        .toUpperCase()
+
+                        job.company.charAt(0).toUpperCase()
+
                     }
 
                 </div>
 
-
-
                 <div className="menu-container">
-
 
                     <button
 
                         className="more-btn"
 
                         onClick={() =>
+
                             setMenuOpen(!menuOpen)
+
                         }
 
                     >
@@ -169,74 +167,65 @@ const handleDelete = async () => {
 
                     </button>
 
-
-
                     {
 
-                    menuOpen && (
+                        menuOpen && (
 
-                        <div className="job-menu">
+                            <div className="job-menu">
 
+                                <button
 
-                            <button
-                                onClick={handleEdit}
-                            >
+                                    onClick={handleEdit}
 
-                                ✏️ Edit
+                                >
 
-                            </button>
+                                    ✏️ Edit
 
+                                </button>
 
+                                {
 
-                            {
+                                    job.jobUrl && (
 
-                            job.jobUrl &&
+                                        <a
 
-                            <a
+                                            href={job.jobUrl}
 
-                                href={job.jobUrl}
+                                            target="_blank"
 
-                                target="_blank"
+                                            rel="noreferrer"
 
-                                rel="noreferrer"
+                                        >
 
-                            >
+                                            🔗 Open Job
 
-                                🔗 Open Job
+                                        </a>
 
-                            </a>
+                                    )
 
-                            }
+                                }
 
+                                <button
 
+                                    className="delete-btn"
 
-                            <button
+                                    onClick={handleDelete}
 
-                                className="delete-btn"
+                                >
 
-                                onClick={handleDelete}
+                                    🗑 Delete
 
-                            >
+                                </button>
 
-                                🗑 Delete
+                            </div>
 
-                            </button>
-
-
-                        </div>
-
-                    )
+                        )
 
                     }
 
-
                 </div>
 
-
             </div>
-
-
-
 
             <h2>
 
@@ -244,20 +233,13 @@ const handleDelete = async () => {
 
             </h2>
 
-
-
-
             <p className="role">
 
                 {job.role}
 
             </p>
 
-
-
-
             <div className="progress-header">
-
 
                 <span>
 
@@ -265,21 +247,15 @@ const handleDelete = async () => {
 
                 </span>
 
-
                 <span>
 
                     {aiScore[job.status] || 0}%
 
                 </span>
 
-
             </div>
 
-
-
-
             <div className="progress">
-
 
                 <div
 
@@ -287,21 +263,15 @@ const handleDelete = async () => {
 
                     style={{
 
-                        width:`${progress[job.status] || 0}%`
+                        width: `${progress[job.status] || 0}%`
 
                     }}
 
                 />
 
-
             </div>
 
-
-
-
-
             <div className="job-info">
-
 
                 <p>
 
@@ -311,8 +281,6 @@ const handleDelete = async () => {
 
                 </p>
 
-
-
                 <p>
 
                     <FaMoneyBillWave />
@@ -321,37 +289,33 @@ const handleDelete = async () => {
 
                 </p>
 
-
-
                 <p>
 
                     <FaCalendarAlt />
 
-
                     {
-                        job.appliedDate
-                        ?
-                        new Date(
-                            job.appliedDate
-                        )
-                        .toLocaleDateString()
-                        :
-                        "No Date"
-                    }
 
+                        job.appliedDate
+
+                            ?
+
+                            new Date(
+
+                                job.appliedDate
+
+                            ).toLocaleDateString()
+
+                            :
+
+                            "No Date"
+
+                    }
 
                 </p>
 
-
             </div>
 
-
-
-
-
-
             <div className="bottom">
-
 
                 <span className="priority">
 
@@ -359,39 +323,34 @@ const handleDelete = async () => {
 
                 </span>
 
-
-
-
                 {
 
-                job.jobUrl &&
+                    job.jobUrl && (
 
-                <a
+                        <a
 
-                    href={job.jobUrl}
+                            href={job.jobUrl}
 
-                    target="_blank"
+                            target="_blank"
 
-                    rel="noreferrer"
+                            rel="noreferrer"
 
-                >
+                        >
 
-                    <FaExternalLinkAlt />
+                            <FaExternalLinkAlt />
 
-                </a>
+                        </a>
+
+                    )
 
                 }
 
-
             </div>
-
-
 
         </motion.div>
 
     );
 
 }
-
 
 export default JobCard;

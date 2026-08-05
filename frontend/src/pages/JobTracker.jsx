@@ -19,6 +19,8 @@ function JobTracker(){
 
     const [loading,setLoading]=useState(true);
 
+    const [editData, setEditData] = useState(null);
+
     useEffect(()=>{
 
         loadApplications();
@@ -81,11 +83,11 @@ function JobTracker(){
 
             />
 
-            <AddApplication
-
-                refresh={loadApplications}
-
-            />
+        <AddApplication
+    refresh={loadApplications}
+    editData={editData}
+    setEditData={setEditData}
+/>
 
             <JobBoard
 

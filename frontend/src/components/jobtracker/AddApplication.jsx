@@ -1,50 +1,77 @@
 import "../../styles/addapplication.css";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { motion, AnimatePresence } from "framer-motion";
 
 import {
-
     FaPlus,
-
     FaTimes
-
 } from "react-icons/fa";
 
 import {
-
-    addApplication
-
+    addApplication,
+    updateApplication
 } from "../../services/jobTrackerService";
 
-function AddApplication({ refresh }) {
+function AddApplication({
+
+    refresh,
+    editData,
+    setEditData
+
+}) {
+
+    const emptyForm = {
+
+        company: "",
+        role: "",
+        location: "",
+        jobUrl: "",
+        salary: "",
+        status: "Applied",
+        priority: "Medium",
+        appliedDate: "",
+        interviewDate: "",
+        notes: ""
+
+    };
 
     const [open, setOpen] = useState(false);
 
-    const [form, setForm] = useState({
+    const [form, setForm] = useState(emptyForm);
 
-        company: "",
+    useEffect(() => {
 
-        role: "",
+        if (editData) {
 
-        location: "",
+            setForm({
 
-        jobUrl: "",
+                company: editData.company || "",
+                role: editData.role || "",
+                location: editData.location || "",
+                jobUrl: editData.jobUrl || "",
+                salary: editData.salary || "",
+                status: editData.status || "Applied",
+                priority: editData.priority || "Medium",
 
-        salary: "",
+                appliedDate: editData.appliedDate
+                    ? editData.appliedDate.substring(0, 10)
+                    : "",
 
-        status: "Applied",
+                interviewDate: editData.interviewDate
+                    ? editData.interviewDate.substring(0, 10)
+                    : "",
 
-        priority: "Medium",
+                notes: editData.notes || ""
 
-        appliedDate: "",
+            });
 
-        interviewDate: "",
+            setOpen(true);
 
-        notes: ""
+        }
 
-    });
+    }, [editData]);
 
     const handleChange = (e) => {
 
@@ -58,55 +85,73 @@ function AddApplication({ refresh }) {
 
     };
 
+    const closeModal = () => {
+
+        setOpen(false);
+
+        setEditData(null);
+
+        setForm(emptyForm);
+
+    };
+
     const handleSubmit = async (e) => {
 
         e.preventDefault();
 
         const token = localStorage.getItem("token");
 
-        const data = await addApplication(
+        let data;
 
-            form,
+        try {
 
-            token
+            if (editData) {
 
-        );
+                data = await updateApplication(
 
-        if (data.success) {
+                    editData._id,
 
-            refresh();
+                    form,
 
-            setOpen(false);
+                    token
 
-            setForm({
+                );
 
-                company: "",
+            }
 
-                role: "",
+            else {
 
-                location: "",
+                data = await addApplication(
 
-                jobUrl: "",
+                    form,
 
-                salary: "",
+                    token
 
-                status: "Applied",
+                );
 
-                priority: "Medium",
+            }
 
-                appliedDate: "",
+            if (data.success) {
 
-                interviewDate: "",
+                refresh();
 
-                notes: ""
+                closeModal();
 
-            });
+            }
+
+            else {
+
+                alert(data.message);
+
+            }
 
         }
 
-        else {
+        catch (error) {
 
-            alert(data.message);
+            console.log(error);
+
+            alert("Something went wrong.");
 
         }
 
@@ -120,7 +165,15 @@ function AddApplication({ refresh }) {
 
                 className="new-job-btn"
 
-                onClick={() => setOpen(true)}
+                onClick={() => {
+
+                    setEditData(null);
+
+                    setForm(emptyForm);
+
+                    setOpen(true);
+
+                }}
 
             >
 
@@ -153,27 +206,18 @@ function AddApplication({ refresh }) {
                             className="job-modal"
 
                             initial={{
-
-                                scale: .8,
-
+                                scale: 0.8,
                                 opacity: 0
-
                             }}
 
                             animate={{
-
                                 scale: 1,
-
                                 opacity: 1
-
                             }}
 
                             exit={{
-
-                                scale: .8,
-
+                                scale: 0.8,
                                 opacity: 0
-
                             }}
 
                         >
@@ -182,13 +226,23 @@ function AddApplication({ refresh }) {
 
                                 <h2>
 
-                                    Add Job Application
+                                    {
+
+                                        editData
+
+                                            ? "Edit Job Application"
+
+                                            : "Add Job Application"
+
+                                    }
 
                                 </h2>
 
                                 <button
 
-                                    onClick={() => setOpen(false)}
+                                    type="button"
+
+                                    onClick={closeModal}
 
                                 >
 
@@ -198,11 +252,7 @@ function AddApplication({ refresh }) {
 
                             </div>
 
-                            <form
-
-                                onSubmit={handleSubmit}
-
-                            >
+                            <form onSubmit={handleSubmit}>
 
                                 <input
 
@@ -368,7 +418,15 @@ function AddApplication({ refresh }) {
 
                                 >
 
-                                    Save Application
+                                    {
+
+                                        editData
+
+                                            ? "Update Application"
+
+                                            : "Save Application"
+
+                                    }
 
                                 </button>
 

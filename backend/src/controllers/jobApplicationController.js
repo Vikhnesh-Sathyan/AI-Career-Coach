@@ -237,7 +237,7 @@ export const deleteApplication = async (req, res) => {
             });
 
         }
-
+        await application.deleteOne();
         res.json({
 
             success: true,

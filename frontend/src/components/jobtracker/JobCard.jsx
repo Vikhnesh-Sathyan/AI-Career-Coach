@@ -12,8 +12,9 @@ import {
     FaEllipsisV
 } from "react-icons/fa";
 
+import { deleteApplication } from "../../services/jobTrackerService";
 
-function JobCard({ job }) {
+function JobCard({ job, refresh }) {
 
     const [menuOpen, setMenuOpen] = useState(false);
 
@@ -66,14 +67,53 @@ function JobCard({ job }) {
     };
 
 
-    const handleDelete = () => {
+const handleDelete = async () => {
 
-        console.log("Delete job:", job._id);
+    const confirmDelete = window.confirm(
 
-        // delete API call here later
+        "Delete this application?"
 
-    };
+    );
 
+    if (!confirmDelete) return;
+
+    try {
+
+        const token = localStorage.getItem("token");
+
+        const data = await deleteApplication(
+
+            job._id,
+
+            token
+
+        );
+
+        if (data.success) {
+
+            alert("Application deleted.");
+
+            refresh();
+
+        }
+
+        else {
+
+            alert(data.message);
+
+        }
+
+    }
+
+    catch (error) {
+
+        console.log(error);
+
+        alert("Delete failed.");
+
+    }
+
+};
 
     return (
 

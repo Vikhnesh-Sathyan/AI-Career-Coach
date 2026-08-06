@@ -1,16 +1,224 @@
-# React + Vite
+# 🤖 AI Career Coach
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An AI-powered career growth platform designed to help users analyze resumes, improve ATS compatibility, prepare for interviews, match job descriptions, and track their career progress.
 
-Currently, two official plugins are available:
+Built with modern full-stack technologies including React, Node.js, Express, MongoDB, and AI-powered resume analysis.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+# 🚀 Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🔐 Authentication
+- User Registration
+- User Login
+- JWT-based Authentication
+- Protected Routes
+- Role-based Access Control
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 📄 Resume Intelligence
+
+- Resume Upload
+- Resume Text Extraction
+- AI-powered Resume Analysis
+- ATS Score Calculation
+- Skill Extraction
+- Resume Improvement Suggestions
+
+---
+
+## 💼 Career Tools
+
+### 🎯 Job Description Matcher
+- Compare resume skills with job requirements
+- Identify missing skills
+- Generate skill improvement suggestions
+
+### 🎤 Interview Preparation
+- Interview question generation
+- Practice interview sessions
+- Answer evaluation *(In Progress)*
+
+### 📊 Career Dashboard
+- ATS Score Tracking
+- Application Statistics
+- Skills Overview
+- Career Progress Visualization
+
+---
+
+# 🛠️ Tech Stack
+
+## Frontend
+
+- React.js
+- React Router
+- React Icons
+- Axios
+- CSS
+- Vite
+
+## Backend
+
+- Node.js
+- Express.js
+- MongoDB
+- Mongoose
+- JWT Authentication
+- bcrypt
+- REST APIs
+
+## AI / Resume Processing
+
+- Python
+- Flask
+- PyMuPDF
+- Resume Text Extraction
+- ATS Scoring Algorithm
+- Skill Matching System
+
+---
+
+# 📂 Project Structure
+
+```
+AI-Career-Coach
+│
+├── backend
+│   ├── src
+│   │   ├── config
+│   │   ├── controllers
+│   │   ├── middleware
+│   │   ├── models
+│   │   └── routes
+│   ├── package.json
+│   └── server.js
+│
+├── frontend
+│   ├── src
+│   │   ├── assets
+│   │   ├── components
+│   │   ├── pages
+│   │   ├── services
+│   │   ├── styles
+│   │   ├── App.jsx
+│   │   └── main.jsx
+│
+├── resume-analyzer
+│   ├── app.py
+│   └── requirements.txt
+│
+└── README.md
+```
+
+---
+
+# ⚙️ Installation
+
+## Clone Repository
+
+```bash
+git clone https://github.com/Vikhnesh-Sathyan/AI-Career-Coach.git
+```
+
+---
+
+## Backend Setup
+
+```bash
+cd backend
+
+npm install
+
+npm run dev
+```
+
+Create a `.env` file:
+
+```env
+PORT=5000
+MONGODB_URI=your_mongodb_connection
+JWT_SECRET=your_secret_key
+```
+
+---
+
+## Frontend Setup
+
+```bash
+cd frontend
+
+npm install
+
+npm run dev
+```
+
+---
+
+## Resume Analyzer Setup
+
+```bash
+cd resume-analyzer
+
+pip install -r requirements.txt
+
+python app.py
+```
+
+---
+
+# 📈 Project Progress
+
+### Completed ✅
+
+- Backend Architecture Setup
+- MongoDB Database Integration
+- User Authentication System
+- JWT Authentication
+- Protected API Routes
+- Admin Middleware
+- Responsive Authentication UI
+- Dashboard Interface
+- Resume Upload System
+- Resume Text Extraction
+- ATS Score Analyzer
+- Skill Extraction
+- Job Skill Matching
+
+### In Development 🚧
+
+- AI Interview Evaluation
+- Advanced Resume Suggestions
+- Application Tracker Improvements
+- AI Model Integration
+- Production Deployment
+
+---
+
+# 🎯 Project Goal
+
+The goal of AI Career Coach is to build a complete AI-powered career assistant that helps job seekers improve their resumes, prepare for interviews, understand their skill gaps, and manage their career journey.
+
+This project demonstrates:
+
+- Full-stack web development
+- REST API development
+- Authentication & Authorization
+- Database Design
+- AI-based Resume Processing
+- Modern React Application Architecture
+
+---
+
+# 👨‍💻 Author
+
+**Vikhnesh Sathyan**
+
+Full Stack Developer | MCA Graduate
+
+GitHub:
+https://github.com/Vikhnesh-Sathyan
+
+LinkedIn:
+https://linkedin.com/in/vikhnesh-sathyan-80a433221

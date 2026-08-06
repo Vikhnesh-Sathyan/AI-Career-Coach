@@ -5,25 +5,19 @@ import StageColumn from "./StageColumn";
 function JobBoard({
 
     applications,
-
     refresh,
-
-    setEditData
+    setEditData,
+    showToast
 
 }) {
 
     const stages = [
 
         "Applied",
-
         "Shortlisted",
-
         "Assessment",
-
         "Interview",
-
         "Offer",
-
         "Rejected"
 
     ];
@@ -55,6 +49,8 @@ function JobBoard({
                         refresh={refresh}
 
                         setEditData={setEditData}
+
+                        showToast={showToast}
 
                     />
 

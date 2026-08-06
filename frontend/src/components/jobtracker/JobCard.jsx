@@ -1,10 +1,7 @@
 import "../../styles/jobcard.css";
 
 import { useState } from "react";
-
 import { motion } from "framer-motion";
-
-import DeleteModal from "./DeleteModal";
 
 import {
     FaMapMarkerAlt,
@@ -14,6 +11,7 @@ import {
     FaEllipsisV
 } from "react-icons/fa";
 
+import DeleteModal from "./DeleteModal";
 import { deleteApplication } from "../../services/jobTrackerService";
 
 function JobCard({
@@ -22,7 +20,9 @@ function JobCard({
 
     refresh,
 
-    setEditData
+    setEditData,
+
+    showToast
 
 }) {
 
@@ -41,27 +41,39 @@ function JobCard({
     ];
 
     const gradient =
-        gradients[job.company.length % gradients.length];
+        gradients[
+            job.company.length % gradients.length
+        ];
 
     const progress = {
 
-        Applied: 20,
-        Shortlisted: 35,
-        Assessment: 55,
-        Interview: 75,
-        Offer: 100,
-        Rejected: 100
+        Applied:20,
+
+        Shortlisted:35,
+
+        Assessment:55,
+
+        Interview:75,
+
+        Offer:100,
+
+        Rejected:100
 
     };
 
     const aiScore = {
 
-        Applied: 62,
-        Shortlisted: 71,
-        Assessment: 79,
-        Interview: 88,
-        Offer: 100,
-        Rejected: 15
+        Applied:62,
+
+        Shortlisted:71,
+
+        Assessment:79,
+
+        Interview:88,
+
+        Offer:100,
+
+        Rejected:15
 
     };
 
@@ -73,151 +85,326 @@ function JobCard({
 
     };
 
-  const handleDelete = async () => {
+    const openDelete = () => {
 
-    try {
+        setDeleteOpen(true);
 
-        const token = localStorage.getItem("token");
+        setMenuOpen(false);
 
-        const data = await deleteApplication(
+    };
 
-            job._id,
+    const closeDelete = () => {
 
-            token
+        setDeleteOpen(false);
 
-        );
+    };
 
-        if (data.success) {
+    const handleDelete = async () => {
 
-            setDeleteOpen(false);
+        try{
 
-            refresh();
+            const token =
+                localStorage.getItem("token");
+
+            const data =
+                await deleteApplication(
+
+                    job._id,
+
+                    token
+
+                );
+
+            if(data.success){
+
+                setDeleteOpen(false);
+
+showToast(
+
+    "Application deleted successfully"
+
+);
+
+refresh();
+            }
+
+            else{
+
+                showToast(
+
+    data.message,
+
+    "error"
+
+);
+
+            }
 
         }
 
-        else {
+        catch(error){
 
-            alert(data.message);
+            console.log(error);
 
         }
 
-    }
+    };
 
-    catch (error) {
+     return (
 
-        console.log(error);
+        <>
 
-    }
+            <motion.div
 
-};
+                className="job-card"
 
-    return (
+                whileHover={{
 
-        <motion.div
+                    y: -8,
 
-            className="job-card"
+                    scale: 1.02
 
-            whileHover={{
+                }}
 
-                y: -8,
+            >
 
-                scale: 1.02
+                <div className="card-top">
 
-            }}
+                    <div
 
-        >
+                        className="company-avatar"
 
-            <div className="card-top">
+                        style={{
 
-                <div
+                            background: gradient
 
-                    className="company-avatar"
-
-                    style={{
-
-                        background: gradient
-
-                    }}
-
-                >
-
-                    {
-
-                        job.company.charAt(0).toUpperCase()
-
-                    }
-
-                </div>
-
-                <div className="menu-container">
-
-                    <button
-
-                        className="more-btn"
-
-                        onClick={() =>
-
-                            setMenuOpen(!menuOpen)
-
-                        }
+                        }}
 
                     >
 
-                        <FaEllipsisV />
+                        {
 
-                    </button>
+                            job.company
+
+                                .charAt(0)
+
+                                .toUpperCase()
+
+                        }
+
+                    </div>
+
+                    <div className="menu-container">
+
+                        <button
+
+                            className="more-btn"
+
+                            onClick={() =>
+
+                                setMenuOpen(
+
+                                    !menuOpen
+
+                                )
+
+                            }
+
+                        >
+
+                            <FaEllipsisV />
+
+                        </button>
+
+                        {
+
+                            menuOpen && (
+
+                                <div className="job-menu">
+
+                                    <button
+
+                                        onClick={handleEdit}
+
+                                    >
+
+                                        ✏️ Edit
+
+                                    </button>
+
+                                    {
+
+                                        job.jobUrl && (
+
+                                            <a
+
+                                                href={job.jobUrl}
+
+                                                target="_blank"
+
+                                                rel="noreferrer"
+
+                                            >
+
+                                                🔗 Open Job
+
+                                            </a>
+
+                                        )
+
+                                    }
+
+                                    <button
+
+                                        className="delete-btn"
+
+                                        onClick={openDelete}
+
+                                    >
+
+                                        🗑 Delete
+
+                                    </button>
+
+                                </div>
+
+                            )
+
+                        }
+
+                    </div>
+
+                </div>
+
+                <h2>
+
+                    {job.company}
+
+                </h2>
+
+                <p className="role">
+
+                    {job.role}
+
+                </p>
+
+                <div className="progress-header">
+
+                    <span>
+
+                        AI Success
+
+                    </span>
+
+                    <span>
+
+                        {aiScore[job.status] || 0}%
+
+                    </span>
+
+                </div>
+
+                <div className="progress">
+
+                    <div
+
+                        className="progress-fill"
+
+                        style={{
+
+                            width: `${
+
+                                progress[job.status] || 0
+
+                            }%`
+
+                        }}
+
+                    />
+
+                </div>
+
+                <div className="job-info">
+
+                    <p>
+
+                        <FaMapMarkerAlt />
+
+                        {
+
+                            job.location ||
+
+                            "Remote"
+
+                        }
+
+                    </p>
+
+                    <p>
+
+                        <FaMoneyBillWave />
+
+                        {
+
+                            job.salary ||
+
+                            "Not Specified"
+
+                        }
+
+                    </p>
+
+                    <p>
+
+                        <FaCalendarAlt />
+
+                        {
+
+                            job.appliedDate
+
+                                ?
+
+                                new Date(
+
+                                    job.appliedDate
+
+                                ).toLocaleDateString()
+
+                                :
+
+                                "No Date"
+
+                        }
+
+                    </p>
+
+                </div>
+
+                <div className="bottom">
+
+                    <span className="priority">
+
+                        {job.priority}
+
+                    </span>
 
                     {
 
-                        menuOpen && (
+                        job.jobUrl && (
 
-                            <div className="job-menu">
+                            <a
 
-                                <button
+                                href={job.jobUrl}
 
-                                    onClick={handleEdit}
+                                target="_blank"
 
-                                >
+                                rel="noreferrer"
 
-                                    ✏️ Edit
+                            >
 
-                                </button>
+                                <FaExternalLinkAlt />
 
-                                {
-
-                                    job.jobUrl && (
-
-                                        <a
-
-                                            href={job.jobUrl}
-
-                                            target="_blank"
-
-                                            rel="noreferrer"
-
-                                        >
-
-                                            🔗 Open Job
-
-                                        </a>
-
-                                    )
-
-                                }
-
-                                <button
-
-                                    className="delete-btn"
-
-                                    onClick={handleDelete}
-
-                                >
-
-                                    🗑 Delete
-
-                                </button>
-
-                            </div>
+                            </a>
 
                         )
 
@@ -225,129 +412,23 @@ function JobCard({
 
                 </div>
 
-            </div>
+            </motion.div>
 
-            <h2>
+            <DeleteModal
 
-                {job.company}
+                open={deleteOpen}
 
-            </h2>
+                title={job.role}
 
-            <p className="role">
+                company={job.company}
 
-                {job.role}
+                onCancel={closeDelete}
 
-            </p>
+                onDelete={handleDelete}
 
-            <div className="progress-header">
+            />
 
-                <span>
-
-                    AI Success
-
-                </span>
-
-                <span>
-
-                    {aiScore[job.status] || 0}%
-
-                </span>
-
-            </div>
-
-            <div className="progress">
-
-                <div
-
-                    className="progress-fill"
-
-                    style={{
-
-                        width: `${progress[job.status] || 0}%`
-
-                    }}
-
-                />
-
-            </div>
-
-            <div className="job-info">
-
-                <p>
-
-                    <FaMapMarkerAlt />
-
-                    {job.location || "Remote"}
-
-                </p>
-
-                <p>
-
-                    <FaMoneyBillWave />
-
-                    {job.salary || "Not Specified"}
-
-                </p>
-
-                <p>
-
-                    <FaCalendarAlt />
-
-                    {
-
-                        job.appliedDate
-
-                            ?
-
-                            new Date(
-
-                                job.appliedDate
-
-                            ).toLocaleDateString()
-
-                            :
-
-                            "No Date"
-
-                    }
-
-                </p>
-
-            </div>
-
-            <div className="bottom">
-
-                <span className="priority">
-
-                    {job.priority}
-
-                </span>
-
-                {
-
-                    job.jobUrl && (
-
-                        <a
-
-                            href={job.jobUrl}
-
-                            target="_blank"
-
-                            rel="noreferrer"
-
-                        >
-
-                            <FaExternalLinkAlt />
-
-                        </a>
-
-                    )
-
-                }
-
-            </div>
-
-        </motion.div>
+        </>
 
     );
 

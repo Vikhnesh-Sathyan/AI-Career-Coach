@@ -18,7 +18,8 @@ function AddApplication({
 
     refresh,
     editData,
-    setEditData
+    setEditData,
+    showToast
 
 }) {
 
@@ -133,7 +134,17 @@ function AddApplication({
 
             if (data.success) {
 
-                refresh();
+                showToast(
+
+    editData
+
+        ? "Application updated successfully"
+
+        : "Application added successfully"
+
+);
+
+refresh();
 
                 closeModal();
 
@@ -141,7 +152,13 @@ function AddApplication({
 
             else {
 
-                alert(data.message);
+                showToast(
+
+    data.message,
+
+    "error"
+
+);
 
             }
 

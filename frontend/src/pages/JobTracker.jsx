@@ -4,6 +4,7 @@ import JobHero from "../components/jobtracker/JobHero";
 import ApplicationStats from "../components/jobtracker/ApplicationStats";
 import AddApplication from "../components/jobtracker/AddApplication";
 import JobBoard from "../components/jobtracker/JobBoard";
+import Toast from "../components/jobtracker/Toast";
 
 import { getApplications } from "../services/jobTrackerService";
 
@@ -12,16 +13,38 @@ import "../styles/jobtracker.css";
 function JobTracker() {
 
     const [applications, setApplications] = useState([]);
-
     const [loading, setLoading] = useState(true);
-
     const [editData, setEditData] = useState(null);
 
+    const [toast, setToast] = useState({
+        open: false,
+        message: "",
+        type: "success"
+    });
+
     useEffect(() => {
-
         loadApplications();
-
     }, []);
+
+    const showToast = (message, type = "success") => {
+
+        setToast({
+            open: true,
+            message,
+            type
+        });
+
+        setTimeout(() => {
+
+            setToast({
+                open: false,
+                message: "",
+                type: "success"
+            });
+
+        }, 3000);
+
+    };
 
     const loadApplications = async () => {
 
@@ -43,6 +66,8 @@ function JobTracker() {
 
             console.log(error);
 
+            showToast("Failed to load applications", "error");
+
         }
 
         finally {
@@ -56,13 +81,9 @@ function JobTracker() {
     if (loading) {
 
         return (
-
             <div className="loading-page">
-
                 Loading Job Tracker...
-
             </div>
-
         );
 
     }
@@ -74,29 +95,27 @@ function JobTracker() {
             <JobHero />
 
             <ApplicationStats
-
                 applications={applications}
-
             />
 
             <AddApplication
-
                 refresh={loadApplications}
-
                 editData={editData}
-
                 setEditData={setEditData}
-
+                showToast={showToast}
             />
 
             <JobBoard
-
                 applications={applications}
-
                 refresh={loadApplications}
-
                 setEditData={setEditData}
+                showToast={showToast}
+            />
 
+            <Toast
+                open={toast.open}
+                message={toast.message}
+                type={toast.type}
             />
 
         </div>

@@ -7,27 +7,20 @@ import JobCard from "./JobCard";
 function StageColumn({
 
     title,
-
     jobs,
-
     refresh,
-
-    setEditData
+    setEditData,
+    showToast
 
 }) {
 
     const colors = {
 
         Applied: "#3B82F6",
-
         Shortlisted: "#8B5CF6",
-
         Assessment: "#F59E0B",
-
         Interview: "#EC4899",
-
         Offer: "#10B981",
-
         Rejected: "#EF4444"
 
     };
@@ -41,7 +34,6 @@ function StageColumn({
             initial={{
 
                 opacity: 0,
-
                 y: 30
 
             }}
@@ -49,14 +41,13 @@ function StageColumn({
             animate={{
 
                 opacity: 1,
-
                 y: 0
 
             }}
 
             transition={{
 
-                duration: 0.4
+                duration: .4
 
             }}
 
@@ -86,17 +77,9 @@ function StageColumn({
 
                 />
 
-                <h2>
+                <h2>{title}</h2>
 
-                    {title}
-
-                </h2>
-
-                <span>
-
-                    {jobs.length}
-
-                </span>
+                <span>{jobs.length}</span>
 
             </div>
 
@@ -131,6 +114,8 @@ function StageColumn({
                                 refresh={refresh}
 
                                 setEditData={setEditData}
+
+                                showToast={showToast}
 
                             />
 

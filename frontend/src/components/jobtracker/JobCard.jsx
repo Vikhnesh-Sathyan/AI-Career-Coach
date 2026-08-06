@@ -1,7 +1,10 @@
 import "../../styles/jobcard.css";
 
 import { useState } from "react";
+
 import { motion } from "framer-motion";
+
+import { Draggable } from "@hello-pangea/dnd";
 
 import {
     FaMapMarkerAlt,
@@ -12,11 +15,14 @@ import {
 } from "react-icons/fa";
 
 import DeleteModal from "./DeleteModal";
+
 import { deleteApplication } from "../../services/jobTrackerService";
 
 function JobCard({
 
     job,
+
+    index,
 
     refresh,
 
@@ -152,121 +158,285 @@ refresh();
 
      return (
 
-        <>
+    <>
 
-            <motion.div
+        <Draggable
 
-                className="job-card"
+            draggableId={job._id}
 
-                whileHover={{
+            index={index}
 
-                    y: -8,
+        >
 
-                    scale: 1.02
+            {(provided, snapshot) => (
 
-                }}
+                <motion.div
 
-            >
+                    ref={provided.innerRef}
 
-                <div className="card-top">
+                    {...provided.draggableProps}
 
-                    <div
+                    {...provided.dragHandleProps}
 
-                        className="company-avatar"
+                    className={`job-card ${
 
-                        style={{
+                        snapshot.isDragging
 
-                            background: gradient
+                            ? "dragging"
 
-                        }}
+                            : ""
 
-                    >
+                    }`}
 
-                        {
+                    whileHover={{
 
-                            job.company
+                        y:-8,
 
-                                .charAt(0)
+                        scale:1.02
 
-                                .toUpperCase()
+                    }}
 
-                        }
+                >
 
-                    </div>
+                    <div className="card-top">
 
-                    <div className="menu-container">
+                        <div
 
-                        <button
+                            className="company-avatar"
 
-                            className="more-btn"
+                            style={{
 
-                            onClick={() =>
+                                background: gradient
 
-                                setMenuOpen(
+                            }}
 
-                                    !menuOpen
+                        >
+
+                            {
+
+                                job.company
+
+                                    .charAt(0)
+
+                                    .toUpperCase()
+
+                            }
+
+                        </div>
+
+                        <div className="menu-container">
+
+                            <button
+
+                                className="more-btn"
+
+                                onClick={() =>
+
+                                    setMenuOpen(
+
+                                        !menuOpen
+
+                                    )
+
+                                }
+
+                            >
+
+                                <FaEllipsisV />
+
+                            </button>
+
+                            {
+
+                                menuOpen && (
+
+                                    <div className="job-menu">
+
+                                        <button
+
+                                            onClick={handleEdit}
+
+                                        >
+
+                                            ✏️ Edit
+
+                                        </button>
+
+                                        {
+
+                                            job.jobUrl && (
+
+                                                <a
+
+                                                    href={job.jobUrl}
+
+                                                    target="_blank"
+
+                                                    rel="noreferrer"
+
+                                                    onClick={() =>
+
+                                                        setMenuOpen(false)
+
+                                                    }
+
+                                                >
+
+                                                    🔗 Open Job
+
+                                                </a>
+
+                                            )
+
+                                        }
+
+                                        <button
+
+                                            className="delete-btn"
+
+                                            onClick={openDelete}
+
+                                        >
+
+                                            🗑 Delete
+
+                                        </button>
+
+                                    </div>
 
                                 )
 
                             }
 
-                        >
+                        </div>
 
-                            <FaEllipsisV />
+                    </div>
 
-                        </button>
+                    <h2>{job.company}</h2>
+
+                    <p className="role">
+
+                        {job.role}
+
+                    </p>
+
+                    <div className="progress-header">
+
+                        <span>
+
+                            AI Success
+
+                        </span>
+
+                        <span>
+
+                            {aiScore[job.status] || 0}%
+
+                        </span>
+
+                    </div>
+
+                    <div className="progress">
+
+                        <div
+
+                            className="progress-fill"
+
+                            style={{
+
+                                width: `${
+
+                                    progress[job.status] || 0
+
+                                }%`
+
+                            }}
+
+                        />
+
+                    </div>
+
+                    <div className="job-info">
+
+                        <p>
+
+                            <FaMapMarkerAlt />
+
+                            {
+
+                                job.location ||
+
+                                "Remote"
+
+                            }
+
+                        </p>
+
+                        <p>
+
+                            <FaMoneyBillWave />
+
+                            {
+
+                                job.salary ||
+
+                                "Not Specified"
+
+                            }
+
+                        </p>
+
+                        <p>
+
+                            <FaCalendarAlt />
+
+                            {
+
+                                job.appliedDate
+
+                                    ?
+
+                                    new Date(
+
+                                        job.appliedDate
+
+                                    ).toLocaleDateString()
+
+                                    :
+
+                                    "No Date"
+
+                            }
+
+                        </p>
+
+                    </div>
+
+                    <div className="bottom">
+
+                        <span className="priority">
+
+                            {job.priority}
+
+                        </span>
 
                         {
 
-                            menuOpen && (
+                            job.jobUrl && (
 
-                                <div className="job-menu">
+                                <a
 
-                                    <button
+                                    href={job.jobUrl}
 
-                                        onClick={handleEdit}
+                                    target="_blank"
 
-                                    >
+                                    rel="noreferrer"
 
-                                        ✏️ Edit
+                                >
 
-                                    </button>
+                                    <FaExternalLinkAlt />
 
-                                    {
-
-                                        job.jobUrl && (
-
-                                            <a
-
-                                                href={job.jobUrl}
-
-                                                target="_blank"
-
-                                                rel="noreferrer"
-
-                                            >
-
-                                                🔗 Open Job
-
-                                            </a>
-
-                                        )
-
-                                    }
-
-                                    <button
-
-                                        className="delete-btn"
-
-                                        onClick={openDelete}
-
-                                    >
-
-                                        🗑 Delete
-
-                                    </button>
-
-                                </div>
+                                </a>
 
                             )
 
@@ -274,163 +444,29 @@ refresh();
 
                     </div>
 
-                </div>
+                </motion.div>
 
-                <h2>
+            )}
 
-                    {job.company}
+        </Draggable>
 
-                </h2>
+        <DeleteModal
 
-                <p className="role">
+            open={deleteOpen}
 
-                    {job.role}
+            title={job.role}
 
-                </p>
+            company={job.company}
 
-                <div className="progress-header">
+            onCancel={closeDelete}
 
-                    <span>
+            onDelete={handleDelete}
 
-                        AI Success
+        />
 
-                    </span>
+    </>
 
-                    <span>
-
-                        {aiScore[job.status] || 0}%
-
-                    </span>
-
-                </div>
-
-                <div className="progress">
-
-                    <div
-
-                        className="progress-fill"
-
-                        style={{
-
-                            width: `${
-
-                                progress[job.status] || 0
-
-                            }%`
-
-                        }}
-
-                    />
-
-                </div>
-
-                <div className="job-info">
-
-                    <p>
-
-                        <FaMapMarkerAlt />
-
-                        {
-
-                            job.location ||
-
-                            "Remote"
-
-                        }
-
-                    </p>
-
-                    <p>
-
-                        <FaMoneyBillWave />
-
-                        {
-
-                            job.salary ||
-
-                            "Not Specified"
-
-                        }
-
-                    </p>
-
-                    <p>
-
-                        <FaCalendarAlt />
-
-                        {
-
-                            job.appliedDate
-
-                                ?
-
-                                new Date(
-
-                                    job.appliedDate
-
-                                ).toLocaleDateString()
-
-                                :
-
-                                "No Date"
-
-                        }
-
-                    </p>
-
-                </div>
-
-                <div className="bottom">
-
-                    <span className="priority">
-
-                        {job.priority}
-
-                    </span>
-
-                    {
-
-                        job.jobUrl && (
-
-                            <a
-
-                                href={job.jobUrl}
-
-                                target="_blank"
-
-                                rel="noreferrer"
-
-                            >
-
-                                <FaExternalLinkAlt />
-
-                            </a>
-
-                        )
-
-                    }
-
-                </div>
-
-            </motion.div>
-
-            <DeleteModal
-
-                open={deleteOpen}
-
-                title={job.role}
-
-                company={job.company}
-
-                onCancel={closeDelete}
-
-                onDelete={handleDelete}
-
-            />
-
-        </>
-
-    );
+);
 
 }
 

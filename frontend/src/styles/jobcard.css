@@ -385,3 +385,20 @@ background:#8B5CF6;
     }
 
 }
+
+
+.dragging{
+
+transform:rotate(3deg);
+
+box-shadow:
+
+0 25px 60px rgba(139,92,246,.45);
+
+opacity:.9;
+
+cursor:grabbing;
+
+z-index:9999;
+
+}

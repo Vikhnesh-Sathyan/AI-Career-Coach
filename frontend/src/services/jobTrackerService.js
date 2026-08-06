@@ -157,3 +157,38 @@ export async function getApplicationStats(token) {
     return await response.json();
 
 }
+
+
+
+
+export async function updateStatus(id, status, token) {
+
+    const response = await fetch(
+
+        `${API}/update/${id}`,
+
+        {
+
+            method: "PUT",
+
+            headers: {
+
+                "Content-Type": "application/json",
+
+                Authorization: `Bearer ${token}`
+
+            },
+
+            body: JSON.stringify({
+
+                status
+
+            })
+
+        }
+
+    );
+
+    return await response.json();
+
+}

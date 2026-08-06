@@ -2,14 +2,20 @@ import "../../styles/stagecolumn.css";
 
 import { motion } from "framer-motion";
 
+import { Droppable } from "@hello-pangea/dnd";
+
 import JobCard from "./JobCard";
 
 function StageColumn({
 
     title,
+
     jobs,
+
     refresh,
+
     setEditData,
+
     showToast
 
 }) {
@@ -17,115 +23,146 @@ function StageColumn({
     const colors = {
 
         Applied: "#3B82F6",
+
         Shortlisted: "#8B5CF6",
+
         Assessment: "#F59E0B",
+
         Interview: "#EC4899",
+
         Offer: "#10B981",
+
         Rejected: "#EF4444"
 
     };
 
     return (
 
-        <motion.div
+        <Droppable droppableId={title}>
 
-            className="stage-column"
+            {(provided, snapshot) => (
 
-            initial={{
+                <motion.div
 
-                opacity: 0,
-                y: 30
+                    className={`stage-column ${
 
-            }}
+                        snapshot.isDraggingOver
 
-            animate={{
+                            ? "drag-over"
 
-                opacity: 1,
-                y: 0
+                            : ""
 
-            }}
+                    }`}
 
-            transition={{
+                    ref={provided.innerRef}
 
-                duration: .4
+                    {...provided.droppableProps}
 
-            }}
+                    initial={{
 
-        >
+                        opacity:0,
 
-            <div
-
-                className="stage-header"
-
-                style={{
-
-                    borderColor: colors[title]
-
-                }}
-
-            >
-
-                <div
-
-                    className="stage-dot"
-
-                    style={{
-
-                        background: colors[title]
+                        y:30
 
                     }}
 
-                />
+                    animate={{
 
-                <h2>{title}</h2>
+                        opacity:1,
 
-                <span>{jobs.length}</span>
+                        y:0
 
-            </div>
+                    }}
 
-            <div className="stage-content">
+                    transition={{
 
-                {
+                        duration:.4
 
-                    jobs.length === 0
+                    }}
 
-                        ?
+                >
 
-                        (
+                    <div
 
-                            <div className="empty-stage">
+                        className="stage-header"
 
-                                No Applications
+                        style={{
 
-                            </div>
+                            borderColor: colors[title]
 
-                        )
+                        }}
 
-                        :
+                    >
 
-                        jobs.map((job) => (
+                        <div
 
-                            <JobCard
+                            className="stage-dot"
 
-                                key={job._id}
+                            style={{
 
-                                job={job}
+                                background: colors[title]
 
-                                refresh={refresh}
+                            }}
 
-                                setEditData={setEditData}
+                        />
 
-                                showToast={showToast}
+                        <h2>{title}</h2>
 
-                            />
+                        <span>{jobs.length}</span>
 
-                        ))
+                    </div>
 
-                }
+                    <div className="stage-content">
 
-            </div>
+                        {
 
-        </motion.div>
+                            jobs.length === 0 &&
+
+                            !snapshot.isDraggingOver && (
+
+                                <div className="empty-stage">
+
+                                    No Applications
+
+                                </div>
+
+                            )
+
+                        }
+
+                        {
+
+                            jobs.map((job, index) => (
+
+                                <JobCard
+
+                                    key={job._id}
+
+                                    index={index}
+
+                                    job={job}
+
+                                    refresh={refresh}
+
+                                    setEditData={setEditData}
+
+                                    showToast={showToast}
+
+                                />
+
+                            ))
+
+                        }
+
+                        {provided.placeholder}
+
+                    </div>
+
+                </motion.div>
+
+            )}
+
+        </Droppable>
 
     );
 

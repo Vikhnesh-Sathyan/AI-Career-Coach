@@ -127,3 +127,14 @@ border:2px dashed rgba(255,255,255,.08);
 border-radius:20px;
 
 }
+
+
+.drag-over{
+
+background:rgba(139,92,246,.08);
+
+border:2px dashed #8B5CF6;
+
+transition:.25s;
+
+}

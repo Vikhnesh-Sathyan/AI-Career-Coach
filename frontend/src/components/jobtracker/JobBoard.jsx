@@ -1,12 +1,19 @@
 import "../../styles/jobboard.css";
 
+import { DragDropContext } from "@hello-pangea/dnd";
+
 import StageColumn from "./StageColumn";
+
+import { updateStatus } from "../../services/jobTrackerService";
 
 function JobBoard({
 
     applications,
+
     refresh,
+
     setEditData,
+
     showToast
 
 }) {
@@ -14,51 +21,138 @@ function JobBoard({
     const stages = [
 
         "Applied",
+
         "Shortlisted",
+
         "Assessment",
+
         "Interview",
+
         "Offer",
+
         "Rejected"
 
     ];
 
-    return (
+    const handleDragEnd = async (result) => {
 
-        <div className="job-board">
+        const { destination, source, draggableId } = result;
 
-            {
+        if (!destination) return;
 
-                stages.map((stage) => (
+        if (
 
-                    <StageColumn
+            destination.droppableId === source.droppableId
 
-                        key={stage}
+        ) {
 
-                        title={stage}
+            return;
 
-                        jobs={
+        }
 
-                            applications.filter(
+        try {
 
-                                (job) => job.status === stage
+            const token = localStorage.getItem("token");
 
-                            )
+            const data = await updateStatus(
 
-                        }
+                draggableId,
 
-                        refresh={refresh}
+                destination.droppableId,
 
-                        setEditData={setEditData}
+                token
 
-                        showToast={showToast}
+            );
 
-                    />
+            if (data.success) {
 
-                ))
+                showToast(
+
+                    `Moved to ${destination.droppableId}`
+
+                );
+
+                refresh();
 
             }
 
-        </div>
+            else {
+
+                showToast(
+
+                    data.message,
+
+                    "error"
+
+                );
+
+            }
+
+        }
+
+        catch (error) {
+
+            console.log(error);
+
+            showToast(
+
+                "Failed to update status",
+
+                "error"
+
+            );
+
+        }
+
+    };
+
+    return (
+
+        <DragDropContext
+
+            onDragEnd={handleDragEnd}
+
+        >
+
+            <div className="job-board">
+
+                {
+
+                    stages.map((stage) => (
+
+                        <StageColumn
+
+                            key={stage}
+
+                            title={stage}
+
+                            jobs={
+
+                                applications.filter(
+
+                                    job =>
+
+                                        job.status === stage
+
+                                )
+
+                            }
+
+                            refresh={refresh}
+
+                            setEditData={setEditData}
+
+                            showToast={showToast}
+
+                        />
+
+                    ))
+
+                }
+
+            </div>
+
+        </DragDropContext>
 
     );
 

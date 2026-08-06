@@ -5,12 +5,20 @@ import {
     FaFileAlt,
     FaMicrophone,
     FaBriefcase,
-    FaLightbulb
+    FaLightbulb,
+    FaTasks
 } from "react-icons/fa";
 
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+
 
 function AIAssistant() {
+
+
+    const navigate = useNavigate();
+
+
 
     return (
 
@@ -21,7 +29,9 @@ function AIAssistant() {
             transition={{ duration:.6 }}
         >
 
+
             <div className="assistant-header">
+
 
                 <div className="assistant-avatar">
 
@@ -29,31 +39,49 @@ function AIAssistant() {
 
                 </div>
 
+
                 <div>
 
-                    <h2>AI Career Assistant</h2>
+                    <h2>
+                        AI Career Assistant
+                    </h2>
 
-                    <p>Always here to help you</p>
+                    <p>
+                        Always here to help you
+                    </p>
 
                 </div>
 
+
             </div>
+
+
 
             <div className="assistant-message">
 
-                <h3>Hello, Vikhnesh 👋</h3>
+
+                <h3>
+                    Hello, Vikhnesh 👋
+                </h3>
+
 
                 <p>
-
                     What would you like to improve today?
-
                 </p>
+
 
             </div>
 
+
+
             <div className="assistant-actions">
 
-                <button className="assistant-btn-primary">
+
+
+                <button
+                    className="assistant-btn-primary"
+                    onClick={() => navigate("/ats")}
+                >
 
                     <FaFileAlt/>
 
@@ -61,7 +89,14 @@ function AIAssistant() {
 
                 </button>
 
-                <button className="assistant-btn-secondary">
+
+
+
+
+                <button
+                    className="assistant-btn-secondary"
+                    onClick={() => navigate("/interviews")}
+                >
 
                     <FaMicrophone/>
 
@@ -69,39 +104,60 @@ function AIAssistant() {
 
                 </button>
 
-                <button className="assistant-btn-secondary">
 
-                    <FaBriefcase/>
 
-                    Find Jobs
+
+
+                <button
+                    className="assistant-btn-secondary"
+                    onClick={() => navigate("/jobs")}
+                >
+
+                    <FaTasks/>
+
+                    Job Tracker
 
                 </button>
 
+
+
             </div>
+
+
+
 
             <div className="assistant-tip">
 
+
                 <FaLightbulb/>
+
 
                 <div>
 
-                    <h4>AI Tip</h4>
+
+                    <h4>
+                        AI Tip
+                    </h4>
+
 
                     <p>
-
                         Add measurable achievements in your projects to improve
                         your ATS score.
-
                     </p>
+
 
                 </div>
 
+
             </div>
+
+
 
         </motion.div>
 
     );
 
 }
+
 
 export default AIAssistant;

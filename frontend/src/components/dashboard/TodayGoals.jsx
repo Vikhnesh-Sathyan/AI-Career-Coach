@@ -131,36 +131,63 @@ function TodayGoals() {
 
 
 
-
-            <div className="goal-progress">
-
-
-                <div className="progress-bar">
+<div className="goal-summary">
 
 
-                    <div
+    <div className="summary-box">
 
-                        className="progress-fill"
+        <span>
+            ✅
+        </span>
 
-                        style={{
-                            width:`${progress}%`
-                        }}
+        <div>
+            <h3>
+                {completedGoals}
+            </h3>
 
-                    />
+            <p>
+                Completed
+            </p>
+        </div>
 
-
-                </div>
-
-
-
-                <p>
-
-                    {completedGoals}/{goals.length} completed
-
-                </p>
+    </div>
 
 
-            </div>
+
+    <div className="summary-box">
+
+        <span>
+            🚀
+        </span>
+
+        <div>
+            <h3>
+                {goals.length - completedGoals}
+            </h3>
+
+            <p>
+                Remaining
+            </p>
+        </div>
+
+    </div>
+
+
+
+    <div className="goal-message">
+
+        {
+            progress === 100
+            ?
+            "🎉 All goals completed!"
+            :
+            "🔥 Keep pushing your career forward!"
+        }
+
+    </div>
+
+
+</div>
 
 
 

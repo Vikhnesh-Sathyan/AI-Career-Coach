@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ChevronDown, ChevronUp, Bell, Search, User } from "lucide-react";
 import "../../styles/admintopbar.css";
+import AdminQuickStats from "./AdminQuickStats";
 
 
 function AdminTopbar() {
@@ -48,7 +49,19 @@ function AdminTopbar() {
 
 
             </div>
+{
 
+    open && (
+
+        <div className="admin-expand">
+
+            <AdminQuickStats />
+
+        </div>
+
+    )
+
+}
 
 
             {/* Floating Center Button */}

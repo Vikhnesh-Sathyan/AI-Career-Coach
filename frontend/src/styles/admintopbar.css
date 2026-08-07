@@ -1,0 +1,273 @@
+.admin-top-wrapper {
+
+    position: fixed;
+
+    top:-80px;
+
+    left:0;
+
+    width:100%;
+
+    z-index:1000;
+
+    transition:0.45s ease;
+
+    overflow: visible;   /* important */
+}
+
+.admin-top-wrapper.open{
+
+    top:0;
+
+}
+
+
+
+/* MAIN BAR */
+
+.admin-topbar {
+
+    height:80px;
+
+    background:
+    linear-gradient(
+        135deg,
+        #111827,
+        #1e293b
+    );
+
+    color:white;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:0 35px;
+
+    box-shadow:
+    0 10px 40px rgba(0,0,0,0.35);
+
+    position:relative;
+
+}
+
+
+
+
+.top-left h2{
+
+
+    font-size:22px;
+
+    font-weight:700;
+
+    letter-spacing:.5px;
+
+
+}
+
+
+
+
+
+.top-actions{
+
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+
+}
+
+
+
+
+.icon-box{
+
+
+    width:42px;
+
+    height:42px;
+
+    border-radius:14px;
+
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+
+    background:
+    rgba(255,255,255,0.08);
+
+
+    cursor:pointer;
+
+
+    transition:.3s;
+
+
+}
+
+
+.icon-box:hover{
+
+
+    transform:translateY(-3px);
+
+    background:
+    rgba(255,255,255,0.18);
+
+
+}
+
+
+
+
+
+.profile{
+
+
+    height:45px;
+
+    padding:0 15px;
+
+
+    display:flex;
+
+    gap:10px;
+
+    align-items:center;
+
+
+    border-radius:20px;
+
+
+    background:
+    rgba(255,255,255,.1);
+
+
+}
+
+
+
+
+/* CENTER BUTTON */
+
+
+.toggle-btn {
+
+    position:absolute;
+
+    bottom:-32px;
+
+    left:50%;
+
+
+    transform:translateX(-50%);
+
+
+    width:64px;
+
+    height:64px;
+
+
+    border-radius:50%;
+
+
+    border:3px solid #0f172a;
+
+
+    background:
+    linear-gradient(
+        135deg,
+        #7c3aed,
+        #4f46e5
+    );
+
+
+    color:white;
+
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+
+    cursor:pointer;
+
+
+    z-index:2000;
+
+
+    box-shadow:
+    0 0 25px rgba(124,58,237,.8);
+
+
+    transition:.35s ease;
+
+}
+
+
+.toggle-btn svg {
+
+    width:28px;
+
+    height:28px;
+
+    stroke-width:3;
+
+    transform: translateY(10px);
+
+
+}
+
+
+
+.toggle-btn:hover{
+
+
+    transform:
+    translateX(-50%)
+    scale(1.1);
+
+
+}
+
+
+
+
+@media(max-width:700px){
+
+
+.admin-topbar{
+
+padding:0 15px;
+
+}
+
+
+.top-left h2{
+
+font-size:17px;
+
+}
+
+
+.profile span{
+
+display:none;
+
+}
+
+
+}

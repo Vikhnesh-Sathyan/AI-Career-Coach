@@ -1,8 +1,8 @@
-.admin-top-wrapper {
+.admin-top-wrapper{
 
-    position: fixed;
+    position:fixed;
 
-    top:-80px;
+    top:0;
 
     left:0;
 
@@ -10,22 +10,13 @@
 
     z-index:1000;
 
-    transition:0.45s ease;
-
-    overflow: visible;   /* important */
 }
 
-.admin-top-wrapper.open{
+/* ===========================
+   TOP BAR
+=========================== */
 
-    top:0;
-
-}
-
-
-
-/* MAIN BAR */
-
-.admin-topbar {
+.admin-topbar{
 
     height:80px;
 
@@ -47,17 +38,17 @@
     padding:0 35px;
 
     box-shadow:
-    0 10px 40px rgba(0,0,0,0.35);
+    0 10px 40px rgba(0,0,0,.35);
 
     position:relative;
 
 }
 
-
-
+/* ===========================
+   LEFT
+=========================== */
 
 .top-left h2{
-
 
     font-size:22px;
 
@@ -65,15 +56,13 @@
 
     letter-spacing:.5px;
 
-
 }
 
-
-
-
+/* ===========================
+   RIGHT
+=========================== */
 
 .top-actions{
-
 
     display:flex;
 
@@ -81,14 +70,9 @@
 
     gap:15px;
 
-
 }
 
-
-
-
 .icon-box{
-
 
     width:42px;
 
@@ -96,94 +80,70 @@
 
     border-radius:14px;
 
-
     display:flex;
 
     align-items:center;
 
     justify-content:center;
 
-
     background:
-    rgba(255,255,255,0.08);
-
+    rgba(255,255,255,.08);
 
     cursor:pointer;
 
-
     transition:.3s;
-
 
 }
 
-
 .icon-box:hover{
-
 
     transform:translateY(-3px);
 
     background:
-    rgba(255,255,255,0.18);
-
+    rgba(255,255,255,.18);
 
 }
 
-
-
-
-
 .profile{
-
 
     height:45px;
 
     padding:0 15px;
 
-
     display:flex;
-
-    gap:10px;
 
     align-items:center;
 
+    gap:10px;
 
     border-radius:20px;
 
-
     background:
-    rgba(255,255,255,.1);
-
+    rgba(255,255,255,.10);
 
 }
 
+/* ===========================
+   TOGGLE BUTTON
+=========================== */
 
-
-
-/* CENTER BUTTON */
-
-
-.toggle-btn {
+.toggle-btn{
 
     position:absolute;
 
-    bottom:-32px;
-
     left:50%;
 
+    bottom:-32px;
 
     transform:translateX(-50%);
-
 
     width:64px;
 
     height:64px;
 
-
     border-radius:50%;
 
-
     border:3px solid #0f172a;
-
 
     background:
     linear-gradient(
@@ -192,9 +152,7 @@
         #4f46e5
     );
 
-
     color:white;
-
 
     display:flex;
 
@@ -202,23 +160,26 @@
 
     justify-content:center;
 
-
     cursor:pointer;
 
+    box-shadow:
+    0 10px 30px rgba(124,58,237,.5);
+
+    transition:.35s;
 
     z-index:2000;
 
+}
 
-    box-shadow:
-    0 0 25px rgba(124,58,237,.8);
+.toggle-btn:hover{
 
-
-    transition:.35s ease;
+    transform:
+    translateX(-50%)
+    scale(1.08);
 
 }
 
-
-.toggle-btn svg {
+.toggle-btn svg{
 
     width:28px;
 
@@ -226,48 +187,63 @@
 
     stroke-width:3;
 
-    transform: translateY(10px);
+}
 
+/* ===========================
+   EXPAND PANEL
+=========================== */
+
+.admin-expand{
+
+    max-height:0;
+
+    overflow:hidden;
+
+    background:
+    linear-gradient(
+        180deg,
+        #111827,
+        #0f172a
+    );
+
+    transition:
+    max-height .45s ease,
+    padding .45s ease;
+
+    padding:0 30px;
 
 }
 
+.admin-top-wrapper.open .admin-expand{
 
+    max-height:1200px;
 
-.toggle-btn:hover{
-
-
-    transform:
-    translateX(-50%)
-    scale(1.1);
-
+    padding:30px;
 
 }
 
-
-
+/* ===========================
+   MOBILE
+=========================== */
 
 @media(max-width:700px){
 
+    .admin-topbar{
 
-.admin-topbar{
+        padding:0 15px;
 
-padding:0 15px;
+    }
 
-}
+    .top-left h2{
 
+        font-size:17px;
 
-.top-left h2{
+    }
 
-font-size:17px;
+    .profile span{
 
-}
+        display:none;
 
-
-.profile span{
-
-display:none;
-
-}
-
+    }
 
 }

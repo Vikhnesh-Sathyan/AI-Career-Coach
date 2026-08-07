@@ -192,37 +192,25 @@ rgba(255,255,255,.05);
 .storage-card{
 
 
-    margin-top:auto;
+flex-shrink:0;
 
-    padding:22px;
+    margin-top:12px;
 
+    padding:10px 16px;
 
-    border-radius:20px;
-
+    border-radius:18px;
 
     background:
-
-    linear-gradient(
-        145deg,
-        rgba(255,255,255,.08),
-        rgba(255,255,255,.03)
-    );
-
+    rgba(255,255,255,.05);
 
     border:
-
     1px solid rgba(255,255,255,.08);
-
-
-    box-shadow:
-
-    inset 0 0 30px rgba(255,255,255,.03);
 
 }
 
 .storage-card h4{
 
-color:white;
+color:#A78BFA;
 
 margin-bottom:15px;
 
@@ -286,13 +274,31 @@ color:#94A3B8;
 
 .admin-profile{
 
-display:flex;
 
-align-items:center;
+    margin-top:25px;
 
-gap:14px;
 
-padding-top:25px;
+    padding:15px;
+
+
+    border-radius:20px;
+
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+
+    background:
+
+    rgba(255,255,255,.05);
+
+
+    border:
+
+    1px solid rgba(255,255,255,.08);
 
 }
 
@@ -340,8 +346,76 @@ margin-bottom:4px;
 
 .admin-profile span{
 
-color:#10B981;
 
-font-size:13px;
+    color:#10B981;
+
+    font-size:13px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:6px;
+
+}
+
+
+
+.admin-profile span::before{
+
+
+    content:"";
+
+
+    width:8px;
+
+    height:8px;
+
+
+    border-radius:50%;
+
+
+    background:#10B981;
+
+
+    box-shadow:
+    0 0 10px #10B981;
+
+
+    animation:pulse 1.5s infinite;
+
+}
+
+
+
+@keyframes pulse{
+
+    50%{
+        opacity:.4;
+    }
+
+}
+
+
+
+/* scrollbar */
+
+.admin-sidebar::-webkit-scrollbar{
+
+    width:6px;
+
+}
+
+
+.admin-sidebar::-webkit-scrollbar-thumb{
+
+    background:
+
+    linear-gradient(
+        #06B6D4,
+        #8B5CF6
+    );
+
+    border-radius:20px;
 
 }

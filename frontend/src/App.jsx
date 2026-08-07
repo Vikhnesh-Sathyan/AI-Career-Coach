@@ -11,6 +11,7 @@ import Settings from "./pages/Settings";
 import Interviews from "./pages/Interviews";
 import InterviewHistory from "./pages/InterviewHistory";
 import JobTracker from "./pages/JobTracker"; 
+import AdminDashboard from "./pages/AdminDashboard";
 
 function App() {
     return (
@@ -38,6 +39,8 @@ function App() {
                 <Route path="/interview-history" element={<InterviewHistory />} />
 
                 <Route path="/jobs" element={<JobTracker />} />
+
+                <Route path="/admin" element={<AdminDashboard />} />
 
 
                 

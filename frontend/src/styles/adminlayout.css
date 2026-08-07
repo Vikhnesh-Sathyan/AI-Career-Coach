@@ -1,0 +1,45 @@
+.admin-layout{
+
+    min-height:100vh;
+
+    display:flex;
+
+    background:#07131D;
+
+}
+
+.admin-main{
+
+    flex:1;
+
+    display:flex;
+
+    flex-direction:column;
+
+    overflow:hidden;
+
+}
+
+.admin-content{
+
+    flex:1;
+
+    padding:35px;
+
+    overflow-y:auto;
+
+}
+
+.admin-content::-webkit-scrollbar{
+
+    width:8px;
+
+}
+
+.admin-content::-webkit-scrollbar-thumb{
+
+    background:#1E293B;
+
+    border-radius:20px;
+
+}

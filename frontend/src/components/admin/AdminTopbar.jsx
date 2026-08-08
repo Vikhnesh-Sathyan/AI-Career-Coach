@@ -82,7 +82,7 @@ function AdminTopbar() {
 
         setMenuOpen(false);
 
-        navigate("/settings");
+        navigate("/admin/settings");
 
     };
 

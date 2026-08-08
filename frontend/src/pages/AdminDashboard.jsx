@@ -15,79 +15,275 @@ import AdminLayout from "../components/admin/AdminLayout";
 
 import "../styles/admindashboard.css";
 
+import { useEffect, useState } from "react";
+
+import { getAdminStats } from "../services/adminService";
+
+
 function AdminDashboard() {
+
+    // =========================================
+    // ADMIN STATS
+    // =========================================
+
+    const [adminData, setAdminData] = useState({
+
+        totalUsers: 0,
+
+        premiumUsers: 0,
+
+        totalApplications: 0,
+
+        interviews: 0,
+
+        offers: 0,
+
+        rejected: 0
+
+    });
+
+
+    const [loading, setLoading] = useState(true);
+
+
+    // =========================================
+    // LOAD ADMIN DATA
+    // =========================================
+
+    useEffect(() => {
+
+        const loadAdminStats = async () => {
+
+            try {
+
+                const token =
+                    localStorage.getItem("token");
+
+
+                if (!token) {
+
+                    setLoading(false);
+
+                    return;
+
+                }
+
+
+                const response =
+                    await getAdminStats(token);
+
+
+                if (response.success) {
+
+                    setAdminData(
+                        response.data
+                    );
+
+                }
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "Admin dashboard error:",
+                    error
+                );
+
+            }
+
+            finally {
+
+                setLoading(false);
+
+            }
+
+        };
+
+
+        loadAdminStats();
+
+    }, []);
+
+
+    // =========================================
+    // DASHBOARD STAT CARDS
+    // =========================================
 
     const stats = [
 
         {
             title: "Total Users",
-            value: "2,340",
+
+            value:
+                adminData.totalUsers,
+
             growth: "+12%",
+
             icon: <FaUsers />,
-            description: "Registered users",
-            className: "users-card"
+
+            description:
+                "Registered users",
+
+            className:
+                "users-card"
+
         },
+
 
         {
             title: "Premium Users",
-            value: "528",
+
+            value:
+                adminData.premiumUsers,
+
             growth: "+8%",
+
             icon: <FaCrown />,
-            description: "Active subscriptions",
-            className: "premium-card"
+
+            description:
+                "Active subscriptions",
+
+            className:
+                "premium-card"
+
         },
+
 
         {
             title: "Job Applications",
-            value: "942",
+
+            value:
+                adminData.totalApplications,
+
             growth: "+15%",
+
             icon: <FaBriefcase />,
-            description: "Tracked applications",
-            className: "jobs-card"
+
+            description:
+                "Tracked applications",
+
+            className:
+                "jobs-card"
+
         },
 
+
         {
-            title: "AI Usage",
-            value: "18.4K",
-            growth: "+32%",
+            title: "Interviews",
+
+            value:
+                adminData.interviews,
+
+            growth: "+18%",
+
             icon: <FaBrain />,
-            description: "AI interactions",
-            className: "ai-usage-card"
+
+            description:
+                "Interview stage",
+
+            className:
+                "ai-usage-card"
+
         }
 
     ];
+
+
+    // =========================================
+    // RECENT ACTIVITY
+    // =========================================
 
     const activities = [
 
         {
             icon: <FaUserPlus />,
-            title: "New user registered",
-            description: "A new account was created",
-            time: "2 min ago"
+
+            title:
+                "User activity",
+
+            description:
+                `${adminData.totalUsers} users registered`,
+
+            time:
+                "Platform"
         },
+
 
         {
             icon: <FaFileAlt />,
-            title: "Resume analyzed",
-            description: "AI resume analysis completed",
-            time: "8 min ago"
+
+            title:
+                "Applications tracked",
+
+            description:
+                `${adminData.totalApplications} applications in system`,
+
+            time:
+                "Tracker"
         },
+
 
         {
             icon: <FaCreditCard />,
-            title: "Premium subscription",
-            description: "New premium subscription purchased",
-            time: "18 min ago"
+
+            title:
+                "Premium users",
+
+            description:
+                `${adminData.premiumUsers} active premium users`,
+
+            time:
+                "Subscription"
         },
+
 
         {
             icon: <FaBriefcase />,
-            title: "Job application added",
-            description: "New application added to tracker",
-            time: "1 hour ago"
+
+            title:
+                "Interview pipeline",
+
+            description:
+                `${adminData.interviews} users reached interview stage`,
+
+            time:
+                "Career"
         }
 
     ];
+
+
+    // =========================================
+    // LOADING SCREEN
+    // =========================================
+
+    if (loading) {
+
+        return (
+
+            <AdminLayout>
+
+                <div className="admin-dashboard-loading">
+
+                    <div className="admin-loader"></div>
+
+                    <p>
+                        Loading admin dashboard...
+                    </p>
+
+                </div>
+
+            </AdminLayout>
+
+        );
+
+    }
+
+
+    // =========================================
+    // DASHBOARD
+    // =========================================
 
     return (
 
@@ -95,11 +291,13 @@ function AdminDashboard() {
 
             <div className="admin-dashboard">
 
-                {/* =========================
-                    WELCOME SECTION
-                ========================== */}
+
+                {/* =================================
+                    WELCOME
+                ================================== */}
 
                 <motion.section
+
                     className="admin-welcome"
 
                     initial={{
@@ -115,17 +313,22 @@ function AdminDashboard() {
                     transition={{
                         duration: 0.6
                     }}
+
                 >
 
                     <div>
 
-                        <span className="welcome-label">
+                        <span
+                            className="welcome-label"
+                        >
                             ADMIN CONTROL CENTER
                         </span>
+
 
                         <h1>
                             Good morning, Admin 👋
                         </h1>
+
 
                         <p>
                             Here's what's happening across
@@ -134,113 +337,176 @@ function AdminDashboard() {
 
                     </div>
 
+
                     <motion.div
+
                         className="welcome-orb"
 
                         animate={{
-                            scale: [1, 1.08, 1],
-                            rotate: [0, 8, 0]
+
+                            scale: [
+                                1,
+                                1.08,
+                                1
+                            ],
+
+                            rotate: [
+                                0,
+                                8,
+                                0
+                            ]
+
                         }}
 
                         transition={{
+
                             duration: 5,
+
                             repeat: Infinity,
+
                             ease: "easeInOut"
+
                         }}
+
                     />
 
                 </motion.section>
 
 
-                {/* =========================
+
+                {/* =================================
                     STATISTICS
-                ========================== */}
+                ================================== */}
 
                 <section className="admin-stats">
 
-                    {stats.map((stat, index) => (
+                    {stats.map(
+                        (stat, index) => (
 
-                        <motion.div
-                            key={stat.title}
+                            <motion.div
 
-                            className={`admin-stat-card ${stat.className}`}
+                                key={
+                                    stat.title
+                                }
 
-                            initial={{
-                                opacity: 0,
-                                y: 35
-                            }}
+                                className={
+                                    `admin-stat-card ${stat.className}`
+                                }
 
-                            animate={{
-                                opacity: 1,
-                                y: 0
-                            }}
+                                initial={{
+                                    opacity: 0,
+                                    y: 35
+                                }}
 
-                            transition={{
-                                duration: 0.5,
-                                delay: index * 0.1
-                            }}
+                                animate={{
+                                    opacity: 1,
+                                    y: 0
+                                }}
 
-                            whileHover={{
-                                y: -8,
-                                scale: 1.02
-                            }}
-                        >
+                                transition={{
 
-                            <div className="stat-top">
+                                    duration: 0.5,
 
-                                <div className="stat-icon">
+                                    delay:
+                                        index * 0.1
 
-                                    {stat.icon}
+                                }}
+
+                                whileHover={{
+
+                                    y: -8,
+
+                                    scale: 1.02
+
+                                }}
+
+                            >
+
+                                <div
+                                    className="stat-top"
+                                >
+
+                                    <div
+                                        className="stat-icon"
+                                    >
+
+                                        {
+                                            stat.icon
+                                        }
+
+                                    </div>
+
+
+                                    <span
+                                        className="stat-growth"
+                                    >
+
+                                        <FaArrowUp />
+
+                                        {
+                                            stat.growth
+                                        }
+
+                                    </span>
 
                                 </div>
 
-                                <span className="stat-growth">
 
-                                    <FaArrowUp />
+                                <div
+                                    className="stat-content"
+                                >
 
-                                    {stat.growth}
+                                    <p>
+                                        {
+                                            stat.title
+                                        }
+                                    </p>
 
-                                </span>
 
-                            </div>
+                                    <h2>
+                                        {
+                                            stat.value
+                                        }
+                                    </h2>
 
-                            <div className="stat-content">
 
-                                <p>
-                                    {stat.title}
-                                </p>
+                                    <span>
+                                        {
+                                            stat.description
+                                        }
+                                    </span>
 
-                                <h2>
-                                    {stat.value}
-                                </h2>
+                                </div>
 
-                                <span>
-                                    {stat.description}
-                                </span>
 
-                            </div>
+                                <div
+                                    className="stat-glow"
+                                />
 
-                            <div className="stat-glow" />
+                            </motion.div>
 
-                        </motion.div>
-
-                    ))}
+                        )
+                    )}
 
                 </section>
 
 
-                {/* =========================
-                    MAIN DASHBOARD GRID
-                ========================== */}
 
-                <section className="admin-main-grid">
+                {/* =================================
+                    MAIN GRID
+                ================================== */}
+
+                <section
+                    className="admin-main-grid"
+                >
 
 
-                    {/* =====================
-                        ANALYTICS CARD
-                    ====================== */}
+                    {/* =================================
+                        ANALYTICS
+                    ================================== */}
 
                     <motion.div
+
                         className="analytics-card"
 
                         initial={{
@@ -257,9 +523,12 @@ function AdminDashboard() {
                             duration: 0.6,
                             delay: 0.4
                         }}
+
                     >
 
-                        <div className="section-heading">
+                        <div
+                            className="section-heading"
+                        >
 
                             <div>
 
@@ -268,21 +537,26 @@ function AdminDashboard() {
                                 </span>
 
                                 <h2>
-                                    Platform Growth
+                                    Application Pipeline
                                 </h2>
 
                             </div>
 
+
                             <button>
-                                Last 7 days
+                                Current
                             </button>
 
                         </div>
 
 
-                        <div className="fake-chart">
+                        <div
+                            className="fake-chart"
+                        >
 
-                            <div className="chart-grid">
+                            <div
+                                className="chart-grid"
+                            >
 
                                 <span />
                                 <span />
@@ -291,68 +565,135 @@ function AdminDashboard() {
 
                             </div>
 
-                            <div className="chart-bars">
 
-                                {[45, 62, 52, 78, 68, 88, 74].map(
-                                    (height, index) => (
+                            <div
+                                className="chart-bars"
+                            >
 
-                                        <motion.div
-                                            key={index}
-                                            className="chart-bar"
+                                {
 
-                                            initial={{
-                                                height: 0
-                                            }}
+                                    [
 
-                                            animate={{
-                                                height: `${height}%`
-                                            }}
+                                        adminData.totalApplications,
 
-                                            transition={{
-                                                duration: 0.8,
-                                                delay:
-                                                    0.5 +
-                                                    index * 0.08
-                                            }}
-                                        >
+                                        adminData.interviews,
 
-                                            <span />
+                                        adminData.offers,
 
-                                        </motion.div>
+                                        adminData.rejected,
+
+                                        adminData.premiumUsers,
+
+                                        adminData.totalUsers,
+
+                                        adminData.interviews
+
+                                    ].map(
+
+                                        (
+                                            value,
+                                            index
+                                        ) => {
+
+
+                                            const maxValue =
+                                                Math.max(
+                                                    adminData.totalUsers,
+                                                    adminData.totalApplications,
+                                                    adminData.premiumUsers,
+                                                    1
+                                                );
+
+
+                                            const height =
+                                                Math.max(
+                                                    8,
+                                                    Math.min(
+                                                        100,
+                                                        (
+                                                            value /
+                                                            maxValue
+                                                        ) * 100
+                                                    )
+                                                );
+
+
+                                            return (
+
+                                                <motion.div
+
+                                                    key={index}
+
+                                                    className="chart-bar"
+
+                                                    initial={{
+                                                        height: 0
+                                                    }}
+
+                                                    animate={{
+                                                        height:
+                                                            `${height}%`
+                                                    }}
+
+                                                    transition={{
+
+                                                        duration:
+                                                            0.8,
+
+                                                        delay:
+                                                            0.5 +
+                                                            index *
+                                                            0.08
+
+                                                    }}
+
+                                                >
+
+                                                    <span />
+
+                                                </motion.div>
+
+                                            );
+
+                                        }
 
                                     )
-                                )}
+
+                                }
 
                             </div>
 
-                            <div className="chart-labels">
+
+                            <div
+                                className="chart-labels"
+                            >
 
                                 <span>
-                                    Mon
+                                    Apps
                                 </span>
 
                                 <span>
-                                    Tue
+                                    Interview
                                 </span>
 
                                 <span>
-                                    Wed
+                                    Offers
                                 </span>
 
                                 <span>
-                                    Thu
+                                    Rejected
                                 </span>
 
                                 <span>
-                                    Fri
+                                    Premium
                                 </span>
 
                                 <span>
-                                    Sat
+                                    Users
                                 </span>
 
                                 <span>
-                                    Sun
+                                    Interview
                                 </span>
 
                             </div>
@@ -362,11 +703,13 @@ function AdminDashboard() {
                     </motion.div>
 
 
-                    {/* =====================
+
+                    {/* =================================
                         RECENT ACTIVITY
-                    ====================== */}
+                    ================================== */}
 
                     <motion.div
+
                         className="activity-card"
 
                         initial={{
@@ -383,83 +726,123 @@ function AdminDashboard() {
                             duration: 0.6,
                             delay: 0.5
                         }}
+
                     >
 
-                        <div className="section-heading">
+                        <div
+                            className="section-heading"
+                        >
 
                             <div>
 
                                 <span>
-                                    LIVE FEED
+                                    PLATFORM FEED
                                 </span>
 
                                 <h2>
-                                    Recent Activity
+                                    System Overview
                                 </h2>
 
                             </div>
 
-                            <div className="live-dot">
+
+                            <div
+                                className="live-dot"
+                            >
+
                                 ● Live
+
                             </div>
 
                         </div>
 
 
-                        <div className="activity-list">
+                        <div
+                            className="activity-list"
+                        >
 
-                            {activities.map(
-                                (activity, index) => (
+                            {
 
-                                    <motion.div
-                                        key={activity.title}
-                                        className="activity-item"
+                                activities.map(
+                                    (
+                                        activity,
+                                        index
+                                    ) => (
 
-                                        initial={{
-                                            opacity: 0,
-                                            x: 20
-                                        }}
+                                        <motion.div
 
-                                        animate={{
-                                            opacity: 1,
-                                            x: 0
-                                        }}
+                                            key={
+                                                activity.title
+                                            }
 
-                                        transition={{
-                                            delay:
-                                                0.7 +
-                                                index * 0.1
-                                        }}
-                                    >
+                                            className="activity-item"
 
-                                        <div className="activity-icon">
+                                            initial={{
+                                                opacity: 0,
+                                                x: 20
+                                            }}
 
-                                            {activity.icon}
+                                            animate={{
+                                                opacity: 1,
+                                                x: 0
+                                            }}
 
-                                        </div>
+                                            transition={{
+                                                delay:
+                                                    0.7 +
+                                                    index *
+                                                    0.1
+                                            }}
 
-                                        <div className="activity-info">
+                                        >
 
-                                            <h4>
-                                                {activity.title}
-                                            </h4>
+                                            <div
+                                                className="activity-icon"
+                                            >
 
-                                            <p>
-                                                {activity.description}
-                                            </p>
+                                                {
+                                                    activity.icon
+                                                }
 
-                                        </div>
+                                            </div>
 
-                                        <span className="activity-time">
 
-                                            {activity.time}
+                                            <div
+                                                className="activity-info"
+                                            >
 
-                                        </span>
+                                                <h4>
+                                                    {
+                                                        activity.title
+                                                    }
+                                                </h4>
 
-                                    </motion.div>
 
+                                                <p>
+                                                    {
+                                                        activity.description
+                                                    }
+                                                </p>
+
+                                            </div>
+
+
+                                            <span
+                                                className="activity-time"
+                                            >
+
+                                                {
+                                                    activity.time
+                                                }
+
+                                            </span>
+
+                                        </motion.div>
+
+                                    )
                                 )
-                            )}
+
+                            }
 
                         </div>
 
@@ -468,11 +851,13 @@ function AdminDashboard() {
                 </section>
 
 
-                {/* =========================
+
+                {/* =================================
                     BOTTOM INSIGHT
-                ========================== */}
+                ================================== */}
 
                 <motion.section
+
                     className="admin-insight"
 
                     initial={{
@@ -489,43 +874,95 @@ function AdminDashboard() {
                         duration: 0.6,
                         delay: 0.7
                     }}
+
                 >
 
-                    <div className="insight-icon">
+                    <div
+                        className="insight-icon"
+                    >
 
                         <FaBrain />
 
                     </div>
 
+
                     <div>
 
                         <span>
-                            AI INSIGHT
+                            PLATFORM INSIGHT
                         </span>
 
+
                         <h3>
-                            AI activity increased by 32% this week.
+
+                            {
+
+                                adminData.interviews >
+                                0
+
+                                    ?
+
+                                    `${adminData.interviews} active interview-stage applications are currently being tracked.`
+
+                                    :
+
+                                    "No interview-stage applications yet."
+
+                            }
+
                         </h3>
 
+
                         <p>
-                            Resume analysis and interview preparation
-                            are currently the most used AI features.
+
+                            {
+
+                                adminData.offers >
+                                0
+
+                                    ?
+
+                                    `${adminData.offers} offer-stage applications are currently recorded in the platform.`
+
+                                    :
+
+                                    "The platform is ready to start tracking career progress."
+
+                            }
+
                         </p>
 
                     </div>
 
+
                     <motion.div
+
                         className="insight-pulse"
 
                         animate={{
-                            scale: [1, 1.4, 1],
-                            opacity: [0.4, 0.1, 0.4]
+
+                            scale: [
+                                1,
+                                1.4,
+                                1
+                            ],
+
+                            opacity: [
+                                0.4,
+                                0.1,
+                                0.4
+                            ]
+
                         }}
 
                         transition={{
+
                             duration: 2,
+
                             repeat: Infinity
+
                         }}
+
                     />
 
                 </motion.section>
@@ -537,5 +974,6 @@ function AdminDashboard() {
     );
 
 }
+
 
 export default AdminDashboard;

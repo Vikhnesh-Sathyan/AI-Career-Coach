@@ -1,41 +1,116 @@
 import User from "../models/User.js";
 import JobApplication from "../models/JobApplication.js";
-import Interview from "../models/Interview.js";
 
 
-// Dashboard Statistics
-export const getDashboardStats = async (req, res) => {
+// ==========================================
+// GET ADMIN DASHBOARD STATS
+// ==========================================
+
+export const getAdminStats = async (req, res) => {
 
     try {
 
-        const totalUsers = await User.countDocuments();
+        // -------------------------------
+        // USERS
+        // -------------------------------
+
+        const totalUsers =
+            await User.countDocuments();
+
+
+        // -------------------------------
+        // PREMIUM USERS
+        // -------------------------------
+
+        const premiumUsers =
+            await User.countDocuments({
+                "subscription.plan": "Premium"
+            });
+
+
+        // -------------------------------
+        // APPLICATIONS
+        // -------------------------------
 
         const totalApplications =
             await JobApplication.countDocuments();
 
-        const totalInterviews =
-            await Interview.countDocuments();
 
-        const premiumUsers =
-            await User.countDocuments({
+        // -------------------------------
+        // APPLICATION STATUS
+        // -------------------------------
 
-                "subscription.plan": "Premium"
-
+        const applied =
+            await JobApplication.countDocuments({
+                status: "Applied"
             });
 
-        res.json({
+
+        const shortlisted =
+            await JobApplication.countDocuments({
+                status: "Shortlisted"
+            });
+
+
+        const assessment =
+            await JobApplication.countDocuments({
+                status: "Assessment"
+            });
+
+
+        const interviews =
+            await JobApplication.countDocuments({
+                status: "Interview"
+            });
+
+
+        const offers =
+            await JobApplication.countDocuments({
+                status: "Offer"
+            });
+
+
+        const rejected =
+            await JobApplication.countDocuments({
+                status: "Rejected"
+            });
+
+
+        const accepted =
+            await JobApplication.countDocuments({
+                status: "Accepted"
+            });
+
+
+        // -------------------------------
+        // RESPONSE
+        // -------------------------------
+
+        res.status(200).json({
 
             success: true,
 
-            stats: {
+            data: {
 
                 totalUsers,
 
+                premiumUsers,
+
                 totalApplications,
 
-                totalInterviews,
+                applied,
 
-                premiumUsers
+                shortlisted,
+
+                assessment,
+
+                interviews,
+
+                offers,
+
+                rejected,
+
+                accepted
 
             }
 
@@ -45,149 +120,17 @@ export const getDashboardStats = async (req, res) => {
 
     catch (error) {
 
-        res.status(500).json({
-
-            success: false,
-
-            message: error.message
-
-        });
-
-    }
-
-};
-
-
-// Get All Users
-export const getUsers = async (req, res) => {
-
-    try {
-
-        const users = await User.find()
-
-            .select("-password")
-
-            .sort({
-
-                createdAt: -1
-
-            });
-
-        res.json({
-
-            success: true,
-
-            users
-
-        });
-
-    }
-
-    catch (error) {
-
-        res.status(500).json({
-
-            success: false,
-
-            message: error.message
-
-        });
-
-    }
-
-};
-
-
-// Get Single User
-export const getUser = async (req, res) => {
-
-    try {
-
-        const user = await User.findById(
-
-            req.params.id
-
-        ).select("-password");
-
-        if (!user) {
-
-            return res.status(404).json({
-
-                success: false,
-
-                message: "User not found"
-
-            });
-
-        }
-
-        res.json({
-
-            success: true,
-
-            user
-
-        });
-
-    }
-
-    catch (error) {
-
-        res.status(500).json({
-
-            success: false,
-
-            message: error.message
-
-        });
-
-    }
-
-};
-
-
-// Delete User
-export const deleteUser = async (req, res) => {
-
-    try {
-
-        const user = await User.findById(
-
-            req.params.id
-
+        console.error(
+            "Admin Stats Error:",
+            error
         );
 
-        if (!user) {
-
-            return res.status(404).json({
-
-                success: false,
-
-                message: "User not found"
-
-            });
-
-        }
-
-        await user.deleteOne();
-
-        res.json({
-
-            success: true,
-
-            message: "User deleted successfully"
-
-        });
-
-    }
-
-    catch (error) {
-
         res.status(500).json({
 
             success: false,
 
-            message: error.message
+            message:
+                "Failed to load admin statistics"
 
         });
 

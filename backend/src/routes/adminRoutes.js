@@ -4,55 +4,16 @@ import protect from "../middleware/authMiddleware.js";
 import adminOnly from "../middleware/adminMiddleware.js";
 
 import {
-
-    getDashboardStats,
-    getUsers,
-    getUser,
-    deleteUser
-
+    getAdminStats
 } from "../controllers/adminController.js";
 
 const router = express.Router();
 
-router.use(
-
+router.get(
+    "/stats",
     protect,
-    adminOnly
-
-);
-
-// Dashboard
-router.get(
-
-    "/dashboard",
-
-    getDashboardStats
-
-);
-
-// Users
-router.get(
-
-    "/users",
-
-    getUsers
-
-);
-
-router.get(
-
-    "/users/:id",
-
-    getUser
-
-);
-
-router.delete(
-
-    "/users/:id",
-
-    deleteUser
-
+    adminOnly,
+    getAdminStats
 );
 
 export default router;

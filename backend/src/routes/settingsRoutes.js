@@ -11,8 +11,7 @@ updateSubscription
 } from "../controllers/settingsController.js";
 
 
-import protect from "../middleware/authMiddleware.js";
-
+import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 

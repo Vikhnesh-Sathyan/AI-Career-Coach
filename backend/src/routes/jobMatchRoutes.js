@@ -5,8 +5,7 @@ import {
     getMatchHistory
 } from "../controllers/jobMatchController.js";
 
-import protect from "../middleware/authMiddleware.js";
-
+import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 

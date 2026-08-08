@@ -1,58 +1,69 @@
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 
-const protect = async (req, res, next) => {
+
+// ===============================
+// Protect Route
+// ===============================
+
+export const protect = async (req, res, next) => {
 
     try {
 
-        let token;
+        const authHeader =
+            req.headers.authorization;
 
+
+        // Check authorization header
         if (
-
-            req.headers.authorization &&
-            req.headers.authorization.startsWith("Bearer ")
-
+            !authHeader ||
+            !authHeader.startsWith("Bearer ")
         ) {
-
-            token = req.headers.authorization.split(" ")[1];
-
-        }
-
-        if (!token) {
 
             return res.status(401).json({
 
                 success: false,
-                message: "Not authorized. No token provided."
+
+                message: "Not authorized. Token missing.",
 
             });
-
         }
 
-        const decoded = jwt.verify(
 
-            token,
+        // Get token
+        const token =
+            authHeader.split(" ")[1];
 
-            process.env.JWT_SECRET
 
-        );
+        // Verify token
+        const decoded =
+            jwt.verify(
+                token,
+                process.env.JWT_SECRET
+            );
 
-        const user = await User.findById(decoded.id)
 
-            .select("-password");
+        // Find user
+        const user =
+            await User.findById(decoded.id)
+                .select("-password");
+
 
         if (!user) {
 
             return res.status(401).json({
 
                 success: false,
-                message: "User not found."
+
+                message: "User not found",
 
             });
-
         }
 
+
+        // Attach user to request
         req.user = user;
+
 
         next();
 
@@ -60,17 +71,48 @@ const protect = async (req, res, next) => {
 
     catch (error) {
 
-        console.error(error);
+        console.error(
+            "Auth Middleware Error:",
+            error
+        );
+
 
         return res.status(401).json({
 
             success: false,
-            message: "Token expired or invalid."
+
+            message: "Invalid or expired token",
 
         });
 
     }
-
 };
 
-export default protect;
+
+// ===============================
+// Admin Only
+// ===============================
+
+export const adminOnly = (
+    req,
+    res,
+    next
+) => {
+
+    if (
+        !req.user ||
+        req.user.role !== "admin"
+    ) {
+
+        return res.status(403).json({
+
+            success: false,
+
+            message: "Admin access required",
+
+        });
+    }
+
+
+    next();
+};

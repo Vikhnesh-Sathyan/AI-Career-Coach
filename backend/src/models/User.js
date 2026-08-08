@@ -1,155 +1,94 @@
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
-
     {
-
         name: {
-
             type: String,
-
-            required: true
-
+            required: true,
         },
 
         email: {
-
             type: String,
-
             required: true,
-
-            unique: true
-
+            unique: true,
         },
 
         password: {
-
             type: String,
-
-            required: true
-
+            required: true,
         },
 
         // Role
-
         role: {
-
             type: String,
-
             enum: ["user", "admin"],
-
-            default: "user"
-
+            default: "user",
         },
 
         // Profile Settings
-
         profileImage: {
-
             type: String,
-
-            default: ""
-
+            default: "",
         },
 
         bio: {
-
             type: String,
-
-            default: ""
-
+            default: "",
         },
 
         // Career Preferences
-
         careerPreferences: {
-
             targetRole: {
-
                 type: String,
-
-                default: ""
-
+                default: "",
             },
 
             experience: {
-
                 type: String,
-
-                default: "Fresher"
-
+                default: "Fresher",
             },
 
             location: {
-
                 type: String,
-
-                default: "Remote"
-
-            }
-
+                default: "Remote",
+            },
         },
 
         // Notification Settings
-
         notifications: {
-
             jobMatchAlerts: {
-
                 type: Boolean,
-
-                default: true
-
+                default: true,
             },
 
             resumeSuggestions: {
-
                 type: Boolean,
-
-                default: true
-
+                default: true,
             },
 
             interviewReminder: {
-
                 type: Boolean,
-
-                default: false
-
-            }
-
+                default: false,
+            },
         },
 
         // Subscription
-
         subscription: {
-
             plan: {
-
                 type: String,
-
-                default: "Free"
-
+                default: "Free",
             },
 
             status: {
-
                 type: String,
-
-                default: "active"
-
-            }
-
-        }
-
+                default: "active",
+            },
+        },
     },
 
     {
-
-        timestamps: true
-
+        timestamps: true,
     }
-
 );
 
 const User = mongoose.model("User", userSchema);

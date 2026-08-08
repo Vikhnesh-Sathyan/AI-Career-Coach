@@ -2,65 +2,57 @@ import express from "express";
 
 import {
     registerUser,
-    loginUser
+    loginUser,
 } from "../controllers/authController.js";
 
-import protect from "../middleware/authMiddleware.js";
-
+import {
+    protect,
+    adminOnly,
+} from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
 
-/*
-|--------------------------------------------------------------------------
-| Public Routes
-|--------------------------------------------------------------------------
-*/
-
+// Register
 router.post(
     "/register",
     registerUser
 );
 
+
+// Login
 router.post(
     "/login",
     loginUser
 );
 
 
-/*
-|--------------------------------------------------------------------------
-| Protected Profile Route
-|--------------------------------------------------------------------------
-*/
-
+// Protected profile
 router.get(
     "/profile",
     protect,
     (req, res) => {
 
-        res.status(200).json({
-
+        res.json({
             success: true,
+            user: req.user,
+        });
 
-            user: {
+    }
+);
 
-                id: req.user._id,
 
-                name: req.user.name,
+// Admin-only test route
+router.get(
+    "/admin-test",
+    protect,
+    adminOnly,
+    (req, res) => {
 
-                email: req.user.email,
-
-                role: req.user.role,
-
-                profileImage:
-                    req.user.profileImage,
-
-                subscription:
-                    req.user.subscription
-
-            }
-
+        res.json({
+            success: true,
+            message: "Welcome Admin",
+            user: req.user,
         });
 
     }

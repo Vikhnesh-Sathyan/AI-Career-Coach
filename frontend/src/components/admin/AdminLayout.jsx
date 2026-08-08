@@ -15,11 +15,11 @@ function AdminLayout({ children }) {
 
                 <AdminTopbar />
 
-                <div className="admin-content">
+                <main className="admin-content">
 
                     {children}
 
-                </div>
+                </main>
 
             </div>
 

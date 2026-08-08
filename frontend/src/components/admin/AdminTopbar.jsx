@@ -1,107 +1,82 @@
-import { useState } from "react";
-
 import {
-    ChevronDown,
-    ChevronUp,
-    Bell,
     Search,
-    User
+    Bell,
+    MoreVertical
 } from "lucide-react";
 
 import "../../styles/admintopbar.css";
 
-import AdminQuickStats from "./AdminQuickStats";
-import AdminActivity from "./AdminActivity";
-
 function AdminTopbar() {
-
-    const [open, setOpen] = useState(false);
 
     return (
 
-        <div className={`admin-top-wrapper ${open ? "open" : ""}`}>
+        <header className="admin-topbar">
 
-            {/* Top Bar */}
+            {/* PAGE INFORMATION */}
 
-            <div className="admin-topbar">
+            <div className="admin-page-info">
 
-                <div className="top-left">
+                <h1>
+                    Admin Dashboard
+                </h1>
 
-                    <h2>
-
-                        Admin Dashboard
-
-                    </h2>
-
-                </div>
-
-                <div className="top-actions">
-
-                    <div className="icon-box">
-
-                        <Search size={20} />
-
-                    </div>
-
-                    <div className="icon-box">
-
-                        <Bell size={20} />
-
-                    </div>
-
-                    <div className="profile">
-
-                        <User size={20} />
-
-                        <span>
-
-                            Admin
-
-                        </span>
-
-                    </div>
-
-                </div>
+                <span>
+                    Manage your CareerCoach platform
+                </span>
 
             </div>
 
-            {/* Expandable Panel */}
 
-            <div className="admin-expand">
+            {/* SEARCH */}
 
-                <AdminQuickStats />
+            <div className="admin-command">
 
-                <AdminActivity />
+                <Search size={19} />
+
+                <input
+                    type="text"
+                    placeholder="Search users, jobs, resumes..."
+                />
+
+                <kbd>
+                    /
+                </kbd>
 
             </div>
 
-            {/* Floating Button */}
 
-            <button
+            {/* ACTIONS */}
 
-                className="toggle-btn"
+            <div className="admin-actions">
 
-                onClick={() => setOpen(!open)}
+                {/* Notification */}
 
-            >
+                <button
+                    className="admin-icon-button"
+                    title="Notifications"
+                >
 
-                {
+                    <Bell size={20} />
 
-                    open
+                    <span className="notification-dot" />
 
-                        ?
+                </button>
 
-                        <ChevronUp size={25} />
 
-                        :
+                {/* More */}
 
-                        <ChevronDown size={25} />
+                <button
+                    className="admin-icon-button"
+                    title="More options"
+                >
 
-                }
+                    <MoreVertical size={20} />
 
-            </button>
+                </button>
 
-        </div>
+            </div>
+
+        </header>
 
     );
 

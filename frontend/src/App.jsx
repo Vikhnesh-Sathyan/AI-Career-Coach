@@ -1,9 +1,9 @@
 import {
     BrowserRouter,
     Routes,
-    Route
+    Route,
+    Navigate
 } from "react-router-dom";
-
 
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -19,6 +19,7 @@ import InterviewHistory from "./pages/InterviewHistory";
 import JobTracker from "./pages/JobTracker";
 
 import AdminDashboard from "./pages/AdminDashboard";
+import AdminUsers from "./pages/AdminUsers";
 
 import AdminProtectedRoute
     from "./components/admin/AdminProtectedRoute";
@@ -36,11 +37,24 @@ function App() {
                     PUBLIC ROUTES
                 ========================== */}
 
+                {/* Default URL */}
+                <Route
+                    path="/"
+                    element={
+                        <Navigate
+                            to="/login"
+                            replace
+                        />
+                    }
+                />
+
+                {/* Login */}
                 <Route
                     path="/login"
                     element={<Login />}
                 />
 
+                {/* Register */}
                 <Route
                     path="/register"
                     element={<Register />}
@@ -101,20 +115,46 @@ function App() {
                     ADMIN ROUTES
                 ========================== */}
 
+                {/* Admin Dashboard */}
+
                 <Route
-
                     path="/admin"
-
                     element={
-
                         <AdminProtectedRoute>
 
                             <AdminDashboard />
 
                         </AdminProtectedRoute>
-
                     }
+                />
 
+
+                {/* Admin User Management */}
+
+                <Route
+                    path="/admin/users"
+                    element={
+                        <AdminProtectedRoute>
+
+                            <AdminUsers />
+
+                        </AdminProtectedRoute>
+                    }
+                />
+
+
+                {/* =========================
+                    FALLBACK
+                ========================== */}
+
+                <Route
+                    path="*"
+                    element={
+                        <Navigate
+                            to="/login"
+                            replace
+                        />
+                    }
                 />
 
             </Routes>

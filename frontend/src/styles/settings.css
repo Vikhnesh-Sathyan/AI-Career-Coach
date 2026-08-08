@@ -794,6 +794,8 @@
 .settings-modal h3 {
     margin: 0 0 10px;
     font-size: 22px;
+    color: #ffffff;
+    font-weight: 700;
 }
 
 .settings-modal p {

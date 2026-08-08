@@ -1,44 +1,116 @@
 # 🤖 AI Career Coach
 
-An AI-powered Career Coach platform that helps users improve their resumes, prepare for interviews, and track their career growth.
+An AI-powered career development platform designed to help users **analyze resumes, improve ATS compatibility, prepare for interviews, match job descriptions, and track their career progress**.
+
+The project is being developed as a full-stack application using **React, Node.js, Express.js, MongoDB, and AI-powered tools**.
 
 ---
 
 ## 🚀 Features
 
-### 🔐 Authentication
-- User Registration
-- User Login
-- JWT Authentication
-- Protected Routes
+### 🔐 Authentication & Authorization
 
-### 📄 Resume
-- Resume Upload *(Coming Soon)*
-- Resume Analysis *(Coming Soon)*
-- ATS Score Checker *(Coming Soon)*
+* User Registration
+* User Login
+* JWT-based Authentication
+* Password Hashing with bcrypt
+* Protected Routes
+* Role-Based Access Control
+* User and Admin Roles
+* Admin Protected Routes
 
-### 💼 Career Tools
-- Job Description Matching *(Coming Soon)*
-- AI Interview Preparation *(Coming Soon)*
-- Career Dashboard *(Coming Soon)*
+### 👤 User Dashboard
+
+* Personalized Career Dashboard
+* Career Progress Overview
+* ATS Score Overview
+* Job Application Statistics
+* Interview Statistics
+* Skills Overview
+* Career Level / Progress Tracking
+
+### 📄 Resume & ATS
+
+* Resume Management
+* Resume Analysis
+* ATS Score Analysis
+* Resume Skill Extraction
+* Resume Improvement Suggestions
+
+### 💼 Job & Career Tools
+
+* Job Description Matching
+* Job Skill Matching
+* Match Score
+* Match History
+* Job Application Tracking
+
+### 🎤 Interview Preparation
+
+* Interview Preparation
+* Interview Questions
+* Interview Practice
+* Interview History
+* Answer Evaluation
+
+### ⚙️ User Settings
+
+* Profile Management
+* Career Preferences
+* Notification Settings
+* Security Settings
+* Subscription UI
+* Free / Premium Plan Interface
+
+### 🛡️ Admin Panel
+
+* Admin Dashboard
+* Role-Based Admin Access
+* User Management
+* User Statistics
+* User Search
+* User Filtering
+* User Status Management UI
+* Admin User Actions
+* Admin Settings
+* Admin Navigation & Controls
+
+> The admin user management module is currently implemented with static data and can be connected to the backend API later.
 
 ---
 
 ## 🛠️ Tech Stack
 
 ### Frontend
-- React
-- React Router
-- React Icons
-- CSS
+
+* React.js
+* React Router
+* JavaScript
+* CSS
+* Framer Motion
+* React Icons
+* Lucide React
+* Axios
 
 ### Backend
-- Node.js
-- Express.js
-- MongoDB
-- Mongoose
-- JWT
-- bcrypt
+
+* Node.js
+* Express.js
+* REST APIs
+* JWT Authentication
+* bcryptjs
+
+### Database
+
+* MongoDB
+* Mongoose
+
+### AI / Resume Processing
+
+* Python
+* Flask
+* PyMuPDF
+* spaCy
 
 ---
 
@@ -50,38 +122,100 @@ AI-Career-Coach
 ├── backend
 │   ├── src
 │   │   ├── config
+│   │   │   └── db.js
+│   │   │
 │   │   ├── controllers
+│   │   │
 │   │   ├── middleware
+│   │   │   └── authMiddleware.js
+│   │   │
 │   │   ├── models
+│   │   │   └── User.js
+│   │   │
 │   │   └── routes
+│   │
 │   ├── package.json
 │   └── server.js
 │
 ├── frontend
 │   ├── src
 │   │   ├── assets
+│   │   │
 │   │   ├── components
+│   │   │   ├── admin
+│   │   │   ├── auth
+│   │   │   └── dashboard
+│   │   │
 │   │   ├── pages
+│   │   │   ├── Login.jsx
+│   │   │   ├── Register.jsx
+│   │   │   ├── Dashboard.jsx
+│   │   │   ├── Resume.jsx
+│   │   │   ├── ATS.jsx
+│   │   │   ├── JobMatcher.jsx
+│   │   │   ├── Interviews.jsx
+│   │   │   ├── JobTracker.jsx
+│   │   │   ├── Settings.jsx
+│   │   │   ├── AdminDashboard.jsx
+│   │   │   └── AdminUsers.jsx
+│   │   │
 │   │   ├── services
+│   │   │
 │   │   ├── styles
+│   │   │
 │   │   ├── App.jsx
 │   │   └── main.jsx
+│   │
 │   └── package.json
 │
+├── .gitignore
 └── README.md
 ```
 
 ---
 
+## 🔑 Role-Based Access
+
+The application supports two user roles:
+
+```text
+User
+  │
+  ├── Dashboard
+  ├── Resume
+  ├── ATS
+  ├── Job Matcher
+  ├── Interviews
+  ├── Job Tracker
+  └── Settings
+
+
+Admin
+  │
+  ├── Admin Dashboard
+  ├── User Management
+  └── Admin Settings
+```
+
+New registrations are assigned the default:
+
+```text
+role: user
+```
+
+Administrators can be assigned the `admin` role through the database during development.
+
+---
+
 ## ⚙️ Installation
 
-### Clone Repository
+### 1. Clone Repository
 
 ```bash
 git clone https://github.com/Vikhnesh-Sathyan/AI-Career-Coach.git
 ```
 
-### Backend
+### 2. Backend
 
 ```bash
 cd backend
@@ -89,7 +223,17 @@ npm install
 npm run dev
 ```
 
-### Frontend
+Create a `.env` file:
+
+```env
+PORT=5000
+MONGODB_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+```
+
+### 3. Frontend
+
+Open another terminal:
 
 ```bash
 cd frontend
@@ -99,23 +243,59 @@ npm run dev
 
 ---
 
-## 📈 Project Status
+## 🔒 Environment Variables
 
-- ✅ Backend Setup
-- ✅ MongoDB Connection
-- ✅ JWT Authentication
-- ✅ Professional Authentication UI
-- 🚧 API Integration
-- 🚧 Dashboard
-- 🚧 Resume Analyzer
-- 🚧 ATS Score Checker
-- 🚧 Interview Preparation
+Do not commit sensitive environment variables to GitHub.
+
+```text
+.env
+```
+
+should remain inside `.gitignore`.
+
+Required backend variables:
+
+```env
+PORT=
+MONGODB_URI=
+JWT_SECRET=
+```
 
 ---
 
-## 🎯 Goal
 
-Build a production-ready AI Career Coach platform that demonstrates modern full-stack development using React, Node.js, Express, MongoDB, and AI integration.
+
+## 🎯 Future Improvements
+
+* AI-powered resume analysis
+* Advanced ATS scoring
+* AI-generated resume suggestions
+* AI interview evaluation
+* Dynamic admin user management
+* Real-time dashboard analytics
+* Job recommendation system
+* Resume PDF processing
+* Advanced career insights
+* Production deployment
+
+---
+
+## 📚 Learning Goals
+
+This project is also being developed as a practical full-stack learning project to strengthen skills in:
+
+* React.js
+* Node.js
+* Express.js
+* MongoDB
+* REST API development
+* Authentication & Authorization
+* JWT
+* Role-Based Access Control
+* Frontend state management
+* API integration
+* AI integration
+* Full-stack application architecture
 
 ---
 
@@ -123,6 +303,9 @@ Build a production-ready AI Career Coach platform that demonstrates modern full-
 
 **Vikhnesh Sathyan**
 
-GitHub: https://github.com/Vikhnesh-Sathyan
+* GitHub: https://github.com/Vikhnesh-Sathyan
+* LinkedIn: https://linkedin.com/in/vikhnesh-sathyan-80a433221n
 
-LinkedIn: https://linkedin.com/in/vikhnesh-sathyan-80a433221
+---
+
+⭐ If you find this project interesting, feel free to explore the repository and follow the development journey.

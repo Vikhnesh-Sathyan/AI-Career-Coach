@@ -243,7 +243,7 @@ function AdminUsers() {
                 <div>
 
                     <h1>
-                        User Management
+                        User Manageent
                     </h1>
 
                     <p>

@@ -1,5 +1,6 @@
 .admin-users-page {
-    width: 100%;
+   min-height: 100vh;
+    background: #020617;
     color: white;
 }
 
@@ -13,8 +14,6 @@
 }
 
 .admin-users-header h1 {
-    margin: 0 0 8px;
-    font-size: 32px;
     background: linear-gradient(
         90deg,
         #ffffff,
@@ -30,6 +29,7 @@
 .admin-users-header p {
     margin: 0;
     color: #94a3b8;
+    font-size: 15px;
 }
 
 

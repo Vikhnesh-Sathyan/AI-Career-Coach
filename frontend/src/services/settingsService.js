@@ -95,3 +95,29 @@ Authorization:`Bearer ${token}`
 
 
 };
+
+
+
+
+
+export const updateSubscription=(plan,token)=>{
+
+
+return axios.put(
+
+`${API}/subscription`,
+
+{ plan },
+
+{
+
+headers:{
+Authorization:`Bearer ${token}`
+}
+
+}
+
+);
+
+
+};

@@ -5,7 +5,8 @@ import {
 getSettings,
 updateProfile,
 updateCareer,
-updateNotifications
+updateNotifications,
+updateSubscription
 
 } from "../controllers/settingsController.js";
 
@@ -45,6 +46,14 @@ router.put(
 "/notifications",
 protect,
 updateNotifications
+);
+
+
+
+router.put(
+"/subscription",
+protect,
+updateSubscription
 );
 
 

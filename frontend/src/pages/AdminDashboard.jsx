@@ -52,7 +52,7 @@ function AdminDashboard() {
             growth: "+32%",
             icon: <FaBrain />,
             description: "AI interactions",
-            className: "ai-card"
+            className: "ai-usage-card"
         }
 
     ];

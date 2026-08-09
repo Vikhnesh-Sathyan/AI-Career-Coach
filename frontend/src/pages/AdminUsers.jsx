@@ -23,6 +23,7 @@ import {
     deleteAdminUser
 } from "../services/adminService.js";
 
+import toast from "react-hot-toast";
 
 function AdminUsers() {
 
@@ -151,27 +152,14 @@ const toggleStatus = async (id) => {
         const token =
             localStorage.getItem("token");
 
-
-        if (!token) {
-
-            alert("Authentication required");
-
-            return;
-
-        }
-
-
         const currentUser =
             users.find(
-                (user) =>
-                    user.id === id
+                (user) => user.id === id
             );
-
 
         if (!currentUser) {
             return;
         }
-
 
         const newStatus =
             currentUser.status === "Active"
@@ -189,38 +177,51 @@ const toggleStatus = async (id) => {
 
         if (!response.success) {
 
-            alert(
+            toast.error(
                 response.message ||
                 "Unable to update user"
             );
 
             return;
-
         }
 
 
-        setUsers(
-            (currentUsers) =>
-                currentUsers.map(
-                    (user) =>
-                        user.id === id
-                            ? {
-                                ...user,
-
-                                status:
-                                    response.data?.status ||
-                                    (
-                                        newStatus === "suspended"
-                                            ? "Suspended"
-                                            : "Active"
-                                    )
-                            }
-                            : user
-                )
+        setUsers((currentUsers) =>
+            currentUsers.map((user) =>
+                user.id === id
+                    ? {
+                        ...user,
+                        status:
+                            response.data?.status ||
+                            (
+                                newStatus === "suspended"
+                                    ? "Suspended"
+                                    : "Active"
+                            )
+                    }
+                    : user
+            )
         );
 
 
         setOpenMenu(null);
+
+
+        // SUCCESS TOAST
+
+        if (newStatus === "suspended") {
+
+            toast.success(
+                `${currentUser.name} has been suspended`
+            );
+
+        } else {
+
+            toast.success(
+                `${currentUser.name} has been activated`
+            );
+
+        }
 
     }
 
@@ -231,11 +232,12 @@ const toggleStatus = async (id) => {
             error
         );
 
-        alert(
+        toast.error(
             "Unable to update user status"
         );
 
     }
+
 };
 
 
@@ -250,14 +252,17 @@ const deleteUser = async (id) => {
             "Are you sure you want to delete this user?"
         );
 
+
     if (!confirmed) {
         return;
     }
+
 
     try {
 
         const token =
             localStorage.getItem("token");
+
 
         const response =
             await deleteAdminUser(
@@ -265,26 +270,63 @@ const deleteUser = async (id) => {
                 id
             );
 
+
+        // =================================
+        // ERROR FROM BACKEND
+        // =================================
+
         if (!response.success) {
-            alert(response.message);
+
+            toast.error(
+                response.message ||
+                "Unable to delete user"
+            );
+
             return;
         }
 
+
+        // =================================
+        // REMOVE USER FROM UI
+        // =================================
+
         setUsers((currentUsers) =>
             currentUsers.filter(
-                (user) => user.id !== id
+                (user) =>
+                    user.id !== id
             )
         );
 
+
         setOpenMenu(null);
 
-    } catch (error) {
 
-        console.error(error);
+        // =================================
+        // SUCCESS TOAST
+        // =================================
 
-        alert("Unable to delete user");
+        toast.success(
+            "User deleted successfully"
+        );
+
     }
+
+    catch (error) {
+
+        console.error(
+            "Delete user error:",
+            error
+        );
+
+
+        toast.error(
+            "Unable to delete user"
+        );
+
+    }
+
 };
+
 
 
     // =====================================

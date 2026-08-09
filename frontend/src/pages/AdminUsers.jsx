@@ -18,7 +18,9 @@ import {
 import "../styles/adminusers.css";
 
 import {
-    getAdminUsers
+    getAdminUsers,
+    updateUserStatus,
+    deleteAdminUser
 } from "../services/adminService.js";
 
 
@@ -168,25 +170,65 @@ function AdminUsers() {
     // =====================================
     // SUSPEND / ACTIVATE
     // =====================================
+const toggleStatus = async (user) => {
 
-    const toggleStatus = (id) => {
+    try {
+
+        const token =
+            localStorage.getItem("token");
+
+
+        if (!token) {
+
+            alert("Authentication required.");
+
+            return;
+
+        }
+
+
+        const newStatus =
+            user.status === "Active"
+                ? "suspended"
+                : "active";
+
+
+        const response =
+            await updateUserStatus(
+                token,
+                user.id,
+                newStatus
+            );
+
+
+        if (!response?.success) {
+
+            alert(
+                response?.message ||
+                "Failed to update user status"
+            );
+
+            return;
+
+        }
+
 
         setUsers((currentUsers) =>
 
-            currentUsers.map((user) =>
+            currentUsers.map((currentUser) =>
 
-                user.id === id
+                currentUser.id === user.id
 
                     ? {
-                        ...user,
+                        ...currentUser,
 
                         status:
-                            user.status === "Active"
+                            newStatus === "suspended"
                                 ? "Suspended"
                                 : "Active"
                     }
 
-                    : user
+                    : currentUser
 
             )
 
@@ -195,23 +237,74 @@ function AdminUsers() {
 
         setOpenMenu(null);
 
-    };
+    }
+
+    catch (error) {
+
+        console.error(
+            "Toggle user status error:",
+            error
+        );
+
+        alert(
+            "Something went wrong."
+        );
+
+    }
+
+};
 
 
     // =====================================
     // DELETE USER
     // =====================================
 
-    const deleteUser = (id) => {
+const deleteUser = async (id) => {
 
-        const confirmed =
-            window.confirm(
-                "Are you sure you want to delete this user?"
+    const confirmed =
+        window.confirm(
+            "Are you sure you want to permanently delete this user?"
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    try {
+
+        const token =
+            localStorage.getItem("token");
+
+
+        if (!token) {
+
+            alert(
+                "Authentication required."
+            );
+
+            return;
+
+        }
+
+
+        const response =
+            await deleteAdminUser(
+                token,
+                id
             );
 
 
-        if (!confirmed) {
+        if (!response?.success) {
+
+            alert(
+                response?.message ||
+                "Failed to delete user"
+            );
+
             return;
+
         }
 
 
@@ -227,7 +320,23 @@ function AdminUsers() {
 
         setOpenMenu(null);
 
-    };
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Delete user error:",
+            error
+        );
+
+        alert(
+            "Something went wrong."
+        );
+
+    }
+
+};
 
 
     // =====================================
@@ -744,7 +853,7 @@ function AdminUsers() {
                                                             <button
                                                                 onClick={() =>
                                                                     toggleStatus(
-                                                                        user.id
+                                                                        user
                                                                     )
                                                                 }
                                                             >

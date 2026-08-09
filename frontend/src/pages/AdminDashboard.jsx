@@ -5,25 +5,24 @@ import {
     FaCrown,
     FaBriefcase,
     FaBrain,
-    FaArrowUp,
     FaUserPlus,
     FaFileAlt,
     FaCreditCard
 } from "react-icons/fa";
 
-import AdminLayout from "../components/admin/AdminLayout";
-
-import "../styles/admindashboard.css";
-
 import { useEffect, useState } from "react";
 
+import AdminLayout from "../components/admin/AdminLayout";
+
 import { getAdminStats } from "../services/adminService";
+
+import "../styles/admindashboard.css";
 
 
 function AdminDashboard() {
 
     // =========================================
-    // ADMIN STATS
+    // ADMIN DATA
     // =========================================
 
     const [adminData, setAdminData] = useState({
@@ -34,11 +33,19 @@ function AdminDashboard() {
 
         totalApplications: 0,
 
+        applied: 0,
+
+        shortlisted: 0,
+
+        assessment: 0,
+
         interviews: 0,
 
         offers: 0,
 
-        rejected: 0
+        rejected: 0,
+
+        accepted: 0
 
     });
 
@@ -47,7 +54,7 @@ function AdminDashboard() {
 
 
     // =========================================
-    // LOAD ADMIN DATA
+    // LOAD ADMIN STATS
     // =========================================
 
     useEffect(() => {
@@ -73,11 +80,41 @@ function AdminDashboard() {
                     await getAdminStats(token);
 
 
-                if (response.success) {
+                if (response?.success) {
 
-                    setAdminData(
-                        response.data
-                    );
+                    setAdminData({
+
+                        totalUsers:
+                            response.data?.totalUsers ?? 0,
+
+                        premiumUsers:
+                            response.data?.premiumUsers ?? 0,
+
+                        totalApplications:
+                            response.data?.totalApplications ?? 0,
+
+                        applied:
+                            response.data?.applied ?? 0,
+
+                        shortlisted:
+                            response.data?.shortlisted ?? 0,
+
+                        assessment:
+                            response.data?.assessment ?? 0,
+
+                        interviews:
+                            response.data?.interviews ?? 0,
+
+                        offers:
+                            response.data?.offers ?? 0,
+
+                        rejected:
+                            response.data?.rejected ?? 0,
+
+                        accepted:
+                            response.data?.accepted ?? 0
+
+                    });
 
                 }
 
@@ -107,7 +144,7 @@ function AdminDashboard() {
 
 
     // =========================================
-    // DASHBOARD STAT CARDS
+    // STAT CARDS
     // =========================================
 
     const stats = [
@@ -118,9 +155,10 @@ function AdminDashboard() {
             value:
                 adminData.totalUsers,
 
-            growth: "+12%",
+            growth: "Live",
 
-            icon: <FaUsers />,
+            icon:
+                <FaUsers />,
 
             description:
                 "Registered users",
@@ -137,9 +175,10 @@ function AdminDashboard() {
             value:
                 adminData.premiumUsers,
 
-            growth: "+8%",
+            growth: "Live",
 
-            icon: <FaCrown />,
+            icon:
+                <FaCrown />,
 
             description:
                 "Active subscriptions",
@@ -156,9 +195,10 @@ function AdminDashboard() {
             value:
                 adminData.totalApplications,
 
-            growth: "+15%",
+            growth: "Live",
 
-            icon: <FaBriefcase />,
+            icon:
+                <FaBriefcase />,
 
             description:
                 "Tracked applications",
@@ -175,12 +215,13 @@ function AdminDashboard() {
             value:
                 adminData.interviews,
 
-            growth: "+18%",
+            growth: "Live",
 
-            icon: <FaBrain />,
+            icon:
+                <FaBrain />,
 
             description:
-                "Interview stage",
+                "Interview-stage applications",
 
             className:
                 "ai-usage-card"
@@ -191,71 +232,137 @@ function AdminDashboard() {
 
 
     // =========================================
-    // RECENT ACTIVITY
+    // SYSTEM ACTIVITY
     // =========================================
 
     const activities = [
 
         {
-            icon: <FaUserPlus />,
+            icon:
+                <FaUserPlus />,
 
             title:
                 "User activity",
 
             description:
-                `${adminData.totalUsers} users registered`,
+                `${adminData.totalUsers} users currently registered`,
 
             time:
                 "Platform"
+
         },
 
 
         {
-            icon: <FaFileAlt />,
+            icon:
+                <FaFileAlt />,
 
             title:
-                "Applications tracked",
+                "Application tracking",
 
             description:
-                `${adminData.totalApplications} applications in system`,
+                `${adminData.totalApplications} applications recorded`,
 
             time:
                 "Tracker"
+
         },
 
 
         {
-            icon: <FaCreditCard />,
+            icon:
+                <FaCreditCard />,
 
             title:
-                "Premium users",
+                "Premium subscriptions",
 
             description:
                 `${adminData.premiumUsers} active premium users`,
 
             time:
-                "Subscription"
+                "Billing"
+
         },
 
 
         {
-            icon: <FaBriefcase />,
+            icon:
+                <FaBriefcase />,
 
             title:
                 "Interview pipeline",
 
             description:
-                `${adminData.interviews} users reached interview stage`,
+                `${adminData.interviews} applications at interview stage`,
 
             time:
                 "Career"
+
         }
 
     ];
 
 
     // =========================================
-    // LOADING SCREEN
+    // APPLICATION PIPELINE
+    // =========================================
+
+    const pipeline = [
+
+        {
+            label: "Applied",
+            value: adminData.applied
+        },
+
+        {
+            label: "Shortlisted",
+            value: adminData.shortlisted
+        },
+
+        {
+            label: "Assessment",
+            value: adminData.assessment
+        },
+
+        {
+            label: "Interview",
+            value: adminData.interviews
+        },
+
+        {
+            label: "Offer",
+            value: adminData.offers
+        },
+
+        {
+            label: "Rejected",
+            value: adminData.rejected
+        },
+
+        {
+            label: "Accepted",
+            value: adminData.accepted
+        }
+
+    ];
+
+
+    // Find largest pipeline value
+
+    const maxPipelineValue =
+        Math.max(
+
+            ...pipeline.map(
+                item => item.value
+            ),
+
+            1
+
+        );
+
+
+    // =========================================
+    // LOADING
     // =========================================
 
     if (loading) {
@@ -294,7 +401,7 @@ function AdminDashboard() {
 
                 {/* =================================
                     WELCOME
-                ================================== */}
+                ================================= */}
 
                 <motion.section
 
@@ -376,7 +483,7 @@ function AdminDashboard() {
 
                 {/* =================================
                     STATISTICS
-                ================================== */}
+                ================================= */}
 
                 <section className="admin-stats">
 
@@ -441,7 +548,6 @@ function AdminDashboard() {
                                         className="stat-growth"
                                     >
 
-                                        <FaArrowUp />
 
                                         {
                                             stat.growth
@@ -494,7 +600,7 @@ function AdminDashboard() {
 
                 {/* =================================
                     MAIN GRID
-                ================================== */}
+                ================================= */}
 
                 <section
                     className="admin-main-grid"
@@ -502,8 +608,8 @@ function AdminDashboard() {
 
 
                     {/* =================================
-                        ANALYTICS
-                    ================================== */}
+                        APPLICATION PIPELINE
+                    ================================= */}
 
                     <motion.div
 
@@ -533,18 +639,18 @@ function AdminDashboard() {
                             <div>
 
                                 <span>
-                                    OVERVIEW
+                                    APPLICATION FLOW
                                 </span>
 
                                 <h2>
-                                    Application Pipeline
+                                    Career Pipeline
                                 </h2>
 
                             </div>
 
 
                             <button>
-                                Current
+                                Live Data
                             </button>
 
                         </div>
@@ -570,96 +676,77 @@ function AdminDashboard() {
                                 className="chart-bars"
                             >
 
-                                {
+                                {pipeline.map(
+                                    (
+                                        item,
+                                        index
+                                    ) => {
 
-                                    [
+                                        const height =
+                                            item.value === 0
 
-                                        adminData.totalApplications,
+                                                ? 8
 
-                                        adminData.interviews,
+                                                :
 
-                                        adminData.offers,
-
-                                        adminData.rejected,
-
-                                        adminData.premiumUsers,
-
-                                        adminData.totalUsers,
-
-                                        adminData.interviews
-
-                                    ].map(
-
-                                        (
-                                            value,
-                                            index
-                                        ) => {
-
-
-                                            const maxValue =
                                                 Math.max(
-                                                    adminData.totalUsers,
-                                                    adminData.totalApplications,
-                                                    adminData.premiumUsers,
-                                                    1
-                                                );
 
-
-                                            const height =
-                                                Math.max(
                                                     8,
-                                                    Math.min(
-                                                        100,
-                                                        (
-                                                            value /
-                                                            maxValue
-                                                        ) * 100
-                                                    )
+
+                                                    (
+                                                        item.value /
+                                                        maxPipelineValue
+                                                    ) * 100
+
                                                 );
 
 
-                                            return (
+                                        return (
 
-                                                <motion.div
+                                            <motion.div
 
-                                                    key={index}
+                                                key={
+                                                    item.label
+                                                }
 
-                                                    className="chart-bar"
+                                                className="chart-bar"
 
-                                                    initial={{
-                                                        height: 0
-                                                    }}
+                                                initial={{
+                                                    height: 0
+                                                }}
 
-                                                    animate={{
-                                                        height:
-                                                            `${height}%`
-                                                    }}
+                                                animate={{
+                                                    height:
+                                                        `${height}%`
+                                                }}
 
-                                                    transition={{
+                                                transition={{
 
-                                                        duration:
-                                                            0.8,
+                                                    duration:
+                                                        0.8,
 
-                                                        delay:
-                                                            0.5 +
-                                                            index *
-                                                            0.08
+                                                    delay:
+                                                        0.5 +
+                                                        index *
+                                                        0.08
 
-                                                    }}
+                                                }}
 
-                                                >
+                                                title={
+                                                    `${item.label}: ${item.value}`
+                                                }
 
-                                                    <span />
+                                            >
 
-                                                </motion.div>
+                                                <span />
 
-                                            );
+                                            </motion.div>
 
-                                        }
+                                        );
 
-                                    )
+                                    }
 
-                                }
+                                )}
 
                             </div>
 
@@ -668,33 +755,23 @@ function AdminDashboard() {
                                 className="chart-labels"
                             >
 
-                                <span>
-                                    Apps
-                                </span>
+                                {pipeline.map(
+                                    item => (
 
-                                <span>
-                                    Interview
-                                </span>
+                                        <span
+                                            key={
+                                                item.label
+                                            }
+                                        >
 
-                                <span>
-                                    Offers
-                                </span>
+                                            {
+                                                item.label
+                                            }
 
-                                <span>
-                                    Rejected
-                                </span>
+                                        </span>
 
-                                <span>
-                                    Premium
-                                </span>
-
-                                <span>
-                                    Users
-                                </span>
-
-                                <span>
-                                    Interview
-                                </span>
+                                    )
+                                )}
 
                             </div>
 
@@ -705,8 +782,8 @@ function AdminDashboard() {
 
 
                     {/* =================================
-                        RECENT ACTIVITY
-                    ================================== */}
+                        SYSTEM OVERVIEW
+                    ================================= */}
 
                     <motion.div
 
@@ -761,88 +838,84 @@ function AdminDashboard() {
                             className="activity-list"
                         >
 
-                            {
+                            {activities.map(
+                                (
+                                    activity,
+                                    index
+                                ) => (
 
-                                activities.map(
-                                    (
-                                        activity,
-                                        index
-                                    ) => (
+                                    <motion.div
 
-                                        <motion.div
+                                        key={
+                                            activity.title
+                                        }
 
-                                            key={
-                                                activity.title
-                                            }
+                                        className="activity-item"
 
-                                            className="activity-item"
+                                        initial={{
+                                            opacity: 0,
+                                            x: 20
+                                        }}
 
-                                            initial={{
-                                                opacity: 0,
-                                                x: 20
-                                            }}
+                                        animate={{
+                                            opacity: 1,
+                                            x: 0
+                                        }}
 
-                                            animate={{
-                                                opacity: 1,
-                                                x: 0
-                                            }}
+                                        transition={{
+                                            delay:
+                                                0.7 +
+                                                index *
+                                                0.1
+                                        }}
 
-                                            transition={{
-                                                delay:
-                                                    0.7 +
-                                                    index *
-                                                    0.1
-                                            }}
+                                    >
 
+                                        <div
+                                            className="activity-icon"
                                         >
 
-                                            <div
-                                                className="activity-icon"
-                                            >
+                                            {
+                                                activity.icon
+                                            }
 
+                                        </div>
+
+
+                                        <div
+                                            className="activity-info"
+                                        >
+
+                                            <h4>
                                                 {
-                                                    activity.icon
+                                                    activity.title
                                                 }
-
-                                            </div>
-
-
-                                            <div
-                                                className="activity-info"
-                                            >
-
-                                                <h4>
-                                                    {
-                                                        activity.title
-                                                    }
-                                                </h4>
+                                            </h4>
 
 
-                                                <p>
-                                                    {
-                                                        activity.description
-                                                    }
-                                                </p>
-
-                                            </div>
-
-
-                                            <span
-                                                className="activity-time"
-                                            >
-
+                                            <p>
                                                 {
-                                                    activity.time
+                                                    activity.description
                                                 }
+                                            </p>
 
-                                            </span>
+                                        </div>
 
-                                        </motion.div>
 
-                                    )
+                                        <span
+                                            className="activity-time"
+                                        >
+
+                                            {
+                                                activity.time
+                                            }
+
+                                        </span>
+
+                                    </motion.div>
+
                                 )
-
-                            }
+                            )}
 
                         </div>
 
@@ -854,7 +927,7 @@ function AdminDashboard() {
 
                 {/* =================================
                     BOTTOM INSIGHT
-                ================================== */}
+                ================================= */}
 
                 <motion.section
 
@@ -897,12 +970,11 @@ function AdminDashboard() {
 
                             {
 
-                                adminData.interviews >
-                                0
+                                adminData.interviews > 0
 
                                     ?
 
-                                    `${adminData.interviews} active interview-stage applications are currently being tracked.`
+                                    `${adminData.interviews} interview-stage applications are currently being tracked.`
 
                                     :
 
@@ -917,12 +989,11 @@ function AdminDashboard() {
 
                             {
 
-                                adminData.offers >
-                                0
+                                adminData.offers > 0
 
                                     ?
 
-                                    `${adminData.offers} offer-stage applications are currently recorded in the platform.`
+                                    `${adminData.offers} offer-stage applications are currently recorded.`
 
                                     :
 

@@ -194,7 +194,13 @@ export const loginUser = async (req, res) => {
 
             });
         }
-
+        if (user.status === "suspended") {
+    return res.status(403).json({
+        success: false,
+        message:
+            "Your account has been suspended. Please contact the administrator."
+    });
+}
 
         // Generate JWT with role
         const token = generateToken(

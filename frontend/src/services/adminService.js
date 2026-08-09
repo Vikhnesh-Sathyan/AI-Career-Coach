@@ -61,9 +61,7 @@ export const getAdminUsers = async (token) => {
             }
         );
 
-        const data = await response.json();
-
-        return data;
+        return await response.json();
 
     } catch (error) {
 
@@ -76,65 +74,46 @@ export const getAdminUsers = async (token) => {
             success: false,
             message: "Unable to load users"
         };
-
     }
-
 };
+
 // ==========================================
 // UPDATE USER STATUS
 // ==========================================
 
-export const updateUserStatus = async (
+export const toggleAdminUserStatus = async (
     token,
-    id,
-    status
+    userId
 ) => {
 
     try {
 
         const response = await fetch(
-            `${API_URL}/users/${id}/status`,
+            `${API_URL}/users/${userId}/status`,
             {
                 method: "PATCH",
 
                 headers: {
                     Authorization: `Bearer ${token}`,
                     "Content-Type": "application/json"
-                },
-
-                body: JSON.stringify({
-                    status
-                })
+                }
             }
         );
 
+        return await response.json();
 
-        const data =
-            await response.json();
-
-
-        return data;
-
-    }
-
-    catch (error) {
+    } catch (error) {
 
         console.error(
-            "Update user status error:",
+            "Toggle user status error:",
             error
         );
 
         return {
-
             success: false,
-
-            message:
-                "Unable to update user status"
-
+            message: "Unable to update user status"
         };
-
     }
-
 };
 
 
@@ -144,13 +123,13 @@ export const updateUserStatus = async (
 
 export const deleteAdminUser = async (
     token,
-    id
+    userId
 ) => {
 
     try {
 
         const response = await fetch(
-            `${API_URL}/users/${id}`,
+            `${API_URL}/users/${userId}`,
             {
                 method: "DELETE",
 
@@ -161,16 +140,9 @@ export const deleteAdminUser = async (
             }
         );
 
+        return await response.json();
 
-        const data =
-            await response.json();
-
-
-        return data;
-
-    }
-
-    catch (error) {
+    } catch (error) {
 
         console.error(
             "Delete user error:",
@@ -178,14 +150,8 @@ export const deleteAdminUser = async (
         );
 
         return {
-
             success: false,
-
-            message:
-                "Unable to delete user"
-
+            message: "Unable to delete user"
         };
-
     }
-
 };

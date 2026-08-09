@@ -1,7 +1,6 @@
 import User from "../models/User.js";
 import JobApplication from "../models/JobApplication.js";
 
-
 // ==========================================
 // GET ADMIN DASHBOARD STATS
 // ==========================================
@@ -10,17 +9,17 @@ export const getAdminStats = async (req, res) => {
 
     try {
 
-        // -------------------------------
+        // ======================================
         // USERS
-        // -------------------------------
+        // ======================================
 
         const totalUsers =
             await User.countDocuments();
 
 
-        // -------------------------------
+        // ======================================
         // PREMIUM USERS
-        // -------------------------------
+        // ======================================
 
         const premiumUsers =
             await User.countDocuments({
@@ -28,17 +27,17 @@ export const getAdminStats = async (req, res) => {
             });
 
 
-        // -------------------------------
-        // APPLICATIONS
-        // -------------------------------
+        // ======================================
+        // JOB APPLICATIONS
+        // ======================================
 
         const totalApplications =
             await JobApplication.countDocuments();
 
 
-        // -------------------------------
+        // ======================================
         // APPLICATION STATUS
-        // -------------------------------
+        // ======================================
 
         const applied =
             await JobApplication.countDocuments({
@@ -82,9 +81,9 @@ export const getAdminStats = async (req, res) => {
             });
 
 
-        // -------------------------------
+        // ======================================
         // RESPONSE
-        // -------------------------------
+        // ======================================
 
         res.status(200).json({
 
@@ -125,7 +124,6 @@ export const getAdminStats = async (req, res) => {
             error
         );
 
-
         res.status(500).json({
 
             success: false,
@@ -148,13 +146,14 @@ export const getAdminUsers = async (req, res) => {
 
     try {
 
-        const users = await User.find({})
-            .select(
-                "_id name email role subscription status createdAt"
-            )
-            .sort({
-                createdAt: -1
-            });
+        const users =
+            await User.find({})
+                .select(
+                    "_id name email role subscription status createdAt"
+                )
+                .sort({
+                    createdAt: -1
+                });
 
 
         const formattedUsers =
@@ -181,7 +180,10 @@ export const getAdminUsers = async (req, res) => {
                 status:
                     user.status === "suspended"
                         ? "Suspended"
-                        : "Active"
+                        : "Active",
+
+                createdAt:
+                    user.createdAt
 
             }));
 
@@ -216,6 +218,7 @@ export const getAdminUsers = async (req, res) => {
 
 };
 
+
 // ==========================================
 // UPDATE USER STATUS
 // ==========================================
@@ -229,7 +232,9 @@ export const updateUserStatus = async (req, res) => {
         const { status } = req.body;
 
 
-        // Validate status
+        // ======================================
+        // VALIDATE STATUS
+        // ======================================
 
         if (
             !["active", "suspended"].includes(status)
@@ -247,21 +252,12 @@ export const updateUserStatus = async (req, res) => {
         }
 
 
+        // ======================================
+        // FIND USER
+        // ======================================
+
         const user =
-            await User.findByIdAndUpdate(
-
-                id,
-
-                {
-                    status
-                },
-
-                {
-                    new: true,
-                    runValidators: true
-                }
-
-            );
+            await User.findById(id);
 
 
         if (!user) {
@@ -277,6 +273,37 @@ export const updateUserStatus = async (req, res) => {
 
         }
 
+
+        // ======================================
+        // PREVENT ADMIN SUSPENSION
+        // ======================================
+
+        if (user.role === "admin") {
+
+            return res.status(403).json({
+
+                success: false,
+
+                message:
+                    "Admin accounts cannot be suspended"
+
+            });
+
+        }
+
+
+        // ======================================
+        // UPDATE STATUS
+        // ======================================
+
+        user.status = status;
+
+        await user.save();
+
+
+        // ======================================
+        // RESPONSE
+        // ======================================
 
         res.status(200).json({
 
@@ -321,6 +348,8 @@ export const updateUserStatus = async (req, res) => {
     }
 
 };
+
+
 // ==========================================
 // DELETE USER
 // ==========================================
@@ -332,8 +361,12 @@ export const deleteUser = async (req, res) => {
         const { id } = req.params;
 
 
+        // ======================================
+        // FIND USER
+        // ======================================
+
         const user =
-            await User.findByIdAndDelete(id);
+            await User.findById(id);
 
 
         if (!user) {
@@ -349,6 +382,35 @@ export const deleteUser = async (req, res) => {
 
         }
 
+
+        // ======================================
+        // PREVENT ADMIN DELETION
+        // ======================================
+
+        if (user.role === "admin") {
+
+            return res.status(403).json({
+
+                success: false,
+
+                message:
+                    "Admin accounts cannot be deleted"
+
+            });
+
+        }
+
+
+        // ======================================
+        // DELETE USER
+        // ======================================
+
+        await User.findByIdAndDelete(id);
+
+
+        // ======================================
+        // RESPONSE
+        // ======================================
 
         res.status(200).json({
 

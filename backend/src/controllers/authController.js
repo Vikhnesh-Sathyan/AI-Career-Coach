@@ -159,22 +159,18 @@ export const loginUser = async (req, res) => {
         } = req.body;
 
 
+        // ===============================
         // Find user
+        // ===============================
+
         const user = await User.findOne({
             email,
         });
-            if (user.status === "suspended") {
 
-    return res.status(403).json({
 
-        success: false,
-
-        message:
-            "Your account has been suspended. Please contact the administrator."
-
-    });
-
-}
+        // ===============================
+        // User not found
+        // ===============================
 
         if (!user) {
 
@@ -182,13 +178,18 @@ export const loginUser = async (req, res) => {
 
                 success: false,
 
-                message: "Invalid email or password",
+                message:
+                    "Invalid email or password",
 
             });
+
         }
 
 
+        // ===============================
         // Check password
+        // ===============================
+
         const match = await bcrypt.compare(
             password,
             user.password
@@ -201,48 +202,74 @@ export const loginUser = async (req, res) => {
 
                 success: false,
 
-                message: "Invalid email or password",
+                message:
+                    "Invalid email or password",
 
             });
-        }
-        if (user.status === "suspended") {
-    return res.status(403).json({
-        success: false,
-        message:
-            "Your account has been suspended. Please contact the administrator."
-    });
-}
 
-        // Generate JWT with role
+        }
+
+
+        // ===============================
+        // Check account status
+        // ===============================
+
+        if (user.status === "suspended") {
+
+            return res.status(403).json({
+
+                success: false,
+
+                message:
+                    "Your account has been suspended. Please contact the administrator.",
+
+            });
+
+        }
+
+
+        // ===============================
+        // Generate JWT
+        // ===============================
+
         const token = generateToken(
             user._id,
             user.role
         );
 
 
+        // ===============================
         // Login response
-        res.json({
+        // ===============================
+
+        res.status(200).json({
 
             success: true,
 
-            message: "Login successful",
+            message:
+                "Login successful",
 
             token,
 
             user: {
 
-                id: user._id,
+                id:
+                    user._id,
 
-                name: user.name,
+                name:
+                    user.name,
 
-                email: user.email,
+                email:
+                    user.email,
 
-                role: user.role,
+                role:
+                    user.role,
 
-                profileImage: user.profileImage,
+                profileImage:
+                    user.profileImage,
 
                 subscription:
-                    user.subscription.plan,
+                    user.subscription?.plan || "Free",
 
             },
 
@@ -257,11 +284,13 @@ export const loginUser = async (req, res) => {
             error
         );
 
+
         res.status(500).json({
 
             success: false,
 
-            message: error.message,
+            message:
+                "Login failed",
 
         });
 

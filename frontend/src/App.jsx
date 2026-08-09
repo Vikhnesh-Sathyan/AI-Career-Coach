@@ -17,6 +17,7 @@ import Settings from "./pages/Settings";
 import Interviews from "./pages/Interviews";
 import InterviewHistory from "./pages/InterviewHistory";
 import JobTracker from "./pages/JobTracker";
+import Help from "./pages/Help";
 
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminUsers from "./pages/AdminUsers";
@@ -109,7 +110,10 @@ function App() {
                     path="/jobs"
                     element={<JobTracker />}
                 />
-
+                <Route
+                    path="/help"
+                    element={<Help />}
+                />
 
                 {/* =========================
                     ADMIN ROUTES

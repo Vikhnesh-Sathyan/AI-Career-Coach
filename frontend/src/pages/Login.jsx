@@ -15,6 +15,7 @@ import Logo from "../components/auth/Logo";
 
 import toast from "react-hot-toast";
 
+
 function Login() {
 
     const [email, setEmail] =
@@ -28,6 +29,9 @@ function Login() {
 
     const [error, setError] =
         useState("");
+
+    const [isSuspended, setIsSuspended] =
+        useState(false);
 
 
     const navigate =
@@ -43,6 +47,8 @@ function Login() {
         e.preventDefault();
 
         setError("");
+
+        setIsSuspended(false);
 
         setLoading(true);
 
@@ -171,6 +177,25 @@ function Login() {
 
 
             // ===============================
+            // Suspended Account
+            // ===============================
+
+            if (
+                error.response?.status === 403
+            ) {
+
+                setIsSuspended(true);
+
+            }
+
+            else {
+
+                setIsSuspended(false);
+
+            }
+
+
+            // ===============================
             // Error Toast
             // ===============================
 
@@ -209,6 +234,10 @@ function Login() {
                     onSubmit={handleSubmit}
                 >
 
+                    {/* ===============================
+                        EMAIL
+                    =============================== */}
+
                     <div className="form-group">
 
                         <label>
@@ -229,6 +258,10 @@ function Login() {
 
                     </div>
 
+
+                    {/* ===============================
+                        PASSWORD
+                    =============================== */}
 
                     <div className="form-group">
 
@@ -251,16 +284,47 @@ function Login() {
                     </div>
 
 
+                    {/* ===============================
+                        ERROR
+                    =============================== */}
+
                     {error && (
 
-                        <p
-                            className="login-error"
-                        >
-                            {error}
-                        </p>
+                        <div className="login-error-container">
+
+                            <p
+                                className="login-error"
+                            >
+                                {error}
+                            </p>
+
+
+                            {/* ===============================
+                                CONTACT ADMIN
+                            =============================== */}
+
+                            {isSuspended && (
+
+                                <button
+                                    type="button"
+                                    className="contact-admin-button"
+                                    onClick={() =>
+                                        navigate("/help")
+                                    }
+                                >
+                                    Contact Administrator
+                                </button>
+
+                            )}
+
+                        </div>
 
                     )}
 
+
+                    {/* ===============================
+                        FORGOT PASSWORD
+                    =============================== */}
 
                     <p
                         className="forgot-password"
@@ -268,6 +332,10 @@ function Login() {
                         Forgot Password?
                     </p>
 
+
+                    {/* ===============================
+                        LOGIN BUTTON
+                    =============================== */}
 
                     <Button
                         text={
@@ -280,6 +348,10 @@ function Login() {
 
                 </form>
 
+
+                {/* ===============================
+                    REGISTER
+                =============================== */}
 
                 <p className="register-text">
 
@@ -299,5 +371,5 @@ function Login() {
 
 }
 
-export default Login;
 
+export default Login;

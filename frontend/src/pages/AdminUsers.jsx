@@ -1,4 +1,7 @@
-import { useState } from "react";
+import {
+    useState,
+    useEffect
+} from "react";
 
 import {
     Search,
@@ -14,65 +17,26 @@ import {
 
 import "../styles/adminusers.css";
 
+import {
+    getAdminUsers
+} from "../services/adminService.js";
+
 
 function AdminUsers() {
 
     // =====================================
-    // Static Demo Users
+    // USERS
     // =====================================
 
-    const [users, setUsers] = useState([
+    const [users, setUsers] =
+        useState([]);
 
-        {
-            id: 1,
-            name: "Vikhnesh Sathyan",
-            email: "vikhnesh@example.com",
-            role: "Admin",
-            plan: "Premium",
-            status: "Active"
-        },
-
-        {
-            id: 2,
-            name: "Rahul Kumar",
-            email: "rahul@example.com",
-            role: "User",
-            plan: "Free",
-            status: "Active"
-        },
-
-        {
-            id: 3,
-            name: "Anu Thomas",
-            email: "anu@example.com",
-            role: "User",
-            plan: "Premium",
-            status: "Active"
-        },
-
-        {
-            id: 4,
-            name: "Arjun Menon",
-            email: "arjun@example.com",
-            role: "User",
-            plan: "Free",
-            status: "Suspended"
-        },
-
-        {
-            id: 5,
-            name: "Neha Raj",
-            email: "neha@example.com",
-            role: "User",
-            plan: "Premium",
-            status: "Active"
-        }
-
-    ]);
+    const [loading, setLoading] =
+        useState(true);
 
 
     // =====================================
-    // States
+    // STATES
     // =====================================
 
     const [search, setSearch] =
@@ -89,23 +53,97 @@ function AdminUsers() {
 
 
     // =====================================
-    // Search + Filters
+    // LOAD USERS
+    // =====================================
+
+    useEffect(() => {
+
+        const loadUsers = async () => {
+
+            try {
+
+                const token =
+                    localStorage.getItem("token");
+
+
+                if (!token) {
+
+                    console.error(
+                        "Admin token not found"
+                    );
+
+                    setLoading(false);
+
+                    return;
+
+                }
+
+
+                const response =
+                    await getAdminUsers(token);
+
+
+                if (response?.success) {
+
+                    setUsers(
+                        response.data || []
+                    );
+
+                }
+
+                else {
+
+                    console.error(
+                        response?.message ||
+                        "Failed to load users"
+                    );
+
+                }
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "Load admin users error:",
+                    error
+                );
+
+            }
+
+            finally {
+
+                setLoading(false);
+
+            }
+
+        };
+
+
+        loadUsers();
+
+    }, []);
+
+
+    // =====================================
+    // SEARCH + FILTERS
     // =====================================
 
     const filteredUsers =
         users.filter((user) => {
 
+            const searchValue =
+                search.toLowerCase();
+
+
             const searchMatch =
                 user.name
                     .toLowerCase()
-                    .includes(
-                        search.toLowerCase()
-                    ) ||
+                    .includes(searchValue) ||
+
                 user.email
                     .toLowerCase()
-                    .includes(
-                        search.toLowerCase()
-                    );
+                    .includes(searchValue);
 
 
             const roleMatch =
@@ -128,7 +166,7 @@ function AdminUsers() {
 
 
     // =====================================
-    // Suspend / Activate
+    // SUSPEND / ACTIVATE
     // =====================================
 
     const toggleStatus = (id) => {
@@ -141,6 +179,7 @@ function AdminUsers() {
 
                     ? {
                         ...user,
+
                         status:
                             user.status === "Active"
                                 ? "Suspended"
@@ -153,13 +192,14 @@ function AdminUsers() {
 
         );
 
+
         setOpenMenu(null);
 
     };
 
 
     // =====================================
-    // Delete User
+    // DELETE USER
     // =====================================
 
     const deleteUser = (id) => {
@@ -176,10 +216,12 @@ function AdminUsers() {
 
 
         setUsers((currentUsers) =>
+
             currentUsers.filter(
                 (user) =>
                     user.id !== id
             )
+
         );
 
 
@@ -189,14 +231,19 @@ function AdminUsers() {
 
 
     // =====================================
-    // View User
+    // VIEW USER
     // =====================================
 
     const viewUser = (user) => {
 
         alert(
-            `Name: ${user.name}\nEmail: ${user.email}\nRole: ${user.role}\nPlan: ${user.plan}\nStatus: ${user.status}`
+            `Name: ${user.name}\n` +
+            `Email: ${user.email}\n` +
+            `Role: ${user.role}\n` +
+            `Plan: ${user.plan}\n` +
+            `Status: ${user.status}`
         );
+
 
         setOpenMenu(null);
 
@@ -204,11 +251,12 @@ function AdminUsers() {
 
 
     // =====================================
-    // Statistics
+    // STATISTICS
     // =====================================
 
     const totalUsers =
         users.length;
+
 
     const activeUsers =
         users.filter(
@@ -216,11 +264,13 @@ function AdminUsers() {
                 user.status === "Active"
         ).length;
 
+
     const premiumUsers =
         users.filter(
             (user) =>
                 user.plan === "Premium"
         ).length;
+
 
     const adminUsers =
         users.filter(
@@ -229,13 +279,40 @@ function AdminUsers() {
         ).length;
 
 
+    // =====================================
+    // LOADING
+    // =====================================
+
+    if (loading) {
+
+        return (
+
+            <div className="admin-users-page">
+
+                <div className="admin-empty">
+
+                    Loading users...
+
+                </div>
+
+            </div>
+
+        );
+
+    }
+
+
+    // =====================================
+    // PAGE
+    // =====================================
+
     return (
 
         <div className="admin-users-page">
 
 
             {/* =================================
-                Header
+                HEADER
             ================================= */}
 
             <div className="admin-users-header">
@@ -257,15 +334,20 @@ function AdminUsers() {
 
 
             {/* =================================
-                Statistics
+                STATISTICS
             ================================= */}
 
             <div className="admin-user-stats">
 
+
+                {/* Total Users */}
+
                 <div className="admin-user-stat-card">
 
                     <div className="admin-stat-icon blue">
+
                         <Users size={20} />
+
                     </div>
 
                     <div>
@@ -283,10 +365,14 @@ function AdminUsers() {
                 </div>
 
 
+                {/* Active Users */}
+
                 <div className="admin-user-stat-card">
 
                     <div className="admin-stat-icon green">
+
                         <UserCheck size={20} />
+
                     </div>
 
                     <div>
@@ -304,10 +390,14 @@ function AdminUsers() {
                 </div>
 
 
+                {/* Premium Users */}
+
                 <div className="admin-user-stat-card">
 
                     <div className="admin-stat-icon gold">
+
                         <Crown size={20} />
+
                     </div>
 
                     <div>
@@ -325,10 +415,14 @@ function AdminUsers() {
                 </div>
 
 
+                {/* Admins */}
+
                 <div className="admin-user-stat-card">
 
                     <div className="admin-stat-icon purple">
+
                         <ShieldCheck size={20} />
+
                     </div>
 
                     <div>
@@ -349,13 +443,15 @@ function AdminUsers() {
 
 
             {/* =================================
-                Main Card
+                MAIN CARD
             ================================= */}
 
             <div className="admin-users-card">
 
 
-                {/* Toolbar */}
+                {/* =================================
+                    TOOLBAR
+                ================================= */}
 
                 <div className="admin-users-toolbar">
 
@@ -435,7 +531,7 @@ function AdminUsers() {
 
 
                 {/* =================================
-                    Table
+                    TABLE
                 ================================= */}
 
                 <div className="admin-users-table-wrap">
@@ -497,7 +593,8 @@ function AdminUsers() {
                                             key={user.id}
                                         >
 
-                                            {/* User */}
+
+                                            {/* USER */}
 
                                             <td>
 
@@ -528,12 +625,16 @@ function AdminUsers() {
                                             </td>
 
 
-                                            {/* Role */}
+                                            {/* ROLE */}
 
                                             <td>
 
                                                 <span
-                                                    className={`admin-role-badge ${user.role.toLowerCase()}`}
+                                                    className={
+                                                        `admin-role-badge ${
+                                                            user.role.toLowerCase()
+                                                        }`
+                                                    }
                                                 >
 
                                                     {user.role}
@@ -543,18 +644,24 @@ function AdminUsers() {
                                             </td>
 
 
-                                            {/* Plan */}
+                                            {/* PLAN */}
 
                                             <td>
 
                                                 <span
-                                                    className={`admin-plan-badge ${user.plan.toLowerCase()}`}
+                                                    className={
+                                                        `admin-plan-badge ${
+                                                            user.plan.toLowerCase()
+                                                        }`
+                                                    }
                                                 >
 
                                                     {user.plan === "Premium" && (
+
                                                         <Crown
                                                             size={13}
                                                         />
+
                                                     )}
 
                                                     {user.plan}
@@ -564,32 +671,31 @@ function AdminUsers() {
                                             </td>
 
 
-                                            {/* Status */}
+                                            {/* STATUS */}
 
                                             <td>
 
                                                 <span
-                                                    className={`admin-status-badge ${user.status.toLowerCase()}`}
+                                                    className={
+                                                        `admin-status-badge ${
+                                                            user.status.toLowerCase()
+                                                        }`
+                                                    }
                                                 >
 
-                                                    {user.status === "Active"
-                                                        ? "●"
-                                                        : "●"}
-
-                                                    {" "}
-
-                                                    {user.status}
+                                                    ● {user.status}
 
                                                 </span>
 
                                             </td>
 
 
-                                            {/* Actions */}
+                                            {/* ACTIONS */}
 
                                             <td>
 
                                                 <div className="admin-user-action">
+
 
                                                     <button
                                                         className="admin-user-more"
@@ -613,6 +719,9 @@ function AdminUsers() {
 
                                                         <div className="admin-user-dropdown">
 
+
+                                                            {/* VIEW */}
+
                                                             <button
                                                                 onClick={() =>
                                                                     viewUser(
@@ -630,6 +739,8 @@ function AdminUsers() {
                                                             </button>
 
 
+                                                            {/* STATUS */}
+
                                                             <button
                                                                 onClick={() =>
                                                                     toggleStatus(
@@ -639,17 +750,34 @@ function AdminUsers() {
                                                             >
 
                                                                 {user.status === "Active"
-                                                                    ? <UserX size={15} />
-                                                                    : <UserCheck size={15} />
+
+                                                                    ? (
+                                                                        <UserX
+                                                                            size={15}
+                                                                        />
+                                                                    )
+
+                                                                    : (
+                                                                        <UserCheck
+                                                                            size={15}
+                                                                        />
+                                                                    )
+
                                                                 }
 
+
                                                                 {user.status === "Active"
+
                                                                     ? "Suspend User"
+
                                                                     : "Activate User"
+
                                                                 }
 
                                                             </button>
 
+
+                                                            {/* DELETE */}
 
                                                             <button
                                                                 className="delete-action"
@@ -668,6 +796,7 @@ function AdminUsers() {
 
                                                             </button>
 
+
                                                         </div>
 
                                                     )}
@@ -679,6 +808,7 @@ function AdminUsers() {
                                         </tr>
 
                                     )
+
                                 )
 
                             )}

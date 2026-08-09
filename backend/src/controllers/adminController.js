@@ -125,12 +125,94 @@ export const getAdminStats = async (req, res) => {
             error
         );
 
+
         res.status(500).json({
 
             success: false,
 
             message:
                 "Failed to load admin statistics"
+
+        });
+
+    }
+
+};
+
+
+// ==========================================
+// GET ALL USERS FOR ADMIN
+// ==========================================
+
+export const getAdminUsers = async (req, res) => {
+
+    try {
+
+        const users =
+            await User.find({})
+
+                .select(
+                    "_id name email role subscription createdAt"
+                )
+
+                .sort({
+                    createdAt: -1
+                });
+
+
+        const formattedUsers =
+            users.map((user) => ({
+
+                id:
+                    user._id,
+
+                name:
+                    user.name,
+
+                email:
+                    user.email,
+
+                role:
+                    user.role === "admin"
+                        ? "Admin"
+                        : "User",
+
+                plan:
+                    user.subscription?.plan === "Premium"
+                        ? "Premium"
+                        : "Free",
+
+                status:
+                    "Active"
+
+            }));
+
+
+        res.status(200).json({
+
+            success: true,
+
+            data:
+                formattedUsers
+
+        });
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Get Admin Users Error:",
+            error
+        );
+
+
+        res.status(500).json({
+
+            success: false,
+
+            message:
+                "Failed to load users"
 
         });
 

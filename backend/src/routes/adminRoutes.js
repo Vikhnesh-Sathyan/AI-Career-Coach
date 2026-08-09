@@ -1,13 +1,23 @@
 import express from "express";
 
-import { protect } from "../middleware/authMiddleware.js";
-import adminOnly from "../middleware/adminMiddleware.js";
-
 import {
-    getAdminStats
+    getAdminStats,
+    getAdminUsers
 } from "../controllers/adminController.js";
 
+import { protect }
+    from "../middleware/authMiddleware.js";
+
+import adminOnly
+    from "../middleware/adminMiddleware.js";
+
+
 const router = express.Router();
+
+
+// ==========================================
+// ADMIN DASHBOARD STATS
+// ==========================================
 
 router.get(
     "/stats",
@@ -15,5 +25,18 @@ router.get(
     adminOnly,
     getAdminStats
 );
+
+
+// ==========================================
+// ADMIN USERS
+// ==========================================
+
+router.get(
+    "/users",
+    protect,
+    adminOnly,
+    getAdminUsers
+);
+
 
 export default router;

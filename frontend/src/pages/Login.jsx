@@ -13,6 +13,7 @@ import Button from "../components/auth/Button";
 import Input from "../components/auth/Input";
 import Logo from "../components/auth/Logo";
 
+import toast from "react-hot-toast";
 
 function Login() {
 
@@ -112,6 +113,15 @@ function Login() {
 
 
                 // ===============================
+                // Success Toast
+                // ===============================
+
+                toast.success(
+                    `Welcome back, ${user.name || "User"}!`
+                );
+
+
+                // ===============================
                 // Role-based navigation
                 // ===============================
 
@@ -148,10 +158,23 @@ function Login() {
             );
 
 
-            setError(
+            const message =
                 error.response?.data?.message ||
-                "Login failed. Please try again."
-            );
+                "Login failed. Please try again.";
+
+
+            // ===============================
+            // Error State
+            // ===============================
+
+            setError(message);
+
+
+            // ===============================
+            // Error Toast
+            // ===============================
+
+            toast.error(message);
 
         }
 
@@ -276,5 +299,5 @@ function Login() {
 
 }
 
-
 export default Login;
+

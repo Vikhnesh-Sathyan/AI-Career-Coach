@@ -1,0 +1,319 @@
+/* ==========================================
+   HELP PAGE
+========================================== */
+
+.help-page {
+    width: 100%;
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 40px 20px;
+
+    background: #f8fafc;
+
+    position: relative;
+    overflow: hidden;
+}
+
+
+/* ==========================================
+   BACKGROUND CIRCLES
+========================================== */
+
+.help-background-circle {
+    position: absolute;
+
+    border-radius: 50%;
+
+    filter: blur(120px);
+
+    opacity: 0.3;
+
+    pointer-events: none;
+}
+
+.help-circle1 {
+    width: 350px;
+    height: 350px;
+
+    background: #2563eb;
+
+    left: -120px;
+    top: -120px;
+}
+
+.help-circle2 {
+    width: 350px;
+    height: 350px;
+
+    background: #7c3aed;
+
+    right: -100px;
+    bottom: -100px;
+}
+
+
+/* ==========================================
+   CARD
+========================================== */
+
+.help-card {
+    width: 100%;
+    max-width: 500px;
+
+    background: white;
+
+    padding: 40px;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.08);
+
+    position: relative;
+
+    z-index: 2;
+}
+
+
+/* ==========================================
+   HEADER
+========================================== */
+
+.help-header {
+    text-align: center;
+
+    margin-bottom: 30px;
+}
+
+.help-icon {
+    width: 55px;
+    height: 55px;
+
+    margin: 0 auto 15px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #eff6ff;
+
+    color: #2563eb;
+}
+
+.help-header h1 {
+    font-size: 28px;
+
+    color: #111827;
+
+    margin-bottom: 8px;
+}
+
+.help-header p {
+    color: #6b7280;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+}
+
+
+/* ==========================================
+   FORM
+========================================== */
+
+.help-form {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 18px;
+}
+
+.help-form-group {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 7px;
+}
+
+.help-form-group label {
+    font-size: 14px;
+
+    font-weight: 500;
+
+    color: #374151;
+}
+
+.help-form-group input,
+.help-form-group textarea {
+    width: 100%;
+
+    padding: 13px 14px;
+
+    border: 1px solid #d1d5db;
+
+    border-radius: 9px;
+
+    outline: none;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    transition: 0.2s ease;
+}
+
+.help-form-group input:focus,
+.help-form-group textarea:focus {
+    border-color: #2563eb;
+
+    box-shadow:
+        0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.help-form-group textarea {
+    min-height: 130px;
+
+    resize: vertical;
+}
+
+
+/* ==========================================
+   SUBMIT BUTTON
+========================================== */
+
+.help-submit-btn {
+    width: 100%;
+
+    padding: 14px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #2563eb;
+
+    color: white;
+
+    font-family: inherit;
+
+    font-size: 15px;
+
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition: 0.3s ease;
+}
+
+.help-submit-btn:hover {
+    background: #1d4ed8;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 10px 20px rgba(37, 99, 235, 0.2);
+}
+
+.help-submit-btn:disabled {
+    opacity: 0.6;
+
+    cursor: not-allowed;
+
+    transform: none;
+
+    box-shadow: none;
+}
+
+
+/* ==========================================
+   BACK TO LOGIN
+========================================== */
+
+.help-back {
+    text-align: center;
+
+    margin-top: 22px;
+}
+
+.help-back a {
+    color: #6b7280;
+
+    font-size: 13px;
+
+    text-decoration: none;
+
+    transition: 0.2s ease;
+}
+
+.help-back a:hover {
+    color: #2563eb;
+}
+
+
+/* ==========================================
+   SUCCESS MESSAGE
+========================================== */
+
+.help-success {
+    padding: 12px 14px;
+
+    margin-bottom: 18px;
+
+    border-radius: 9px;
+
+    background: #ecfdf5;
+
+    border: 1px solid #a7f3d0;
+
+    color: #047857;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+}
+
+
+/* ==========================================
+   ERROR MESSAGE
+========================================== */
+
+.help-error {
+    padding: 12px 14px;
+
+    margin-bottom: 18px;
+
+    border-radius: 9px;
+
+    background: #fef2f2;
+
+    border: 1px solid #fecaca;
+
+    color: #dc2626;
+
+    font-size: 13px;
+}
+
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media (max-width: 600px) {
+
+    .help-card {
+        padding: 30px 22px;
+    }
+
+    .help-header h1 {
+        font-size: 24px;
+    }
+
+}

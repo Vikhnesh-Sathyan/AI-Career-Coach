@@ -288,39 +288,23 @@ function Login() {
                         ERROR
                     =============================== */}
 
-                    {error && (
+                   {error && (
+    <p className="login-error">
+        {error}
+    </p>
+)}
 
-                        <div className="login-error-container">
+{isSuspended && (
+    <div className="suspended-help">
+        <p>
+            Need help with your account?
+        </p>
 
-                            <p
-                                className="login-error"
-                            >
-                                {error}
-                            </p>
-
-
-                            {/* ===============================
-                                CONTACT ADMIN
-                            =============================== */}
-
-                            {isSuspended && (
-
-                                <button
-                                    type="button"
-                                    className="contact-admin-button"
-                                    onClick={() =>
-                                        navigate("/help")
-                                    }
-                                >
-                                    Contact Administrator
-                                </button>
-
-                            )}
-
-                        </div>
-
-                    )}
-
+        <Link to="/help">
+            Contact Administrator
+        </Link>
+    </div>
+)}
 
                     {/* ===============================
                         FORGOT PASSWORD

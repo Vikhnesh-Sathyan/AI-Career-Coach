@@ -1,164 +1,88 @@
-import { useState } from "react";
-
-import api from "../services/api";
-
-import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
+import { HelpCircle } from "lucide-react";
 
 import "../styles/help.css";
 
-
 function Help() {
-
-    const [message, setMessage] =
-        useState("");
-
-    const [loading, setLoading] =
-        useState(false);
-
-
-    const handleSubmit = async (e) => {
-
-        e.preventDefault();
-
-
-        if (!message.trim()) {
-
-            toast.error(
-                "Please enter your message."
-            );
-
-            return;
-
-        }
-
-
-        try {
-
-            setLoading(true);
-
-
-            const token =
-                localStorage.getItem("token");
-
-
-            const response =
-                await api.post(
-                    "/support",
-                    {
-                        message: message.trim()
-                    },
-                    {
-                        headers: {
-                            Authorization:
-                                `Bearer ${token}`
-                        }
-                    }
-                );
-
-
-            if (response.data.success) {
-
-                toast.success(
-                    "Your request has been sent to the administrator."
-                );
-
-                setMessage("");
-
-            }
-
-        }
-
-        catch (error) {
-
-            console.error(
-                "Support request error:",
-                error
-            );
-
-
-            toast.error(
-                error.response?.data?.message ||
-                "Unable to send request."
-            );
-
-        }
-
-        finally {
-
-            setLoading(false);
-
-        }
-
-    };
-
-
     return (
-
         <div className="help-page">
+
+            <div className="help-background-circle help-circle1"></div>
+
+            <div className="help-background-circle help-circle2"></div>
 
             <div className="help-card">
 
                 <div className="help-header">
 
-                    <span>
-                        ACCOUNT SUPPORT
-                    </span>
+                    <div className="help-icon">
+                        <HelpCircle size={28} />
+                    </div>
 
                     <h1>
-                        Contact Administrator
+                        Account Support
                     </h1>
 
                     <p>
-                        If you believe your account was
-                        suspended by mistake, send a
-                        request to the administrator.
+                        Your account is currently suspended.
+                        Send a request to the administrator
+                        for review.
                     </p>
 
                 </div>
 
 
-                <form
-                    onSubmit={handleSubmit}
-                >
+                <form className="help-form">
 
-                    <label>
-                        Message
-                    </label>
+                    <div className="help-form-group">
+
+                        <label>
+                            Email Address
+                        </label>
+
+                        <input
+                            type="email"
+                            placeholder="Enter your email"
+                        />
+
+                    </div>
 
 
-                    <textarea
-                        value={message}
-                        onChange={(e) =>
-                            setMessage(
-                                e.target.value
-                            )
-                        }
-                        placeholder="Explain why you believe your account should be reviewed..."
-                        rows="6"
-                    />
+                    <div className="help-form-group">
+
+                        <label>
+                            Message
+                        </label>
+
+                        <textarea
+                            placeholder="Explain why you believe your account should be reviewed..."
+                        />
+
+                    </div>
 
 
                     <button
                         type="submit"
-                        disabled={loading}
+                        className="help-submit-btn"
                     >
-
-                        {loading
-                            ? "Sending..."
-                            : "Send Request"
-                        }
-
+                        Send Request
                     </button>
 
                 </form>
 
+
+                <div className="help-back">
+
+                    <Link to="/login">
+                        ← Back to Login
+                    </Link>
+
+                </div>
+
             </div>
 
         </div>
-
     );
-
 }
-
 
 export default Help;

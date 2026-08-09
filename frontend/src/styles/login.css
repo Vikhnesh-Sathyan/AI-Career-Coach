@@ -212,3 +212,53 @@ body{
     text-decoration:underline;
 
 }
+
+
+/* ==========================================
+   LOGIN ERROR
+========================================== */
+
+.login-error {
+    margin: -5px 0 15px;
+    padding: 10px 12px;
+
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+
+    color: #dc2626;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+
+/* ==========================================
+   SUSPENDED ACCOUNT HELP
+========================================== */
+
+.suspended-help {
+    margin-top: -8px;
+    margin-bottom: 20px;
+
+    text-align: center;
+
+    font-size: 13px;
+    color: #6b7280;
+}
+
+.suspended-help p {
+    margin-bottom: 6px;
+}
+
+.suspended-help a {
+    color: #2563eb;
+    font-weight: 600;
+    text-decoration: none;
+
+    transition: 0.2s ease;
+}
+
+.suspended-help a:hover {
+    color: #1d4ed8;
+    text-decoration: underline;
+}

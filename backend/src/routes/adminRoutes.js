@@ -7,9 +7,8 @@ import {
     deleteUser
 } from "../controllers/adminController.js";
 
-import {
-    protect
-} from "../middleware/authMiddleware.js";
+import { protect }
+    from "../middleware/authMiddleware.js";
 
 import adminOnly
     from "../middleware/adminMiddleware.js";

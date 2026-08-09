@@ -57,74 +57,48 @@ function AdminUsers() {
     // =====================================
     // LOAD USERS
     // =====================================
+useEffect(() => {
 
-    useEffect(() => {
+    const loadUsers = async () => {
 
-        const loadUsers = async () => {
+        try {
 
-            try {
+            const token =
+                localStorage.getItem("token");
 
-                const token =
-                    localStorage.getItem("token");
-
-
-                if (!token) {
-
-                    console.error(
-                        "Admin token not found"
-                    );
-
-                    setLoading(false);
-
-                    return;
-
-                }
-
-
-                const response =
-                    await getAdminUsers(token);
-
-
-                if (response?.success) {
-
-                    setUsers(
-                        response.data || []
-                    );
-
-                }
-
-                else {
-
-                    console.error(
-                        response?.message ||
-                        "Failed to load users"
-                    );
-
-                }
-
+            if (!token) {
+                setLoading(false);
+                return;
             }
 
-            catch (error) {
+            const response =
+                await getAdminUsers(token);
 
-                console.error(
-                    "Load admin users error:",
-                    error
+            if (response.success) {
+
+                setUsers(
+                    response.data || []
                 );
 
             }
 
-            finally {
+        } catch (error) {
 
-                setLoading(false);
+            console.error(
+                "Admin users loading error:",
+                error
+            );
 
-            }
+        } finally {
 
-        };
+            setLoading(false);
 
+        }
+    };
 
-        loadUsers();
+    loadUsers();
 
-    }, []);
+}, []);
 
 
     // =====================================
@@ -170,7 +144,7 @@ function AdminUsers() {
     // =====================================
     // SUSPEND / ACTIVATE
     // =====================================
-const toggleStatus = async (user) => {
+const toggleStatus = async (id) => {
 
     try {
 
@@ -180,15 +154,27 @@ const toggleStatus = async (user) => {
 
         if (!token) {
 
-            alert("Authentication required.");
+            alert("Authentication required");
 
             return;
 
         }
 
 
+        const currentUser =
+            users.find(
+                (user) =>
+                    user.id === id
+            );
+
+
+        if (!currentUser) {
+            return;
+        }
+
+
         const newStatus =
-            user.status === "Active"
+            currentUser.status === "Active"
                 ? "suspended"
                 : "active";
 
@@ -196,16 +182,16 @@ const toggleStatus = async (user) => {
         const response =
             await updateUserStatus(
                 token,
-                user.id,
+                id,
                 newStatus
             );
 
 
-        if (!response?.success) {
+        if (!response.success) {
 
             alert(
-                response?.message ||
-                "Failed to update user status"
+                response.message ||
+                "Unable to update user"
             );
 
             return;
@@ -213,25 +199,24 @@ const toggleStatus = async (user) => {
         }
 
 
-        setUsers((currentUsers) =>
+        setUsers(
+            (currentUsers) =>
+                currentUsers.map(
+                    (user) =>
+                        user.id === id
+                            ? {
+                                ...user,
 
-            currentUsers.map((currentUser) =>
-
-                currentUser.id === user.id
-
-                    ? {
-                        ...currentUser,
-
-                        status:
-                            newStatus === "suspended"
-                                ? "Suspended"
-                                : "Active"
-                    }
-
-                    : currentUser
-
-            )
-
+                                status:
+                                    response.data?.status ||
+                                    (
+                                        newStatus === "suspended"
+                                            ? "Suspended"
+                                            : "Active"
+                                    )
+                            }
+                            : user
+                )
         );
 
 
@@ -247,11 +232,10 @@ const toggleStatus = async (user) => {
         );
 
         alert(
-            "Something went wrong."
+            "Unable to update user status"
         );
 
     }
-
 };
 
 
@@ -263,31 +247,17 @@ const deleteUser = async (id) => {
 
     const confirmed =
         window.confirm(
-            "Are you sure you want to permanently delete this user?"
+            "Are you sure you want to delete this user?"
         );
-
 
     if (!confirmed) {
         return;
     }
 
-
     try {
 
         const token =
             localStorage.getItem("token");
-
-
-        if (!token) {
-
-            alert(
-                "Authentication required."
-            );
-
-            return;
-
-        }
-
 
         const response =
             await deleteAdminUser(
@@ -295,47 +265,25 @@ const deleteUser = async (id) => {
                 id
             );
 
-
-        if (!response?.success) {
-
-            alert(
-                response?.message ||
-                "Failed to delete user"
-            );
-
+        if (!response.success) {
+            alert(response.message);
             return;
-
         }
 
-
         setUsers((currentUsers) =>
-
             currentUsers.filter(
-                (user) =>
-                    user.id !== id
+                (user) => user.id !== id
             )
-
         );
-
 
         setOpenMenu(null);
 
+    } catch (error) {
 
+        console.error(error);
+
+        alert("Unable to delete user");
     }
-
-    catch (error) {
-
-        console.error(
-            "Delete user error:",
-            error
-        );
-
-        alert(
-            "Something went wrong."
-        );
-
-    }
-
 };
 
 
@@ -852,40 +800,26 @@ const deleteUser = async (id) => {
 
                                                             <button
                                                                 onClick={() =>
-                                                                    toggleStatus(
-                                                                        user
-                                                                    )
+                                                                    toggleStatus(user.id)
                                                                 }
                                                             >
-
                                                                 {user.status === "Active"
 
-                                                                    ? (
-                                                                        <UserX
-                                                                            size={15}
-                                                                        />
-                                                                    )
-
-                                                                    : (
-                                                                        <UserCheck
-                                                                            size={15}
-                                                                        />
-                                                                    )
-
+                                                                    ? (<UserX
+                                                                        size={15}
+                                                                    />  )
+                                                                    : (<UserCheck
+                                                                        size={15}
+                                                                    />  )   
                                                                 }
-
-
+                                                                
                                                                 {user.status === "Active"
-
                                                                     ? "Suspend User"
-
                                                                     : "Activate User"
-
                                                                 }
-
                                                             </button>
 
-
+                                                            
                                                             {/* DELETE */}
 
                                                             <button

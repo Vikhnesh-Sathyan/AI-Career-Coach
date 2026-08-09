@@ -24,6 +24,7 @@ const userSchema = new mongoose.Schema(
             enum: ["user", "admin"],
             default: "user",
         },
+
         // Account Status
         status: {
             type: String,

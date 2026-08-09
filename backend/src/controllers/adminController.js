@@ -6,20 +6,19 @@ import JobApplication from "../models/JobApplication.js";
 // ==========================================
 
 export const getAdminStats = async (req, res) => {
-
     try {
 
-        // ======================================
+        // -------------------------------
         // USERS
-        // ======================================
+        // -------------------------------
 
         const totalUsers =
             await User.countDocuments();
 
 
-        // ======================================
+        // -------------------------------
         // PREMIUM USERS
-        // ======================================
+        // -------------------------------
 
         const premiumUsers =
             await User.countDocuments({
@@ -27,17 +26,17 @@ export const getAdminStats = async (req, res) => {
             });
 
 
-        // ======================================
-        // JOB APPLICATIONS
-        // ======================================
+        // -------------------------------
+        // APPLICATIONS
+        // -------------------------------
 
         const totalApplications =
             await JobApplication.countDocuments();
 
 
-        // ======================================
+        // -------------------------------
         // APPLICATION STATUS
-        // ======================================
+        // -------------------------------
 
         const applied =
             await JobApplication.countDocuments({
@@ -81,9 +80,9 @@ export const getAdminStats = async (req, res) => {
             });
 
 
-        // ======================================
+        // -------------------------------
         // RESPONSE
-        // ======================================
+        // -------------------------------
 
         res.status(200).json({
 
@@ -134,7 +133,6 @@ export const getAdminStats = async (req, res) => {
         });
 
     }
-
 };
 
 
@@ -146,14 +144,13 @@ export const getAdminUsers = async (req, res) => {
 
     try {
 
-        const users =
-            await User.find({})
-                .select(
-                    "_id name email role subscription status createdAt"
-                )
-                .sort({
-                    createdAt: -1
-                });
+        const users = await User.find({})
+            .select(
+                "_id name email role subscription status createdAt"
+            )
+            .sort({
+                createdAt: -1
+            });
 
 
         const formattedUsers =
@@ -177,13 +174,12 @@ export const getAdminUsers = async (req, res) => {
                         ? "Premium"
                         : "Free",
 
+                // Existing users without status
+                // are treated as Active
                 status:
                     user.status === "suspended"
                         ? "Suspended"
-                        : "Active",
-
-                createdAt:
-                    user.createdAt
+                        : "Active"
 
             }));
 
@@ -215,7 +211,6 @@ export const getAdminUsers = async (req, res) => {
         });
 
     }
-
 };
 
 
@@ -232,9 +227,9 @@ export const updateUserStatus = async (req, res) => {
         const { status } = req.body;
 
 
-        // ======================================
+        // -------------------------------
         // VALIDATE STATUS
-        // ======================================
+        // -------------------------------
 
         if (
             !["active", "suspended"].includes(status)
@@ -252,9 +247,9 @@ export const updateUserStatus = async (req, res) => {
         }
 
 
-        // ======================================
+        // -------------------------------
         // FIND USER
-        // ======================================
+        // -------------------------------
 
         const user =
             await User.findById(id);
@@ -274,9 +269,9 @@ export const updateUserStatus = async (req, res) => {
         }
 
 
-        // ======================================
+        // -------------------------------
         // PREVENT ADMIN SUSPENSION
-        // ======================================
+        // -------------------------------
 
         if (user.role === "admin") {
 
@@ -285,25 +280,25 @@ export const updateUserStatus = async (req, res) => {
                 success: false,
 
                 message:
-                    "Admin accounts cannot be suspended"
+                    "Admin users cannot be suspended"
 
             });
 
         }
 
 
-        // ======================================
+        // -------------------------------
         // UPDATE STATUS
-        // ======================================
+        // -------------------------------
 
         user.status = status;
 
         await user.save();
 
 
-        // ======================================
+        // -------------------------------
         // RESPONSE
-        // ======================================
+        // -------------------------------
 
         res.status(200).json({
 
@@ -346,7 +341,6 @@ export const updateUserStatus = async (req, res) => {
         });
 
     }
-
 };
 
 
@@ -360,10 +354,6 @@ export const deleteUser = async (req, res) => {
 
         const { id } = req.params;
 
-
-        // ======================================
-        // FIND USER
-        // ======================================
 
         const user =
             await User.findById(id);
@@ -383,10 +373,7 @@ export const deleteUser = async (req, res) => {
         }
 
 
-        // ======================================
-        // PREVENT ADMIN DELETION
-        // ======================================
-
+        // Prevent deleting admin
         if (user.role === "admin") {
 
             return res.status(403).json({
@@ -394,23 +381,15 @@ export const deleteUser = async (req, res) => {
                 success: false,
 
                 message:
-                    "Admin accounts cannot be deleted"
+                    "Admin users cannot be deleted"
 
             });
 
         }
 
 
-        // ======================================
-        // DELETE USER
-        // ======================================
-
         await User.findByIdAndDelete(id);
 
-
-        // ======================================
-        // RESPONSE
-        // ======================================
 
         res.status(200).json({
 
@@ -440,5 +419,4 @@ export const deleteUser = async (req, res) => {
         });
 
     }
-
 };

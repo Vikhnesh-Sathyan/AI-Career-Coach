@@ -2,7 +2,9 @@ import express from "express";
 
 import {
     getAdminStats,
-    getAdminUsers
+    getAdminUsers,
+    updateUserStatus,
+    deleteUser
 } from "../controllers/adminController.js";
 
 import { protect }
@@ -28,7 +30,7 @@ router.get(
 
 
 // ==========================================
-// ADMIN USERS
+// GET ALL USERS
 // ==========================================
 
 router.get(
@@ -36,6 +38,30 @@ router.get(
     protect,
     adminOnly,
     getAdminUsers
+);
+
+
+// ==========================================
+// UPDATE USER STATUS
+// ==========================================
+
+router.patch(
+    "/users/:id/status",
+    protect,
+    adminOnly,
+    updateUserStatus
+);
+
+
+// ==========================================
+// DELETE USER
+// ==========================================
+
+router.delete(
+    "/users/:id",
+    protect,
+    adminOnly,
+    deleteUser
 );
 
 

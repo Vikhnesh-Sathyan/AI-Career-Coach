@@ -24,6 +24,12 @@ const userSchema = new mongoose.Schema(
             enum: ["user", "admin"],
             default: "user",
         },
+        // Account Status
+        status: {
+            type: String,
+            enum: ["active", "suspended"],
+            default: "active",
+        },
 
         // Profile Settings
         profileImage: {

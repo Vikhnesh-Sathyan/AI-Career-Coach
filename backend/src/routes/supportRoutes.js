@@ -16,7 +16,6 @@ const router = express.Router();
 // USER
 router.post(
     "/",
-    protect,
     createSupportRequest
 );
 

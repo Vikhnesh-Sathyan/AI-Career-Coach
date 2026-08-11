@@ -12,9 +12,12 @@ import {
     updateSupportRequest
 } from "../controllers/supportController.js";
 
-import { protect } from "../middleware/authMiddleware.js";
+import { protect }
+    from "../middleware/authMiddleware.js";
 
-import adminOnly from "../middleware/adminMiddleware.js";
+import adminOnly
+    from "../middleware/adminMiddleware.js";
+
 
 const router = express.Router();
 

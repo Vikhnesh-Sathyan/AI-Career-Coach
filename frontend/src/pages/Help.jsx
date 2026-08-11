@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { HelpCircle } from "lucide-react";
 import toast from "react-hot-toast";
 
+import api from "../services/api";
+
 import "../styles/help.css";
 
 function Help() {
@@ -12,11 +14,16 @@ function Help() {
     const [loading, setLoading] = useState(false);
 
 
+    // ==========================================
+    // SEND SUPPORT REQUEST
+    // ==========================================
+
     const handleSubmit = async (e) => {
 
         e.preventDefault();
 
-        if (!email || !message) {
+
+        if (!email.trim() || !message.trim()) {
 
             toast.error(
                 "Please fill in all fields"
@@ -25,21 +32,59 @@ function Help() {
             return;
         }
 
+
         setLoading(true);
 
-        // For now, just simulate sending
-        setTimeout(() => {
+
+        try {
+
+            const response = await api.post(
+                "/support",
+                {
+                    email,
+                    message
+                }
+            );
+
+
+            if (!response.data.success) {
+
+                toast.error(
+                    response.data.message ||
+                    "Unable to send request"
+                );
+
+                return;
+            }
+
 
             toast.success(
                 "Support request sent successfully"
             );
 
+
             setEmail("");
             setMessage("");
 
+
+        } catch (error) {
+
+            console.error(
+                "Support request error:",
+                error
+            );
+
+
+            toast.error(
+                error.response?.data?.message ||
+                "Unable to send support request"
+            );
+
+        } finally {
+
             setLoading(false);
 
-        }, 800);
+        }
 
     };
 
@@ -58,16 +103,12 @@ function Help() {
                 <div className="help-header">
 
                     <div className="help-icon">
-
                         <HelpCircle size={28} />
-
                     </div>
-
 
                     <h1>
                         Account Support
                     </h1>
-
 
                     <p>
                         Your account is currently suspended.
@@ -89,15 +130,12 @@ function Help() {
                             Email Address
                         </label>
 
-
                         <input
                             type="email"
                             placeholder="Enter your email"
                             value={email}
                             onChange={(e) =>
-                                setEmail(
-                                    e.target.value
-                                )
+                                setEmail(e.target.value)
                             }
                         />
 
@@ -110,14 +148,11 @@ function Help() {
                             Message
                         </label>
 
-
                         <textarea
                             placeholder="Explain why you believe your account should be reviewed..."
                             value={message}
                             onChange={(e) =>
-                                setMessage(
-                                    e.target.value
-                                )
+                                setMessage(e.target.value)
                             }
                         />
 

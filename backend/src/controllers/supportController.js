@@ -6,77 +6,154 @@ import User from "../models/User.js";
 // ==========================================
 
 export const createSupportRequest = async (req, res) => {
-    try {
-        const userId = req.user.id;
-        const { message } = req.body;
 
-        if (!message || !message.trim()) {
+    try {
+
+        const {
+            email,
+            message
+        } = req.body;
+
+
+        // Validate fields
+
+        if (!email || !message || !message.trim()) {
+
             return res.status(400).json({
+
                 success: false,
-                message: "Please enter a message."
+
+                message:
+                    "Email and message are required."
+
             });
+
         }
 
-        const user = await User.findById(userId);
+
+        // Find user
+
+        const user =
+            await User.findOne({
+                email: email.trim().toLowerCase()
+            });
+
 
         if (!user) {
+
             return res.status(404).json({
+
                 success: false,
-                message: "User not found."
+
+                message:
+                    "No account found with this email."
+
             });
+
         }
+
+
+        // User must be suspended
 
         if (user.status !== "suspended") {
+
             return res.status(400).json({
+
                 success: false,
+
                 message:
                     "Account review is only available for suspended accounts."
+
             });
+
         }
 
-        const existingRequest = await SupportRequest.findOne({
-            user: userId,
-            status: "pending"
-        });
+
+        // Check existing pending request
+
+        const existingRequest =
+            await SupportRequest.findOne({
+
+                user: user._id,
+
+                status: "pending"
+
+            });
+
 
         if (existingRequest) {
+
             return res.status(400).json({
+
                 success: false,
+
                 message:
                     "You already have a pending account review request."
+
             });
+
         }
 
-        const supportRequest = await SupportRequest.create({
-            user: userId,
-            message: message.trim(),
-            status: "pending",
-            read: false
-        });
+
+        // Create request
+
+        const supportRequest =
+            await SupportRequest.create({
+
+                user: user._id,
+
+                message: message.trim(),
+
+                status: "pending",
+
+                read: false
+
+            });
+
 
         res.status(201).json({
+
             success: true,
+
             message:
                 "Account review request submitted successfully.",
+
             data: {
-                id: supportRequest._id,
-                status: supportRequest.status,
-                message: supportRequest.message
+
+                id:
+                    supportRequest._id,
+
+                status:
+                    supportRequest.status,
+
+                message:
+                    supportRequest.message
+
             }
+
         });
 
-    } catch (error) {
+    }
+
+    catch (error) {
+
         console.error(
             "Create Support Request Error:",
             error
         );
 
+
         res.status(500).json({
+
             success: false,
+
             message:
                 "Failed to submit account review request."
+
         });
+
     }
+
 };
 
 

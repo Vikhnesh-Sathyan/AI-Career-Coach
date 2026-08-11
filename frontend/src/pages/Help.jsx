@@ -1,27 +1,73 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { HelpCircle } from "lucide-react";
+import toast from "react-hot-toast";
 
 import "../styles/help.css";
 
 function Help() {
+
+    const [email, setEmail] = useState("");
+    const [message, setMessage] = useState("");
+    const [loading, setLoading] = useState(false);
+
+
+    const handleSubmit = async (e) => {
+
+        e.preventDefault();
+
+        if (!email || !message) {
+
+            toast.error(
+                "Please fill in all fields"
+            );
+
+            return;
+        }
+
+        setLoading(true);
+
+        // For now, just simulate sending
+        setTimeout(() => {
+
+            toast.success(
+                "Support request sent successfully"
+            );
+
+            setEmail("");
+            setMessage("");
+
+            setLoading(false);
+
+        }, 800);
+
+    };
+
+
     return (
+
         <div className="help-page">
 
             <div className="help-background-circle help-circle1"></div>
 
             <div className="help-background-circle help-circle2"></div>
 
+
             <div className="help-card">
 
                 <div className="help-header">
 
                     <div className="help-icon">
+
                         <HelpCircle size={28} />
+
                     </div>
+
 
                     <h1>
                         Account Support
                     </h1>
+
 
                     <p>
                         Your account is currently suspended.
@@ -32,7 +78,10 @@ function Help() {
                 </div>
 
 
-                <form className="help-form">
+                <form
+                    className="help-form"
+                    onSubmit={handleSubmit}
+                >
 
                     <div className="help-form-group">
 
@@ -40,9 +89,16 @@ function Help() {
                             Email Address
                         </label>
 
+
                         <input
                             type="email"
                             placeholder="Enter your email"
+                            value={email}
+                            onChange={(e) =>
+                                setEmail(
+                                    e.target.value
+                                )
+                            }
                         />
 
                     </div>
@@ -54,8 +110,15 @@ function Help() {
                             Message
                         </label>
 
+
                         <textarea
                             placeholder="Explain why you believe your account should be reviewed..."
+                            value={message}
+                            onChange={(e) =>
+                                setMessage(
+                                    e.target.value
+                                )
+                            }
                         />
 
                     </div>
@@ -64,8 +127,14 @@ function Help() {
                     <button
                         type="submit"
                         className="help-submit-btn"
+                        disabled={loading}
                     >
-                        Send Request
+
+                        {loading
+                            ? "Sending..."
+                            : "Send Request"
+                        }
+
                     </button>
 
                 </form>
@@ -82,7 +151,9 @@ function Help() {
             </div>
 
         </div>
+
     );
+
 }
 
 export default Help;

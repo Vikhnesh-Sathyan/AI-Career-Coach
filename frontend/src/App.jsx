@@ -21,6 +21,9 @@ import Help from "./pages/Help";
 
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminUsers from "./pages/AdminUsers";
+import AdminSupport from "./pages/AdminSupport";
+
+
 
 import AdminProtectedRoute
     from "./components/admin/AdminProtectedRoute";
@@ -145,7 +148,18 @@ function App() {
                         </AdminProtectedRoute>
                     }
                 />
+                {/* Admin Support Requests */}
 
+                <Route
+                    path="/admin/support"
+                    element={
+                     <AdminProtectedRoute>
+                        
+                             <AdminSupport />
+                    
+                     </AdminProtectedRoute>
+                    }
+                />
 
                 {/* =========================
                     FALLBACK

@@ -223,3 +223,93 @@ export const deleteAdminUser = async (
 
     }
 };
+
+
+
+
+// ==========================================
+// GET SUPPORT REQUESTS
+// ==========================================
+
+export const getSupportRequests = async (token) => {
+
+    try {
+
+        const response = await fetch(
+            `${API_URL}/support`,
+            {
+                method: "GET",
+
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                }
+            }
+        );
+
+        return await response.json();
+
+    } catch (error) {
+
+        console.error(
+            "Support requests error:",
+            error
+        );
+
+        return {
+            success: false,
+            message: "Unable to load support requests"
+        };
+
+    }
+
+};
+
+
+// ==========================================
+// UPDATE SUPPORT REQUEST
+// ==========================================
+
+export const updateSupportRequest = async (
+    token,
+    id,
+    status,
+    adminResponse
+) => {
+
+    try {
+
+        const response = await fetch(
+            `${API_URL}/support/${id}`,
+            {
+                method: "PATCH",
+
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    status,
+                    adminResponse
+                })
+            }
+        );
+
+        return await response.json();
+
+    } catch (error) {
+
+        console.error(
+            "Update support request error:",
+            error
+        );
+
+        return {
+            success: false,
+            message: "Unable to update request"
+        };
+
+    }
+
+};

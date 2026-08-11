@@ -7,12 +7,14 @@ import {
     deleteUser
 } from "../controllers/adminController.js";
 
-import { protect }
-    from "../middleware/authMiddleware.js";
+import {
+    getAllSupportRequests,
+    updateSupportRequest
+} from "../controllers/supportController.js";
 
-import adminOnly
-    from "../middleware/adminMiddleware.js";
+import { protect } from "../middleware/authMiddleware.js";
 
+import adminOnly from "../middleware/adminMiddleware.js";
 
 const router = express.Router();
 
@@ -62,6 +64,30 @@ router.delete(
     protect,
     adminOnly,
     deleteUser
+);
+
+
+// ==========================================
+// GET SUPPORT REQUESTS
+// ==========================================
+
+router.get(
+    "/support",
+    protect,
+    adminOnly,
+    getAllSupportRequests
+);
+
+
+// ==========================================
+// UPDATE SUPPORT REQUEST
+// ==========================================
+
+router.patch(
+    "/support/:id",
+    protect,
+    adminOnly,
+    updateSupportRequest
 );
 
 

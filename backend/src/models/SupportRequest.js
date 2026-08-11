@@ -35,10 +35,9 @@ const supportRequestSchema = new mongoose.Schema(
     }
 );
 
-const SupportRequest =
-    mongoose.model(
-        "SupportRequest",
-        supportRequestSchema
-    );
+const SupportRequest = mongoose.model(
+    "SupportRequest",
+    supportRequestSchema
+);
 
 export default SupportRequest;

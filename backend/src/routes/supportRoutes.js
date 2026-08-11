@@ -1,23 +1,49 @@
 import express from "express";
 
 import {
-    createSupportRequest
+    createSupportRequest,
+    getMySupportRequest,
+    getAllSupportRequests,
+    updateSupportRequest
 } from "../controllers/supportController.js";
 
-import { protect }
-    from "../middleware/authMiddleware.js";
+import { protect } from "../middleware/authMiddleware.js";
+import adminOnly from "../middleware/adminMiddleware.js";
 
 const router = express.Router();
 
 
-// ==========================================
-// CREATE ACCOUNT REVIEW REQUEST
-// ==========================================
-
+// USER
 router.post(
     "/",
     protect,
     createSupportRequest
+);
+
+
+// USER
+router.get(
+    "/my-request",
+    protect,
+    getMySupportRequest
+);
+
+
+// ADMIN
+router.get(
+    "/admin",
+    protect,
+    adminOnly,
+    getAllSupportRequests
+);
+
+
+// ADMIN
+router.patch(
+    "/admin/:id",
+    protect,
+    adminOnly,
+    updateSupportRequest
 );
 
 

@@ -73,11 +73,16 @@
     margin-bottom:8px;
 
 }
+.resume-upload-success {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 
-.success{
+    color: #22c55e !important;
+    background: transparent !important;
 
-    color:#22C55E !important;
-
+    margin-top: 10px;
+    margin-bottom: 0;
 }
 
 .analyse-btn{

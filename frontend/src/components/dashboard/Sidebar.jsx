@@ -48,11 +48,11 @@ function Sidebar() {
             path: "/interviews"
         },
 
-        // {
-        //     icon: <FaBriefcase />,
-        //     title: "Jobs",
-        //     path: "/jobs"
-        // },
+        {
+            icon: <FaBriefcase />,
+            title: "Jobs",
+            path: "/jobs"
+        },
 
         {
             icon: <FaCog />,

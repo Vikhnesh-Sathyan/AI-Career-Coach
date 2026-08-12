@@ -30,7 +30,9 @@ function JobBoard({
 
         "Offer",
 
-        "Rejected"
+        "Rejected",
+
+        "Accepted"
 
     ];
 

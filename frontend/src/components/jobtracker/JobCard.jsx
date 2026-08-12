@@ -63,7 +63,9 @@ function JobCard({
 
         Offer:100,
 
-        Rejected:100
+        Rejected:100,
+
+        Accepted:100
 
     };
 
@@ -79,7 +81,9 @@ function JobCard({
 
         Offer:100,
 
-        Rejected:15
+        Rejected:15,
+
+        Accepted:100
 
     };
 

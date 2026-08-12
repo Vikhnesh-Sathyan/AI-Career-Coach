@@ -20,21 +20,23 @@ function StageColumn({
 
 }) {
 
-    const colors = {
+const colors = {
 
-        Applied: "#3B82F6",
+    Applied: "#3B82F6",
 
-        Shortlisted: "#8B5CF6",
+    Shortlisted: "#8B5CF6",
 
-        Assessment: "#F59E0B",
+    Assessment: "#F59E0B",
 
-        Interview: "#EC4899",
+    Interview: "#EC4899",
 
-        Offer: "#10B981",
+    Offer: "#10B981",
 
-        Rejected: "#EF4444"
+    Rejected: "#EF4444",
 
-    };
+    Accepted: "#22C55E"
+
+};
 
     return (
 

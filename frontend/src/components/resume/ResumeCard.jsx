@@ -56,7 +56,7 @@ function ResumeCard({ file, onAnalyse }) {
 
                 </p>
 
-                <p className="success">
+                <p className="resume-upload-success">
 
                     <FaCheckCircle />
 

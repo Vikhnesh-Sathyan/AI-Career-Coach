@@ -47,7 +47,37 @@ export const protect = async (req, res, next) => {
         const user =
             await User.findById(decoded.id)
                 .select("-password");
+        if (!user) {
 
+    return res.status(401).json({
+
+        success: false,
+
+        message: "User not found"
+
+    });
+
+}
+
+// ===============================
+// CHECK ACCOUNT STATUS
+// ===============================
+
+if (
+    user.status === "suspended" &&
+    user.role !== "admin"
+) {
+
+    return res.status(403).json({
+
+        success: false,
+
+        message:
+            "Your account has been suspended."
+
+    });
+
+}
 
         if (!user) {
 

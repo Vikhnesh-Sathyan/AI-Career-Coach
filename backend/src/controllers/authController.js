@@ -2,6 +2,8 @@ import User from "../models/User.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
+import SupportRequest from "../models/SupportRequest.js";
+
 // ===============================
 // Generate JWT
 // ===============================
@@ -210,22 +212,34 @@ export const loginUser = async (req, res) => {
         }
 
 
-        // ===============================
-        // Check account status
-        // ===============================
+     // ===============================
+// Check account status
+// ===============================
 
-        if (user.status === "suspended") {
+if (user.status === "suspended") {
 
-            return res.status(403).json({
+    const supportRequest =
+        await SupportRequest.findOne({
+            user: user._id
+        }).sort({
+            createdAt: -1
+        });
 
-                success: false,
+    return res.status(403).json({
 
-                message:
-                    "Your account has been suspended. Please contact the administrator.",
+        success: false,
 
-            });
+        message:
+            "Your account has been suspended.",
 
-        }
+        supportStatus:
+            supportRequest?.status || null,
+
+        adminResponse:
+            supportRequest?.adminResponse || null
+
+    });
+}
 
 
         // ===============================

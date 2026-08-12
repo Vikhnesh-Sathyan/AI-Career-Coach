@@ -1,9 +1,5 @@
 import { useState } from "react";
-
-import {
-    Link,
-    useNavigate,
-} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import api from "../services/api";
 
@@ -18,99 +14,65 @@ import toast from "react-hot-toast";
 
 function Login() {
 
-    const [email, setEmail] =
-        useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
-    const [password, setPassword] =
-        useState("");
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
 
-    const [loading, setLoading] =
-        useState(false);
+    const [isSuspended, setIsSuspended] = useState(false);
+    const [supportStatus, setSupportStatus] = useState("");
+    const [adminResponse, setAdminResponse] = useState("");
 
-    const [error, setError] =
-        useState("");
+    const navigate = useNavigate();
 
-    const [isSuspended, setIsSuspended] =
-        useState(false);
-
-
-    const navigate =
-        useNavigate();
-
-
-    // ===============================
-    // Login
-    // ===============================
 
     const handleSubmit = async (e) => {
 
         e.preventDefault();
 
         setError("");
-
         setIsSuspended(false);
+        setSupportStatus("");
+        setAdminResponse("");
+
+        if (!email.trim() || !password.trim()) {
+
+            const message =
+                "Email and password are required.";
+
+            setError(message);
+            toast.error(message);
+
+            return;
+        }
 
         setLoading(true);
 
-
         try {
 
-            const response =
-                await api.post(
-                    "/auth/login",
-                    {
-                        email,
-                        password,
-                    }
-                );
+            const response = await api.post(
+                "/auth/login",
+                {
+                    email: email.trim(),
+                    password
+                }
+            );
 
 
             if (response.data.success) {
 
-                // ===============================
-                // Get token
-                // ===============================
-
                 const token =
                     response.data.token;
-
-
-                // ===============================
-                // Get user
-                // ===============================
 
                 const user =
                     response.data.user;
 
 
-                console.log(
-                    "Login successful"
-                );
-
-                console.log(
-                    "User:",
-                    user
-                );
-
-                console.log(
-                    "Role:",
-                    user.role
-                );
-
-
-                // ===============================
-                // Save token
-                // ===============================
-
                 localStorage.setItem(
                     "token",
                     token
                 );
-
-
-                // ===============================
-                // Save user
-                // ===============================
 
                 localStorage.setItem(
                     "user",
@@ -118,34 +80,16 @@ function Login() {
                 );
 
 
-                // ===============================
-                // Success Toast
-                // ===============================
-
                 toast.success(
                     `Welcome back, ${user.name || "User"}!`
                 );
 
 
-                // ===============================
-                // Role-based navigation
-                // ===============================
-
                 if (user.role === "admin") {
-
-                    console.log(
-                        "Redirecting to Admin"
-                    );
 
                     navigate("/admin");
 
-                }
-
-                else {
-
-                    console.log(
-                        "Redirecting to Dashboard"
-                    );
+                } else {
 
                     navigate("/dashboard");
 
@@ -153,57 +97,48 @@ function Login() {
 
             }
 
-        }
-
-        catch (error) {
+        } catch (error) {
 
             console.error(
                 "Login Error:",
-                error.response?.data ||
-                error.message
+                error.response?.data || error.message
             );
 
 
+            const data =
+                error.response?.data;
+
+
             const message =
-                error.response?.data?.message ||
+                data?.message ||
                 "Login failed. Please try again.";
 
-
-            // ===============================
-            // Error State
-            // ===============================
 
             setError(message);
 
 
             // ===============================
-            // Suspended Account
+            // SUSPENDED USER
             // ===============================
 
-            if (
-                error.response?.status === 403
-            ) {
+            if (error.response?.status === 403) {
 
                 setIsSuspended(true);
 
+                setSupportStatus(
+                    data?.supportStatus || ""
+                );
+
+                setAdminResponse(
+                    data?.adminResponse || ""
+                );
+
             }
 
-            else {
-
-                setIsSuspended(false);
-
-            }
-
-
-            // ===============================
-            // Error Toast
-            // ===============================
 
             toast.error(message);
 
-        }
-
-        finally {
+        } finally {
 
             setLoading(false);
 
@@ -216,13 +151,9 @@ function Login() {
 
         <div className="login-page">
 
-            <div
-                className="background-circle circle1"
-            ></div>
+            <div className="background-circle circle1"></div>
 
-            <div
-                className="background-circle circle2"
-            ></div>
+            <div className="background-circle circle2"></div>
 
 
             <div className="login-card">
@@ -230,13 +161,7 @@ function Login() {
                 <Logo />
 
 
-                <form
-                    onSubmit={handleSubmit}
-                >
-
-                    {/* ===============================
-                        EMAIL
-                    =============================== */}
+                <form onSubmit={handleSubmit}>
 
                     <div className="form-group">
 
@@ -244,24 +169,17 @@ function Login() {
                             Email Address
                         </label>
 
-
                         <Input
                             type="email"
                             placeholder="Enter your email"
                             value={email}
                             onChange={(e) =>
-                                setEmail(
-                                    e.target.value
-                                )
+                                setEmail(e.target.value)
                             }
                         />
 
                     </div>
 
-
-                    {/* ===============================
-                        PASSWORD
-                    =============================== */}
 
                     <div className="form-group">
 
@@ -269,57 +187,136 @@ function Login() {
                             Password
                         </label>
 
-
                         <Input
                             type="password"
                             placeholder="Enter your password"
                             value={password}
                             onChange={(e) =>
-                                setPassword(
-                                    e.target.value
-                                )
+                                setPassword(e.target.value)
                             }
                         />
 
                     </div>
 
 
-                    {/* ===============================
-                        ERROR
-                    =============================== */}
+                    {/* NORMAL ERROR */}
 
-                   {error && (
-    <p className="login-error">
-        {error}
-    </p>
-)}
+                    {error && !isSuspended && (
+
+                        <p className="login-error">
+                            {error}
+                        </p>
+
+                    )}
+
+{/* ==========================================
+    SUSPENDED ACCOUNT
+========================================== */}
 
 {isSuspended && (
+
     <div className="suspended-help">
-        <p>
-            Need help with your account?
+
+        {/* Main message */}
+
+        <p className="suspended-message">
+            Your account is currently suspended.
         </p>
 
-        <Link to="/help">
-            Contact Administrator
-        </Link>
+
+        {/* ==================================
+            PENDING REQUEST
+        ================================== */}
+
+        {supportStatus === "pending" && (
+
+            <div className="support-pending">
+
+                <p>
+                    Your account review request is
+                    currently under review.
+                </p>
+
+                <p>
+                    Please wait for the administrator
+                    to review your request.
+                </p>
+
+            </div>
+
+        )}
+
+
+        {/* ==================================
+            REJECTED REQUEST
+        ================================== */}
+
+        {supportStatus === "rejected" && (
+
+            <div className="support-rejected">
+
+                <p>
+                    Your previous account review
+                    request was rejected.
+                </p>
+
+
+                {adminResponse && (
+
+                    <div className="admin-response">
+
+                        <strong>
+                            Admin Response
+                        </strong>
+
+                        <p>
+                            {adminResponse}
+                        </p>
+
+                    </div>
+
+                )}
+
+
+                <Link to="/help">
+                    Submit Another Request
+                </Link>
+
+            </div>
+
+        )}
+
+
+        {/* ==================================
+            NO REQUEST
+        ================================== */}
+
+        {supportStatus !== "pending" &&
+         supportStatus !== "rejected" && (
+
+            <div className="support-contact">
+
+                <p>
+                    Need help with your account?
+                </p>
+
+                <Link to="/help">
+                    Contact Administrator
+                </Link>
+
+            </div>
+
+        )}
+
     </div>
+
 )}
 
-                    {/* ===============================
-                        FORGOT PASSWORD
-                    =============================== */}
 
-                    <p
-                        className="forgot-password"
-                    >
+                    <p className="forgot-password">
                         Forgot Password?
                     </p>
 
-
-                    {/* ===============================
-                        LOGIN BUTTON
-                    =============================== */}
 
                     <Button
                         text={
@@ -332,10 +329,6 @@ function Login() {
 
                 </form>
 
-
-                {/* ===============================
-                    REGISTER
-                =============================== */}
 
                 <p className="register-text">
 
@@ -354,6 +347,5 @@ function Login() {
     );
 
 }
-
 
 export default Login;

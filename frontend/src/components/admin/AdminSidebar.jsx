@@ -5,14 +5,15 @@ import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
 
 import {
-    FaChartPie,
-    FaUsers,
-    FaFileAlt,
-    FaBriefcase,
-    FaMicrophone,
-    FaChartLine,
-    FaGem,
-    FaCog
+FaChartPie,
+FaUsers,
+FaFileAlt,
+FaBriefcase,
+FaMicrophone,
+FaChartLine,
+FaGem,
+FaCog,
+FaLifeRing
 } from "react-icons/fa";
 
 const menus = [
@@ -27,6 +28,11 @@ const menus = [
         name:"Users",
         icon:<FaUsers />,
         path:"/admin/users"
+    },
+    {
+    name:"Support Requests",
+    icon:<FaLifeRing />,
+    path:"/admin/support"
     },
 
     {

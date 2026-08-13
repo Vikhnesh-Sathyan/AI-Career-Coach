@@ -13,7 +13,7 @@ import settingsRoutes from "./src/routes/settingsRoutes.js";
 import jobApplicationRoutes from "./src/routes/jobApplicationRoutes.js";  
 import adminRoutes from "./src/routes/adminRoutes.js";
 import supportRoutes from "./src/routes/supportRoutes.js";
- 
+import jobPostingRoutes from "./src/routes/jobPostingRoutes.js";
 
 dotenv.config();
 
@@ -38,6 +38,7 @@ app.use("/api/settings", settingsRoutes);
 app.use("/api/job-application", jobApplicationRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/support", supportRoutes);
+app.use("/api/jobs", jobPostingRoutes);
 
 
 

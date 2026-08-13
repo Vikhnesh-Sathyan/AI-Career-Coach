@@ -18,6 +18,7 @@ import Interviews from "./pages/Interviews";
 import InterviewHistory from "./pages/InterviewHistory";
 import JobTracker from "./pages/JobTracker";
 import Help from "./pages/Help";
+import Jobs from "./pages/Jobs";
 
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminUsers from "./pages/AdminUsers";
@@ -111,8 +112,14 @@ function App() {
 
                 <Route
                     path="/jobs"
-                    element={<JobTracker />}
+                    element={<Jobs />}
                 />
+
+                <Route 
+                    path="/job-tracker" 
+                    element={<JobTracker />} 
+                />
+
                 <Route
                     path="/help"
                     element={<Help />}
@@ -161,6 +168,17 @@ function App() {
                     }
                 />
 
+                    <Route
+                     path="/admin/jobs"
+                     element={
+                        <AdminProtectedRoute>
+
+                         <AdminJobs />
+
+                        </AdminProtectedRoute>
+                    }
+                />
+
                 {/* =========================
                     FALLBACK
                 ========================== */}
@@ -175,16 +193,6 @@ function App() {
                     }
                 />
 
-                <Route
-                     path="/admin/jobs"
-                     element={
-                        <AdminProtectedRoute>
-
-                         <AdminJobs />
-
-                        </AdminProtectedRoute>
-                    }
-                />
 
             </Routes>
 

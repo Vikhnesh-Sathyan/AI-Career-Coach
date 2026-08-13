@@ -1,3 +1,4 @@
+
 import "../../styles/adminsidebar.css";
 
 import { NavLink } from "react-router-dom";
@@ -5,97 +6,105 @@ import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
 
 import {
-FaChartPie,
-FaUsers,
-FaFileAlt,
-FaBriefcase,
-FaMicrophone,
-FaChartLine,
-FaGem,
-FaCog,
-FaLifeRing
+    FaChartPie,
+    FaUsers,
+    FaFileAlt,
+    FaBriefcase,
+    FaMicrophone,
+    FaChartLine,
+    FaGem,
+    FaCog,
+    FaLifeRing
 } from "react-icons/fa";
+
 
 const menus = [
 
     {
-        name:"Dashboard",
-        icon:<FaChartPie />,
-        path:"/admin"
+        name: "Dashboard",
+        icon: <FaChartPie />,
+        path: "/admin",
+        end: true
     },
 
     {
-        name:"Users",
-        icon:<FaUsers />,
-        path:"/admin/users"
-    },
-    {
-    name:"Support Requests",
-    icon:<FaLifeRing />,
-    path:"/admin/support"
+        name: "Users",
+        icon: <FaUsers />,
+        path: "/admin/users"
     },
 
     {
-        name:"Resume",
-        icon:<FaFileAlt />,
-        path:"/admin/resumes"
+        name: "Support Requests",
+        icon: <FaLifeRing />,
+        path: "/admin/support"
     },
 
     {
-        name:"Jobs",
-        icon:<FaBriefcase />,
-        path:"/admin/jobs"
+        name: "Resume",
+        icon: <FaFileAlt />,
+        path: "/admin/resumes"
     },
 
     {
-        name:"Interview",
-        icon:<FaMicrophone />,
-        path:"/admin/interviews"
+        name: "Jobs",
+        icon: <FaBriefcase />,
+        path: "/admin/jobs"
     },
 
     {
-        name:"Analytics",
-        icon:<FaChartLine />,
-        path:"/admin/analytics"
+        name: "Interview",
+        icon: <FaMicrophone />,
+        path: "/admin/interviews"
     },
 
     {
-        name:"Premium",
-        icon:<FaGem />,
-        path:"/admin/premium"
+        name: "Analytics",
+        icon: <FaChartLine />,
+        path: "/admin/analytics"
     },
 
     {
-        name:"Settings",
-        icon:<FaCog />,
-        path:"/admin/settings"
+        name: "Premium",
+        icon: <FaGem />,
+        path: "/admin/premium"
+    },
+
+    {
+        name: "Settings",
+        icon: <FaCog />,
+        path: "/admin/settings"
     }
 
 ];
 
-function AdminSidebar(){
 
-    return(
+function AdminSidebar() {
+
+    return (
 
         <motion.aside
 
             className="admin-sidebar"
 
             initial={{
-                x:-80,
-                opacity:0
+                x: -80,
+                opacity: 0
             }}
 
             animate={{
-                x:0,
-                opacity:1
+                x: 0,
+                opacity: 1
             }}
 
             transition={{
-                duration:.6
+                duration: 0.6
             }}
 
         >
+
+            {/* ================================
+                SIDEBAR LOGO
+            ================================= */}
 
             <div className="sidebar-logo">
 
@@ -104,109 +113,98 @@ function AdminSidebar(){
                     className="logo-circle"
 
                     animate={{
-
-                        scale:[1,1.15,1]
-
+                        scale: [1, 1.15, 1]
                     }}
 
                     transition={{
-
-                        duration:2.5,
-
-                        repeat:Infinity
-
+                        duration: 2.5,
+                        repeat: Infinity
                     }}
 
                 />
 
                 <div>
 
-                    <h2>AI Career Coach</h2>
+                    <h2>
+                        AI Career Coach
+                    </h2>
 
-                    <p>Admin Console</p>
+                    <p>
+                        Admin Console
+                    </p>
 
                 </div>
 
             </div>
 
+
+            {/* ================================
+                SIDEBAR MENU
+            ================================= */}
+
             <div className="sidebar-menu">
 
-                {
+                {menus.map((menu) => (
 
-                    menus.map(menu=>(
+                    <NavLink
 
-                        <NavLink
+                        key={menu.name}
 
-                            key={menu.name}
+                        to={menu.path}
 
-                            to={menu.path}
+                        end={menu.end || false}
 
-                            className={({isActive})=>
+                        className={({ isActive }) =>
 
-                                isActive
+                            isActive
+                                ? "menu-item active"
+                                : "menu-item"
 
-                                ?
+                        }
 
-                                "menu-item active"
+                    >
 
-                                :
+                        <motion.div
 
-                                "menu-item"
+                            whileHover={{
+                                x: 10,
+                                scale: 1.03
+                            }}
 
-                            }
+                            transition={{
+                                type: "spring",
+                                stiffness: 350
+                            }}
+
+                            className="menu-content"
 
                         >
 
-                            <motion.div
+                            <span>
+                                {menu.icon}
+                            </span>
 
-                                whileHover={{
+                            <p>
+                                {menu.name}
+                            </p>
 
-                                    x:10,
+                        </motion.div>
 
-                                    scale:1.03
+                    </NavLink>
 
-                                }}
-
-                                transition={{
-
-                                    type:"spring",
-
-                                    stiffness:350
-
-                                }}
-
-                                className="menu-content"
-
-                            >
-
-                                <span>
-
-                                    {menu.icon}
-
-                                </span>
-
-                                <p>
-
-                                    {menu.name}
-
-                                </p>
-
-                            </motion.div>
-
-                        </NavLink>
-
-                    ))
-
-                }
+                ))}
 
             </div>
+
+
+            {/* ================================
+                STORAGE
+            ================================= */}
 
             <div className="storage-card">
 
                 <h4>
-
                     Storage
-
                 </h4>
 
                 <div className="storage-bar">
@@ -216,21 +214,15 @@ function AdminSidebar(){
                         className="storage-fill"
 
                         initial={{
-
-                            width:0
-
+                            width: 0
                         }}
 
                         animate={{
-
-                            width:"72%"
-
+                            width: "72%"
                         }}
 
                         transition={{
-
-                            duration:1.2
-
+                            duration: 1.2
                         }}
 
                     />
@@ -238,33 +230,30 @@ function AdminSidebar(){
                 </div>
 
                 <small>
-
                     2.4 GB / 5 GB
-
                 </small>
 
             </div>
 
+
+            {/* ================================
+                ADMIN PROFILE
+            ================================= */}
+
             <div className="admin-profile">
 
                 <div className="profile-avatar">
-
                     A
-
                 </div>
 
                 <div>
 
                     <h4>
-
                         Administrator
-
                     </h4>
 
                     <span>
-
                         ● Online
-
                     </span>
 
                 </div>
@@ -276,5 +265,6 @@ function AdminSidebar(){
     );
 
 }
+
 
 export default AdminSidebar;

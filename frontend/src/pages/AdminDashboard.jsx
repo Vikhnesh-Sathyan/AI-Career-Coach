@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import {Link} from "react-router-dom"
 
 import {
     FaUsers,
@@ -922,6 +923,70 @@ function AdminDashboard() {
                     </motion.div>
 
                 </section>
+
+            
+{/* =================================
+    JOB MANAGEMENT
+================================= */}
+
+<motion.section
+
+    className="admin-job-management"
+
+    initial={{
+        opacity: 0,
+        y: 25
+    }}
+
+    animate={{
+        opacity: 1,
+        y: 0
+    }}
+
+    transition={{
+        duration: 0.6,
+        delay: 0.6
+    }}
+
+>
+
+    <div className="job-management-content">
+
+        <div className="job-management-icon">
+            <FaBriefcase />
+        </div>
+
+        <div>
+
+            <span>
+                JOB MANAGEMENT
+            </span>
+
+            <h2>
+                Manage Posted Jobs
+            </h2>
+
+            <p>
+                Create, manage and publish job opportunities
+                for users on the platform.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <Link
+        to="/admin/jobs"
+        className="manage-jobs-btn"
+    >
+
+        Manage Jobs →
+
+    </Link>
+
+</motion.section>
+    
 
 
 

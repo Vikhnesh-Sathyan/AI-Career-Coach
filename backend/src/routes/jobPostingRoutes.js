@@ -13,6 +13,7 @@ import {
     adminOnly
 } from "../middleware/authMiddleware.js";
 
+
 const router = express.Router();
 
 
@@ -29,7 +30,8 @@ router.post(
 
 
 // ==========================================
-// ADMIN + USER — GET JOBS
+// GET ALL OPEN JOBS
+// ADMIN + USER
 // ==========================================
 
 router.get(
@@ -40,7 +42,8 @@ router.get(
 
 
 // ==========================================
-// ADMIN + USER — GET SINGLE JOB
+// GET SINGLE JOB
+// USER + ADMIN
 // ==========================================
 
 router.get(

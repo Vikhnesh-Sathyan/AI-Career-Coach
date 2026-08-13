@@ -165,14 +165,16 @@ export const getAllJobs = async (req, res) => {
 
     try {
 
-        const jobs = await Job.find()
-            .populate(
-                "postedBy",
-                "name email"
-            )
-            .sort({
-                createdAt: -1
-            });
+        const jobs = await Job.find({
+            status: "Open"
+        })
+        .populate(
+            "postedBy",
+            "name email"
+        )
+        .sort({
+            createdAt: -1
+        });
 
 
         res.status(200).json({

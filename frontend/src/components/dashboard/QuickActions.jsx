@@ -42,7 +42,7 @@ function QuickActions() {
             title: "Job Tracker",
             subtitle: "Track applications",
             icon: <FaBriefcase />,
-            path: "/jobs"
+            path: "/job-tracker"
         }
 
     ];

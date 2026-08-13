@@ -4,7 +4,6 @@ import { useEffect, useMemo, useState } from "react";
 
 import Sidebar from "../components/dashboard/Sidebar";
 import Topbar from "../components/dashboard/Topbar";
-import Toast from "../components/jobtracker/Toast";
 
 import {
     FaBell,

@@ -22,7 +22,7 @@ import Help from "./pages/Help";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminUsers from "./pages/AdminUsers";
 import AdminSupport from "./pages/AdminSupport";
-
+import AdminJobs from "./pages/AdminJobs";
 
 
 import AdminProtectedRoute
@@ -172,6 +172,17 @@ function App() {
                             to="/login"
                             replace
                         />
+                    }
+                />
+
+                <Route
+                     path="/admin/jobs"
+                     element={
+                        <AdminProtectedRoute>
+
+                         <AdminJobs />
+
+                        </AdminProtectedRoute>
                     }
                 />
 

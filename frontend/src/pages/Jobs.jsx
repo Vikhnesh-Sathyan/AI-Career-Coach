@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 
-import { FaBriefcase, FaMapMarkerAlt } from "react-icons/fa";
+import {
+    FaBriefcase,
+    FaMapMarkerAlt,
+    FaTimes,
+    FaMoneyBillWave,
+} from "react-icons/fa";
 
 import { getJobs } from "../services/jobService";
 
@@ -11,10 +16,19 @@ function Jobs() {
 
     const [jobs, setJobs] = useState([]);
 
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] =
+        useState(true);
 
-    const [error, setError] = useState("");
+    const [error, setError] =
+        useState("");
 
+    const [selectedJob, setSelectedJob] =
+        useState(null);
+
+
+    // =========================================
+    // LOAD JOBS
+    // =========================================
 
     const loadJobs = async () => {
 
@@ -24,11 +38,14 @@ function Jobs() {
 
             setError("");
 
-            const data = await getJobs();
+            const data =
+                await getJobs();
 
             if (data.success) {
 
-                setJobs(data.data || []);
+                setJobs(
+                    data.data || []
+                );
 
             }
 
@@ -63,9 +80,25 @@ function Jobs() {
     }, []);
 
 
+    // =========================================
+    // CLOSE MODAL
+    // =========================================
+
+    const closeJobDetails = () => {
+
+        setSelectedJob(null);
+
+    };
+
+
     return (
 
         <div className="jobs-page">
+
+
+            {/* =================================
+                HEADER
+            ================================= */}
 
             <div className="jobs-header">
 
@@ -81,6 +114,7 @@ function Jobs() {
 
                 </div>
 
+
                 <div className="jobs-header-icon">
 
                     <FaBriefcase />
@@ -89,6 +123,11 @@ function Jobs() {
 
             </div>
 
+
+
+            {/* =================================
+                LOADING
+            ================================= */}
 
             {loading && (
 
@@ -103,6 +142,11 @@ function Jobs() {
             )}
 
 
+
+            {/* =================================
+                ERROR
+            ================================= */}
+
             {!loading && error && (
 
                 <div className="jobs-message error">
@@ -111,7 +155,9 @@ function Jobs() {
                         {error}
                     </p>
 
-                    <button onClick={loadJobs}>
+                    <button
+                        onClick={loadJobs}
+                    >
                         Try Again
                     </button>
 
@@ -120,107 +166,300 @@ function Jobs() {
             )}
 
 
-            {!loading && !error && jobs.length === 0 && (
 
-                <div className="jobs-message">
+            {/* =================================
+                EMPTY
+            ================================= */}
 
-                    <FaBriefcase />
+            {!loading &&
+                !error &&
+                jobs.length === 0 && (
 
-                    <h3>
-                        No jobs available
-                    </h3>
+                    <div className="jobs-message">
 
-                    <p>
-                        New job opportunities will appear here when they are posted.
-                    </p>
+                        <FaBriefcase />
 
-                </div>
+                        <h3>
+                            No jobs available
+                        </h3>
 
-            )}
+                        <p>
+                            New job opportunities will appear here when they are posted.
+                        </p>
+
+                    </div>
+
+                )}
 
 
-            {!loading && !error && jobs.length > 0 && (
 
-                <div className="jobs-grid">
+            {/* =================================
+                JOB LIST
+            ================================= */}
 
-                    {jobs.map((job) => (
+            {!loading &&
+                !error &&
+                jobs.length > 0 && (
 
-                        <div
-                            className="user-job-card"
-                            key={job._id}
-                        >
+                    <div className="jobs-list">
 
-                            <div className="job-card-top">
+                        {jobs.map((job) => (
 
-                                <div className="company-icon">
+                            <div
+                                className="job-list-item"
+                                key={job._id}
+                            >
+
+
+                                {/* JOB ICON */}
+
+                                <div className="job-list-icon">
+
                                     <FaBriefcase />
+
                                 </div>
 
-                                <span className="job-status">
-                                    {job.status}
-                                </span>
+
+
+                                {/* JOB MAIN INFO */}
+
+                                <div className="job-list-info">
+
+                                    <h2>
+                                        {job.title}
+                                    </h2>
+
+                                    <p className="job-company">
+                                        {job.company}
+                                    </p>
+
+
+                                    <div className="job-meta">
+
+                                        <span>
+
+                                            <FaMapMarkerAlt />
+
+                                            {job.location || "Remote"}
+
+                                        </span>
+
+
+                                        <span>
+                                            {job.employmentType}
+                                        </span>
+
+
+                                        <span>
+                                            {job.experience || "Fresher"}
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+
+
+                                {/* STATUS */}
+
+                                <div className="job-list-status">
+
+                                    <span>
+                                        {job.status}
+                                    </span>
+
+                                </div>
+
+
+
+                                {/* ACTION */}
+
+                                <button
+                                    className="view-job-btn"
+                                    onClick={() =>
+                                        setSelectedJob(job)
+                                    }
+                                >
+                                    View Details
+                                </button>
+
+                            </div>
+
+                        ))}
+
+                    </div>
+
+                )}
+
+
+
+            {/* =================================
+                JOB DETAILS MODAL
+            ================================= */}
+
+            {selectedJob && (
+
+                <div
+                    className="job-details-overlay"
+                    onClick={closeJobDetails}
+                >
+
+                    <div
+                        className="job-details-modal"
+                        onClick={(e) =>
+                            e.stopPropagation()
+                        }
+                    >
+
+
+                        {/* MODAL HEADER */}
+
+                        <div className="job-details-header">
+
+                            <div>
+
+                                <div className="job-details-icon">
+
+                                    <FaBriefcase />
+
+                                </div>
 
                             </div>
 
 
-                            <h2>
-                                {job.title}
-                            </h2>
+                            <button
+                                className="close-job-details"
+                                onClick={closeJobDetails}
+                            >
+
+                                <FaTimes />
+
+                            </button>
+
+                        </div>
 
 
-                            <h3>
-                                {job.company}
-                            </h3>
+
+                        {/* TITLE */}
+
+                        <h2 className="job-details-title">
+
+                            {selectedJob.title}
+
+                        </h2>
 
 
-                            <div className="job-location">
+                        <p className="job-details-company">
+
+                            {selectedJob.company}
+
+                        </p>
+
+
+
+                        {/* STATUS */}
+
+                        <span className="job-details-status">
+
+                            {selectedJob.status}
+
+                        </span>
+
+
+
+                        {/* META */}
+
+                        <div className="job-details-meta">
+
+                            <div>
 
                                 <FaMapMarkerAlt />
 
                                 <span>
-                                    {job.location || "Remote"}
+                                    {selectedJob.location || "Remote"}
                                 </span>
 
                             </div>
 
 
-                            <div className="job-details">
+                            <div>
+
+                                <FaBriefcase />
 
                                 <span>
-                                    {job.employmentType}
-                                </span>
-
-                                <span>
-                                    {job.experience || "Fresher"}
+                                    {selectedJob.employmentType}
                                 </span>
 
                             </div>
 
 
-                            {job.salary && (
+                            <div>
 
-                                <p className="job-salary">
-                                    {job.salary}
-                                </p>
+                                <span>
+                                    🎓
+                                </span>
+
+                                <span>
+                                    {selectedJob.experience || "Fresher"}
+                                </span>
+
+                            </div>
+
+
+                            {selectedJob.salary && (
+
+                                <div>
+
+                                    <FaMoneyBillWave />
+
+                                    <span>
+                                        {selectedJob.salary}
+                                    </span>
+
+                                </div>
 
                             )}
 
+                        </div>
 
-                            <p className="job-description">
 
-                                {job.description}
 
+                        {/* DESCRIPTION */}
+
+                        <div className="job-details-section">
+
+                            <h3>
+                                Job Description
+                            </h3>
+
+                            <p>
+                                {selectedJob.description ||
+                                    "No description provided."}
                             </p>
 
+                        </div>
 
-                            {job.skills?.length > 0 && (
 
-                                <div className="job-skills">
 
-                                    {job.skills.map(
+                        {/* SKILLS */}
+
+                        {selectedJob.skills?.length > 0 && (
+
+                            <div className="job-details-section">
+
+                                <h3>
+                                    Required Skills
+                                </h3>
+
+
+                                <div className="job-details-skills">
+
+                                    {selectedJob.skills.map(
                                         (skill, index) => (
 
-                                            <span key={index}>
+                                            <span
+                                                key={index}
+                                            >
                                                 {skill}
                                             </span>
 
@@ -229,18 +468,25 @@ function Jobs() {
 
                                 </div>
 
-                            )}
+                            </div>
 
+                        )}
+
+
+
+                        {/* APPLY */}
+
+                        <div className="job-details-actions">
 
                             <button
-                                className="view-job-btn"
+                                className="apply-job-btn"
                             >
-                                View Job
+                                Apply Now
                             </button>
 
                         </div>
 
-                    ))}
+                    </div>
 
                 </div>
 

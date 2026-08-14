@@ -3,6 +3,7 @@ import express from "express";
 import {
     createJob,
     getAllJobs,
+    getAdminJobs,
     getJobById,
     updateJob,
     deleteJob
@@ -30,8 +31,21 @@ router.post(
 
 
 // ==========================================
-// GET ALL OPEN JOBS
-// ADMIN + USER
+// ADMIN — GET ALL JOBS
+// OPEN + CLOSED
+// IMPORTANT: MUST COME BEFORE /:id
+// ==========================================
+
+router.get(
+    "/admin",
+    protect,
+    adminOnly,
+    getAdminJobs
+);
+
+
+// ==========================================
+// USER + ADMIN — GET OPEN JOBS
 // ==========================================
 
 router.get(
@@ -42,8 +56,7 @@ router.get(
 
 
 // ==========================================
-// GET SINGLE JOB
-// USER + ADMIN
+// USER + ADMIN — GET SINGLE JOB
 // ==========================================
 
 router.get(

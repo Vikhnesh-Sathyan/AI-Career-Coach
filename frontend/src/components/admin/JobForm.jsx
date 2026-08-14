@@ -1,9 +1,20 @@
-import { useState } from "react";
-import { createJob } from "../../services/jobService";
 
-function JobForm({ onClose, onSuccess }) {
+import { useEffect, useState } from "react";
+
+import {
+    createJob,
+    updateJob
+} from "../../services/jobService";
+
+
+function JobForm({
+    job,
+    onClose,
+    onSuccess
+}) {
 
     const [formData, setFormData] = useState({
+
         title: "",
         company: "",
         location: "",
@@ -13,66 +24,217 @@ function JobForm({ onClose, onSuccess }) {
         skills: "",
         applicationDeadline: "",
         description: ""
+
     });
 
-    const [loading, setLoading] = useState(false);
+
+    const [loading, setLoading] =
+        useState(false);
+
+
+    const isEditMode =
+        Boolean(job);
+
+
+    // ==========================================
+    // LOAD JOB DATA FOR EDIT
+    // ==========================================
+
+    useEffect(() => {
+
+        if (!job) {
+
+            setFormData({
+
+                title: "",
+                company: "",
+                location: "",
+                employmentType: "Full-time",
+                salary: "",
+                experience: "Fresher",
+                skills: "",
+                applicationDeadline: "",
+                description: ""
+
+            });
+
+            return;
+
+        }
+
+
+        setFormData({
+
+            title:
+                job.title || "",
+
+            company:
+                job.company || "",
+
+            location:
+                job.location || "",
+
+            employmentType:
+                job.employmentType ||
+                "Full-time",
+
+            salary:
+                job.salary || "",
+
+            experience:
+                job.experience ||
+                "Fresher",
+
+            skills:
+                Array.isArray(job.skills)
+                    ? job.skills.join(", ")
+                    : "",
+
+            applicationDeadline:
+                job.applicationDeadline
+                    ? job.applicationDeadline
+                        .split("T")[0]
+                    : "",
+
+            description:
+                job.description || ""
+
+        });
+
+    }, [job]);
+
+
+    // ==========================================
+    // HANDLE CHANGE
+    // ==========================================
 
     const handleChange = (e) => {
 
-        const { name, value } = e.target;
+        const {
+            name,
+            value
+        } = e.target;
+
 
         setFormData(prev => ({
+
             ...prev,
+
             [name]: value
+
         }));
 
     };
+
+
+    // ==========================================
+    // SUBMIT
+    // ==========================================
 
     const handleSubmit = async (e) => {
 
         e.preventDefault();
 
+
         try {
 
             setLoading(true);
 
-            const data = await createJob({
+
+            const payload = {
 
                 ...formData,
 
-                skills: formData.skills
-                    .split(",")
-                    .map(skill => skill.trim())
-                    .filter(Boolean)
+                skills:
+                    formData.skills
+                        .split(",")
+                        .map(
+                            skill =>
+                                skill.trim()
+                        )
+                        .filter(Boolean)
 
-            });
+            };
+
+
+            let data;
+
+
+            // ==================================
+            // EDIT
+            // ==================================
+
+            if (isEditMode) {
+
+                data =
+                    await updateJob(
+                        job._id,
+                        payload
+                    );
+
+            }
+
+            // ==================================
+            // CREATE
+            // ==================================
+
+            else {
+
+                data =
+                    await createJob(
+                        payload
+                    );
+
+            }
+
 
             if (data.success) {
 
-                alert("Job posted successfully");
+                alert(
+                    isEditMode
+                        ? "Job updated successfully"
+                        : "Job posted successfully"
+                );
+
 
                 onSuccess();
 
                 onClose();
 
             }
+
             else {
 
-                alert(data.message);
+                alert(
+                    data.message
+                );
 
             }
 
         }
+
         catch (error) {
 
-            console.log(error);
+            console.error(
+                "Job form error:",
+                error
+            );
+
 
             alert(
+
                 error.response?.data?.message ||
-                "Failed to post job"
+
+                (
+                    isEditMode
+                        ? "Failed to update job"
+                        : "Failed to post job"
+                )
+
             );
 
         }
+
         finally {
 
             setLoading(false);
@@ -81,25 +243,50 @@ function JobForm({ onClose, onSuccess }) {
 
     };
 
+
     return (
 
         <div className="job-form-overlay">
 
+
             <div className="job-form-modal">
 
+
+                {/* =================================
+                    HEADER
+                ================================= */}
+
                 <div className="job-form-header">
+
 
                     <div>
 
                         <h2>
-                            Post New Job
+
+                            {
+                                isEditMode
+                                    ? "Edit Job"
+                                    : "Post New Job"
+                            }
+
                         </h2>
 
+
                         <p>
-                            Add a new opportunity for users.
+
+                            {
+                                isEditMode
+
+                                    ? "Update the job information."
+
+                                    : "Add a new opportunity for users."
+
+                            }
+
                         </p>
 
                     </div>
+
 
                     <button
                         type="button"
@@ -108,21 +295,31 @@ function JobForm({ onClose, onSuccess }) {
                         ×
                     </button>
 
+
                 </div>
 
+
+                {/* =================================
+                    FORM
+                ================================= */}
 
                 <form
                     className="job-form"
                     onSubmit={handleSubmit}
                 >
 
+
+                    {/* JOB TITLE + COMPANY */}
+
                     <div className="form-row">
+
 
                         <div className="form-group">
 
                             <label>
                                 Job Title
                             </label>
+
 
                             <input
                                 type="text"
@@ -142,6 +339,7 @@ function JobForm({ onClose, onSuccess }) {
                                 Company
                             </label>
 
+
                             <input
                                 type="text"
                                 name="company"
@@ -153,16 +351,21 @@ function JobForm({ onClose, onSuccess }) {
 
                         </div>
 
+
                     </div>
 
 
+                    {/* LOCATION + EMPLOYMENT */}
+
                     <div className="form-row">
+
 
                         <div className="form-group">
 
                             <label>
                                 Location
                             </label>
+
 
                             <input
                                 type="text"
@@ -181,9 +384,12 @@ function JobForm({ onClose, onSuccess }) {
                                 Employment Type
                             </label>
 
+
                             <select
                                 name="employmentType"
-                                value={formData.employmentType}
+                                value={
+                                    formData.employmentType
+                                }
                                 onChange={handleChange}
                             >
 
@@ -207,16 +413,21 @@ function JobForm({ onClose, onSuccess }) {
 
                         </div>
 
+
                     </div>
 
 
+                    {/* SALARY + EXPERIENCE */}
+
                     <div className="form-row">
+
 
                         <div className="form-group">
 
                             <label>
                                 Salary
                             </label>
+
 
                             <input
                                 type="text"
@@ -235,6 +446,7 @@ function JobForm({ onClose, onSuccess }) {
                                 Experience
                             </label>
 
+
                             <input
                                 type="text"
                                 name="experience"
@@ -245,16 +457,21 @@ function JobForm({ onClose, onSuccess }) {
 
                         </div>
 
+
                     </div>
 
 
+                    {/* SKILLS + DEADLINE */}
+
                     <div className="form-row">
+
 
                         <div className="form-group">
 
                             <label>
                                 Skills
                             </label>
+
 
                             <input
                                 type="text"
@@ -263,6 +480,7 @@ function JobForm({ onClose, onSuccess }) {
                                 value={formData.skills}
                                 onChange={handleChange}
                             />
+
 
                             <small>
                                 Separate skills with commas
@@ -277,17 +495,23 @@ function JobForm({ onClose, onSuccess }) {
                                 Application Deadline
                             </label>
 
+
                             <input
                                 type="date"
                                 name="applicationDeadline"
-                                value={formData.applicationDeadline}
+                                value={
+                                    formData.applicationDeadline
+                                }
                                 onChange={handleChange}
                             />
 
                         </div>
 
+
                     </div>
 
+
+                    {/* DESCRIPTION */}
 
                     <div className="form-group">
 
@@ -295,19 +519,26 @@ function JobForm({ onClose, onSuccess }) {
                             Job Description
                         </label>
 
+
                         <textarea
                             name="description"
                             rows="6"
                             placeholder="Describe the role, responsibilities and requirements..."
-                            value={formData.description}
+                            value={
+                                formData.description
+                            }
                             onChange={handleChange}
                             required
                         />
 
+
                     </div>
 
 
+                    {/* ACTIONS */}
+
                     <div className="job-form-actions">
+
 
                         <button
                             type="button"
@@ -317,20 +548,37 @@ function JobForm({ onClose, onSuccess }) {
                             Cancel
                         </button>
 
+
                         <button
                             type="submit"
                             className="submit-job-btn"
                             disabled={loading}
                         >
-                            {loading
-                                ? "Posting..."
-                                : "Post Job"
+
+                            {
+                                loading
+
+                                    ? (
+                                        isEditMode
+                                            ? "Updating..."
+                                            : "Posting..."
+                                    )
+
+                                    : (
+                                        isEditMode
+                                            ? "Update Job"
+                                            : "Post Job"
+                                    )
                             }
+
                         </button>
+
 
                     </div>
 
+
                 </form>
+
 
             </div>
 
@@ -339,5 +587,6 @@ function JobForm({ onClose, onSuccess }) {
     );
 
 }
+
 
 export default JobForm;

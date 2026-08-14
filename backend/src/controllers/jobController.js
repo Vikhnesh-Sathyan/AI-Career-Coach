@@ -3,7 +3,7 @@ import Job from "../models/Job.js";
 
 
 // ==========================================
-// JOB MATCHER - EXISTING
+// JOB MATCHER
 // ==========================================
 
 export const analyzeJob = async (req, res) => {
@@ -11,14 +11,11 @@ export const analyzeJob = async (req, res) => {
     try {
 
         const response = await axios.post(
-
             "http://127.0.0.1:5001/job-match",
-
             {
                 jobDescription:
                     req.body.jobDescription
             }
-
         );
 
         res.json(response.data);
@@ -36,7 +33,8 @@ export const analyzeJob = async (req, res) => {
 
             success: false,
 
-            message: "Python server error"
+            message:
+                "Python server error"
 
         });
 
@@ -118,7 +116,10 @@ export const createJob = async (req, res) => {
                 jobUrl?.trim() || "",
 
             postedBy:
-                req.user.id
+                req.user.id,
+
+            status:
+                "Open"
 
         });
 
@@ -158,23 +159,25 @@ export const createJob = async (req, res) => {
 
 
 // ==========================================
-// GET ALL JOBS - ADMIN
+// GET ALL JOBS - USER
+// ONLY OPEN JOBS
 // ==========================================
 
 export const getAllJobs = async (req, res) => {
 
     try {
 
-        const jobs = await Job.find({
-            status: "Open"
-        })
-        .populate(
-            "postedBy",
-            "name email"
-        )
-        .sort({
-            createdAt: -1
-        });
+        const jobs =
+            await Job.find({
+                status: "Open"
+            })
+            .populate(
+                "postedBy",
+                "name email"
+            )
+            .sort({
+                createdAt: -1
+            });
 
 
         res.status(200).json({
@@ -209,6 +212,57 @@ export const getAllJobs = async (req, res) => {
 
 
 // ==========================================
+// GET ALL JOBS - ADMIN
+// OPEN + CLOSED
+// ==========================================
+
+export const getAdminJobs = async (req, res) => {
+
+    try {
+
+        const jobs =
+            await Job.find()
+            .populate(
+                "postedBy",
+                "name email"
+            )
+            .sort({
+                createdAt: -1
+            });
+
+
+        res.status(200).json({
+
+            success: true,
+
+            data: jobs
+
+        });
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Get Admin Jobs Error:",
+            error
+        );
+
+        res.status(500).json({
+
+            success: false,
+
+            message:
+                "Failed to load admin jobs."
+
+        });
+
+    }
+
+};
+
+
+// ==========================================
 // GET SINGLE JOB
 // ==========================================
 
@@ -219,7 +273,8 @@ export const getJobById = async (req, res) => {
         const job =
             await Job.findById(
                 req.params.id
-            ).populate(
+            )
+            .populate(
                 "postedBy",
                 "name email"
             );
@@ -286,7 +341,7 @@ export const updateJob = async (req, res) => {
                 req.body,
 
                 {
-                    new: true,
+                    returnDocument: "after",
                     runValidators: true
                 }
 

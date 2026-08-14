@@ -18,6 +18,7 @@ import Interviews from "./pages/Interviews";
 import InterviewHistory from "./pages/InterviewHistory";
 import Help from "./pages/Help";
 import Jobs from "./pages/Jobs";
+import JobDetails from "./pages/JobDetails";
 
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminUsers from "./pages/AdminUsers";
@@ -109,11 +110,15 @@ function App() {
                     element={<InterviewHistory />}
                 />
 
+                 <Route
+                    path="/jobs/:id"
+                    element={<JobDetails />}
+                />            
+
                 <Route
                     path="/jobs"
                     element={<Jobs />}
                 />
-
                 <Route
                     path="/help"
                     element={<Help />}

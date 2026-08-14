@@ -1,19 +1,31 @@
 import { useEffect, useState } from "react";
 
-import { FaBriefcase } from "react-icons/fa";
+import {
+    FaBriefcase,
+    FaEdit,
+    FaTrash
+} from "react-icons/fa";
 
 import AdminLayout from "../components/admin/AdminLayout";
 
 import JobForm from "../components/admin/JobForm";
 
-import { getJobs } from "../services/jobService";
+import {
+    getAdminJobs,
+    deleteJob,
+    updateJob
+} from "../services/jobService";
 
 import "../styles/adminjobs.css";
+
 
 function AdminJobs() {
 
     const [showForm, setShowForm] =
         useState(false);
+
+    const [editingJob, setEditingJob] =
+        useState(null);
 
     const [jobs, setJobs] =
         useState([]);
@@ -21,6 +33,16 @@ function AdminJobs() {
     const [loading, setLoading] =
         useState(true);
 
+    const [deletingId, setDeletingId] =
+        useState(null);
+
+    const [updatingId, setUpdatingId] =
+        useState(null);
+
+
+    // ==========================================
+    // LOAD JOBS
+    // ==========================================
 
     const loadJobs = async () => {
 
@@ -28,23 +50,29 @@ function AdminJobs() {
 
             setLoading(true);
 
-            const data = await getJobs();
+            const data =
+                await getAdminJobs();
+
 
             if (data.success) {
 
-                setJobs(data.data || []);
+                setJobs(
+                    data.data || []
+                );
 
             }
 
         }
+
         catch (error) {
 
-            console.log(
+            console.error(
                 "Failed to load jobs:",
                 error
             );
 
         }
+
         finally {
 
             setLoading(false);
@@ -61,25 +89,214 @@ function AdminJobs() {
     }, []);
 
 
-    const openForm = () => {
+    // ==========================================
+    // CREATE JOB
+    // ==========================================
+
+    const openCreateForm = () => {
+
+        setEditingJob(null);
 
         setShowForm(true);
 
     };
 
 
+    // ==========================================
+    // EDIT JOB
+    // ==========================================
+
+    const openEditForm = (job) => {
+
+        setEditingJob(job);
+
+        setShowForm(true);
+
+    };
+
+
+    // ==========================================
+    // CLOSE FORM
+    // ==========================================
+
     const closeForm = () => {
 
         setShowForm(false);
 
+        setEditingJob(null);
+
     };
 
+
+    // ==========================================
+    // DELETE JOB
+    // ==========================================
+
+    const handleDelete = async (job) => {
+
+        const confirmed =
+            window.confirm(
+                `Are you sure you want to delete "${job.title}"?`
+            );
+
+
+        if (!confirmed) {
+
+            return;
+
+        }
+
+
+        try {
+
+            setDeletingId(job._id);
+
+
+            const data =
+                await deleteJob(
+                    job._id
+                );
+
+
+            if (data.success) {
+
+                setJobs(
+                    previousJobs =>
+                        previousJobs.filter(
+                            item =>
+                                item._id !== job._id
+                        )
+                );
+
+            }
+
+            else {
+
+                alert(
+                    data.message ||
+                    "Failed to delete job."
+                );
+
+            }
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Failed to delete job:",
+                error
+            );
+
+
+            alert(
+                error.response?.data?.message ||
+                "Failed to delete job."
+            );
+
+        }
+
+        finally {
+
+            setDeletingId(null);
+
+        }
+
+    };
+
+
+    // ==========================================
+    // TOGGLE JOB STATUS
+    // ==========================================
+
+    const handleToggleStatus = async (job) => {
+
+        const newStatus =
+            job.status === "Open"
+                ? "Closed"
+                : "Open";
+
+
+        try {
+
+            setUpdatingId(job._id);
+
+
+            const data =
+                await updateJob(
+                    job._id,
+                    {
+                        status: newStatus
+                    }
+                );
+
+
+            if (data.success) {
+
+                setJobs(
+                    previousJobs =>
+                        previousJobs.map(
+                            item =>
+                                item._id === job._id
+                                    ? {
+                                        ...item,
+                                        status: newStatus
+                                    }
+                                    : item
+                        )
+                );
+
+            }
+
+            else {
+
+                alert(
+                    data.message ||
+                    "Failed to update job status."
+                );
+
+            }
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Failed to update job status:",
+                error
+            );
+
+
+            alert(
+                error.response?.data?.message ||
+                "Failed to update job status."
+            );
+
+        }
+
+        finally {
+
+            setUpdatingId(null);
+
+        }
+
+    };
+
+
+    // ==========================================
+    // MAIN RETURN
+    // ==========================================
 
     return (
 
         <AdminLayout>
 
             <div className="admin-jobs">
+
+
+                {/* =================================
+                    HEADER
+                ================================= */}
 
                 <div className="admin-jobs-header">
 
@@ -98,7 +315,7 @@ function AdminJobs() {
 
                     <button
                         className="create-job-btn"
-                        onClick={openForm}
+                        onClick={openCreateForm}
                     >
                         + Post New Job
                     </button>
@@ -106,7 +323,14 @@ function AdminJobs() {
                 </div>
 
 
+                {/* =================================
+                    STATISTICS
+                ================================= */}
+
                 <div className="jobs-overview">
+
+
+                    {/* TOTAL */}
 
                     <div className="job-stat-card">
 
@@ -120,6 +344,8 @@ function AdminJobs() {
 
                     </div>
 
+
+                    {/* OPEN */}
 
                     <div className="job-stat-card">
 
@@ -139,6 +365,8 @@ function AdminJobs() {
                     </div>
 
 
+                    {/* CLOSED */}
+
                     <div className="job-stat-card">
 
                         <span>
@@ -156,10 +384,16 @@ function AdminJobs() {
 
                     </div>
 
+
                 </div>
 
 
+                {/* =================================
+                    JOB LIST
+                ================================= */}
+
                 <div className="admin-jobs-list">
+
 
                     <div className="jobs-list-header">
 
@@ -169,6 +403,10 @@ function AdminJobs() {
 
                     </div>
 
+
+                    {/* ============================
+                        LOADING
+                    ============================ */}
 
                     {
                         loading ? (
@@ -182,6 +420,11 @@ function AdminJobs() {
                             </div>
 
                         ) : jobs.length === 0 ? (
+
+
+                            /* ========================
+                               EMPTY
+                            ======================== */
 
                             <div className="empty-jobs">
 
@@ -199,76 +442,198 @@ function AdminJobs() {
 
                         ) : (
 
+
+                            /* ========================
+                               JOB TABLE
+                            ======================== */
+
                             <div className="jobs-table">
 
                                 {
-                                    jobs.map(job => (
+                                    jobs.map(
+                                        job => (
 
-                                        <div
-                                            className="admin-job-item"
-                                            key={job._id}
-                                        >
+                                            <div
+                                                className="admin-job-item"
+                                                key={job._id}
+                                            >
 
-                                            <div>
 
-                                                <h3>
-                                                    {job.title}
-                                                </h3>
+                                                {/* ======================
+                                                    JOB INFO
+                                                ====================== */}
 
-                                                <p>
-                                                    {job.company}
-                                                </p>
+                                                <div className="admin-job-info">
+
+                                                    <h3>
+                                                        {job.title}
+                                                    </h3>
+
+                                                    <p>
+                                                        {job.company}
+                                                    </p>
+
+                                                </div>
+
+
+                                                {/* ======================
+                                                    LOCATION
+                                                ====================== */}
+
+                                                <span>
+                                                    {
+                                                        job.location ||
+                                                        "Remote"
+                                                    }
+                                                </span>
+
+
+                                                {/* ======================
+                                                    EMPLOYMENT TYPE
+                                                ====================== */}
+
+                                                <span>
+                                                    {job.employmentType}
+                                                </span>
+
+
+                                                {/* ======================
+                                                    STATUS
+                                                ====================== */}
+
+                                                <span
+                                                    className={
+                                                        job.status === "Open"
+                                                            ? "job-status open"
+                                                            : "job-status closed"
+                                                    }
+                                                >
+
+                                                    {
+                                                        job.status === "Open"
+                                                            ? "Open"
+                                                            : "Closed"
+                                                    }
+
+                                                </span>
+
+
+                                                {/* ======================
+                                                    ACTIONS
+                                                ====================== */}
+
+                                                <div className="job-actions">
+
+
+                                                    {/* EDIT */}
+
+                                                    <button
+                                                        className="edit-job-btn"
+                                                        title="Edit Job"
+                                                        onClick={() =>
+                                                            openEditForm(job)
+                                                        }
+                                                    >
+
+                                                        <FaEdit />
+
+                                                    </button>
+
+
+                                                    {/* CLOSE / REOPEN */}
+
+                                                    <button
+                                                        className={
+                                                            job.status === "Open"
+                                                                ? "close-job-btn"
+                                                                : "reopen-job-btn"
+                                                        }
+                                                        title={
+                                                            job.status === "Open"
+                                                                ? "Close Job"
+                                                                : "Reopen Job"
+                                                        }
+                                                        disabled={
+                                                            updatingId === job._id
+                                                        }
+                                                        onClick={() =>
+                                                            handleToggleStatus(job)
+                                                        }
+                                                    >
+
+                                                        {
+                                                            updatingId === job._id
+                                                                ? "..."
+                                                                : job.status === "Open"
+                                                                    ? "Close"
+                                                                    : "Reopen"
+                                                        }
+
+                                                    </button>
+
+
+                                                    {/* DELETE */}
+
+                                                    <button
+                                                        className="delete-job-btn"
+                                                        title="Delete Job"
+                                                        disabled={
+                                                            deletingId === job._id
+                                                        }
+                                                        onClick={() =>
+                                                            handleDelete(job)
+                                                        }
+                                                    >
+
+                                                        <FaTrash />
+
+                                                    </button>
+
+
+                                                </div>
+
 
                                             </div>
 
-
-                                            <span>
-                                                {job.location || "Remote"}
-                                            </span>
-
-
-                                            <span>
-                                                {job.employmentType}
-                                            </span>
-
-
-                                            <span
-                                                className={
-                                                    job.status === "Open"
-                                                        ? "job-status open"
-                                                        : "job-status closed"
-                                                }
-                                            >
-                                                {job.status}
-                                            </span>
-
-                                        </div>
-
-                                    ))
+                                        )
+                                    )
                                 }
 
                             </div>
 
                         )
-
                     }
+
 
                 </div>
 
+
+                {/* =================================
+                    CREATE / EDIT FORM
+                ================================= */}
 
                 {
                     showForm && (
 
                         <JobForm
 
+                            job={editingJob}
+
                             onClose={closeForm}
 
-                            onSuccess={loadJobs}
+                            onSuccess={() => {
+
+                                closeForm();
+
+                                loadJobs();
+
+                            }}
 
                         />
 
                     )
                 }
+
 
             </div>
 
@@ -277,5 +642,6 @@ function AdminJobs() {
     );
 
 }
+
 
 export default AdminJobs;

@@ -133,3 +133,29 @@ export const deleteJob = async (id) => {
     return response.data;
 
 };
+
+
+
+
+// ==========================================
+// GET ALL JOBS — ADMIN
+// OPEN + CLOSED
+// ==========================================
+
+export const getAdminJobs = async () => {
+
+    const token =
+        localStorage.getItem("token");
+
+    const response = await api.get(
+        "/jobs/admin",
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+    );
+
+    return response.data;
+
+};

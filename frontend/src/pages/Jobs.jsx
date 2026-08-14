@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+import { useNavigate } from "react-router-dom";
+
 import {
     FaBriefcase,
     FaMapMarkerAlt,
@@ -24,7 +26,8 @@ function Jobs() {
 
     const [selectedJob, setSelectedJob] =
         useState(null);
-
+        
+    const navigate = useNavigate();
 
     // =========================================
     // LOAD JOBS
@@ -276,9 +279,8 @@ function Jobs() {
 
                                 <button
                                     className="view-job-btn"
-                                    onClick={() =>
-                                        setSelectedJob(job)
-                                    }
+                                       onClick={() => navigate(`/jobs/${job._id}`)}
+
                                 >
                                     View Details
                                 </button>

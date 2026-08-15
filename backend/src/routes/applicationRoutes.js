@@ -3,8 +3,7 @@ import express from "express";
 import {
     applyForJob,
     getMyApplications,
-    getAllApplications,
-    getApplicationsByJob,
+    getJobApplications,
     updateApplicationStatus
 } from "../controllers/applicationController.js";
 
@@ -40,19 +39,6 @@ router.get(
 
 
 // ==========================================
-// ADMIN — GET ALL APPLICATIONS
-// IMPORTANT: MUST COME BEFORE /:id
-// ==========================================
-
-router.get(
-    "/admin",
-    protect,
-    adminOnly,
-    getAllApplications
-);
-
-
-// ==========================================
 // ADMIN — GET APPLICATIONS FOR ONE JOB
 // ==========================================
 
@@ -60,7 +46,7 @@ router.get(
     "/job/:jobId",
     protect,
     adminOnly,
-    getApplicationsByJob
+    getJobApplications
 );
 
 
@@ -69,7 +55,7 @@ router.get(
 // ==========================================
 
 router.put(
-    "/:id/status",
+    "/:applicationId/status",
     protect,
     adminOnly,
     updateApplicationStatus

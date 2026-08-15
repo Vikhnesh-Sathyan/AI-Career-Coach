@@ -1,3 +1,4 @@
+
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 
@@ -14,7 +15,10 @@ export const protect = async (req, res, next) => {
             req.headers.authorization;
 
 
-        // Check authorization header
+        // ===============================
+        // CHECK AUTHORIZATION HEADER
+        // ===============================
+
         if (
             !authHeader ||
             !authHeader.startsWith("Bearer ")
@@ -24,18 +28,26 @@ export const protect = async (req, res, next) => {
 
                 success: false,
 
-                message: "Not authorized. Token missing.",
+                message:
+                    "Not authorized. Token missing."
 
             });
+
         }
 
 
-        // Get token
+        // ===============================
+        // GET TOKEN
+        // ===============================
+
         const token =
             authHeader.split(" ")[1];
 
 
-        // Verify token
+        // ===============================
+        // VERIFY TOKEN
+        // ===============================
+
         const decoded =
             jwt.verify(
                 token,
@@ -43,41 +55,15 @@ export const protect = async (req, res, next) => {
             );
 
 
-        // Find user
+        // ===============================
+        // FIND USER
+        // ===============================
+
         const user =
-            await User.findById(decoded.id)
-                .select("-password");
-        if (!user) {
+            await User.findById(
+                decoded.id
+            ).select("-password");
 
-    return res.status(401).json({
-
-        success: false,
-
-        message: "User not found"
-
-    });
-
-}
-
-// ===============================
-// CHECK ACCOUNT STATUS
-// ===============================
-
-if (
-    user.status === "suspended" &&
-    user.role !== "admin"
-) {
-
-    return res.status(403).json({
-
-        success: false,
-
-        message:
-            "Your account has been suspended."
-
-    });
-
-}
 
         if (!user) {
 
@@ -85,19 +71,45 @@ if (
 
                 success: false,
 
-                message: "User not found",
+                message: "User not found"
 
             });
+
         }
 
 
-        // Attach user to request
+        // ===============================
+        // CHECK ACCOUNT STATUS
+        // ===============================
+
+        if (
+            user.status === "suspended" &&
+            user.role !== "admin"
+        ) {
+
+            return res.status(403).json({
+
+                success: false,
+
+                message:
+                    "Your account has been suspended."
+
+            });
+
+        }
+
+
+        // ===============================
+        // ATTACH USER
+        // ===============================
+
         req.user = user;
 
 
         next();
 
     }
+
 
     catch (error) {
 
@@ -111,11 +123,13 @@ if (
 
             success: false,
 
-            message: "Invalid or expired token",
+            message:
+                "Invalid or expired token"
 
         });
 
     }
+
 };
 
 
@@ -138,11 +152,15 @@ export const adminOnly = (
 
             success: false,
 
-            message: "Admin access required",
+            message:
+                "Admin access required"
 
         });
+
     }
 
 
     next();
+
 };
+

@@ -1,4 +1,4 @@
-```js
+
 import Application from "../models/Application.js";
 import Job from "../models/Job.js";
 
@@ -413,4 +413,4 @@ export const updateApplicationStatus = async (req, res) => {
     }
 
 };
-```
+

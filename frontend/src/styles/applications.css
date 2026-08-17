@@ -1,0 +1,675 @@
+/* =========================================================
+   APPLICATIONS PAGE
+   Premium SaaS Dashboard Style
+========================================================= */
+
+.applications-page {
+    min-height: 100vh;
+    padding: 32px;
+    background: #f6f8fc;
+    color: #172033;
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.applications-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 28px;
+}
+
+.applications-header h1 {
+    margin: 0 0 8px;
+    font-size: 30px;
+    font-weight: 750;
+    letter-spacing: -0.7px;
+    color: #111827;
+}
+
+.applications-header p {
+    margin: 0;
+    max-width: 650px;
+    font-size: 14px;
+    line-height: 1.7;
+    color: #667085;
+}
+
+
+/* =========================================================
+   SUMMARY
+========================================================= */
+
+.applications-summary {
+    display: flex;
+    margin-bottom: 24px;
+}
+
+.application-summary-card {
+    position: relative;
+    min-width: 210px;
+    padding: 20px 22px;
+    background: #ffffff;
+    border: 1px solid #e7eaf0;
+    border-radius: 14px;
+    box-shadow:
+        0 1px 2px rgba(16, 24, 40, 0.03),
+        0 6px 18px rgba(16, 24, 40, 0.04);
+    overflow: hidden;
+}
+
+.application-summary-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(
+        90deg,
+        #4f46e5,
+        #7c3aed
+    );
+}
+
+.application-summary-card span {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #667085;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.application-summary-card strong {
+    display: block;
+    font-size: 28px;
+    font-weight: 750;
+    line-height: 1;
+    color: #111827;
+}
+
+
+/* =========================================================
+   APPLICATION LIST
+========================================================= */
+
+.applications-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+
+/* =========================================================
+   APPLICATION CARD
+========================================================= */
+
+.application-card {
+    display: grid;
+    grid-template-columns: 48px minmax(240px, 1fr) auto auto;
+    align-items: center;
+    gap: 18px;
+
+    min-height: 96px;
+    padding: 18px 20px;
+
+    background: #ffffff;
+    border: 1px solid #e7eaf0;
+    border-radius: 16px;
+
+    box-shadow:
+        0 1px 2px rgba(16, 24, 40, 0.025),
+        0 5px 18px rgba(16, 24, 40, 0.035);
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.application-card:hover {
+    transform: translateY(-2px);
+    border-color: #d9dced;
+    box-shadow:
+        0 4px 8px rgba(16, 24, 40, 0.04),
+        0 14px 32px rgba(16, 24, 40, 0.07);
+}
+
+
+/* =========================================================
+   JOB ICON
+========================================================= */
+
+.application-job-icon {
+    width: 48px;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    background: linear-gradient(
+        145deg,
+        #eef2ff,
+        #f5f3ff
+    );
+
+    border: 1px solid #e0e4ff;
+
+    color: #4f46e5;
+    font-size: 18px;
+
+    flex-shrink: 0;
+}
+
+
+/* =========================================================
+   JOB INFORMATION
+========================================================= */
+
+.application-job-info {
+    min-width: 0;
+}
+
+.application-job-info h3 {
+    margin: 0 0 8px;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    color: #172033;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.application-company,
+.application-date {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    font-size: 12px;
+    color: #667085;
+}
+
+.application-company {
+    margin-bottom: 6px;
+}
+
+.application-company svg {
+    color: #7c8799;
+    font-size: 11px;
+}
+
+.application-date svg {
+    color: #98a2b3;
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.application-status-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.application-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 88px;
+    padding: 6px 11px;
+
+    border-radius: 999px;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    border: 1px solid transparent;
+    letter-spacing: 0.1px;
+}
+
+
+/* Applied */
+
+.application-status.applied {
+    color: #475467;
+    background: #f2f4f7;
+    border-color: #e4e7ec;
+}
+
+
+/* Shortlisted */
+
+.application-status.shortlisted {
+    color: #175cd3;
+    background: #eff8ff;
+    border-color: #b2ddff;
+}
+
+
+/* Interview */
+
+.application-status.interview {
+    color: #6941c6;
+    background: #f9f5ff;
+    border-color: #e9d7fe;
+}
+
+
+/* Selected */
+
+.application-status.selected {
+    color: #027a48;
+    background: #ecfdf3;
+    border-color: #abefc6;
+}
+
+
+/* Rejected */
+
+.application-status.rejected {
+    color: #b42318;
+    background: #fef3f2;
+    border-color: #fecdca;
+}
+
+
+/* =========================================================
+   VIEW JOB BUTTON
+========================================================= */
+
+.view-application-btn {
+    height: 38px;
+    padding: 0 14px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+
+    border: 1px solid #d9dce5;
+    border-radius: 9px;
+
+    background: #ffffff;
+    color: #344054;
+
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 650;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.view-application-btn svg {
+    font-size: 12px;
+    color: #667085;
+}
+
+.view-application-btn:hover {
+    background: #f8f9fc;
+    border-color: #c7cad5;
+    color: #4338ca;
+}
+
+.view-application-btn:hover svg {
+    color: #4f46e5;
+}
+
+.view-application-btn:active {
+    transform: scale(0.97);
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.applications-empty {
+    min-height: 360px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    padding: 50px 20px;
+
+    background: #ffffff;
+    border: 1px dashed #d9dee8;
+    border-radius: 18px;
+
+    text-align: center;
+}
+
+.applications-empty > svg {
+    width: 52px;
+    height: 52px;
+
+    padding: 15px;
+    margin-bottom: 18px;
+
+    box-sizing: border-box;
+
+    border-radius: 14px;
+
+    color: #4f46e5;
+    background: #eef2ff;
+}
+
+.applications-empty h3 {
+    margin: 0 0 8px;
+
+    font-size: 17px;
+    font-weight: 700;
+
+    color: #172033;
+}
+
+.applications-empty p {
+    margin: 0 0 22px;
+
+    font-size: 13px;
+    color: #667085;
+}
+
+
+/* =========================================================
+   BROWSE JOBS BUTTON
+========================================================= */
+
+.applications-empty button {
+    height: 40px;
+    padding: 0 18px;
+
+    border: none;
+    border-radius: 9px;
+
+    background: linear-gradient(
+        135deg,
+        #4f46e5,
+        #6366f1
+    );
+
+    color: #ffffff;
+
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 650;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 4px 10px rgba(79, 70, 229, 0.18);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.applications-empty button:hover {
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 7px 16px rgba(79, 70, 229, 0.24);
+}
+
+.applications-empty button:active {
+    transform: translateY(0);
+}
+
+
+/* =========================================================
+   LOADING / ERROR MESSAGE
+========================================================= */
+
+.applications-message {
+    min-height: 420px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    padding: 40px;
+
+    background: #ffffff;
+    border: 1px solid #e7eaf0;
+    border-radius: 18px;
+
+    text-align: center;
+
+    box-shadow:
+        0 1px 2px rgba(16, 24, 40, 0.03),
+        0 8px 24px rgba(16, 24, 40, 0.04);
+}
+
+.applications-message p {
+    margin: 0;
+
+    font-size: 14px;
+    color: #667085;
+}
+
+
+/* =========================================================
+   ERROR STATE
+========================================================= */
+
+.applications-message.error svg {
+    width: 48px;
+    height: 48px;
+
+    padding: 13px;
+    margin-bottom: 16px;
+
+    box-sizing: border-box;
+
+    border-radius: 13px;
+
+    color: #b42318;
+    background: #fef3f2;
+}
+
+.applications-message.error h3 {
+    margin: 0 0 7px;
+
+    font-size: 16px;
+    font-weight: 700;
+
+    color: #172033;
+}
+
+.applications-message.error p {
+    max-width: 450px;
+    margin-bottom: 20px;
+
+    line-height: 1.6;
+    color: #667085;
+}
+
+.applications-message.error button {
+    height: 38px;
+    padding: 0 16px;
+
+    border: 1px solid #d9dce5;
+    border-radius: 9px;
+
+    background: #ffffff;
+    color: #344054;
+
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 650;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+.applications-message.error button:hover {
+    background: #f8f9fc;
+    border-color: #c5cad5;
+    color: #4338ca;
+}
+
+
+/* =========================================================
+   RESPONSIVE — TABLET
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .applications-page {
+        padding: 24px;
+    }
+
+    .application-card {
+        grid-template-columns: 44px minmax(0, 1fr) auto;
+        gap: 15px;
+    }
+
+    .application-status-wrapper {
+        grid-column: 2;
+        justify-content: flex-start;
+    }
+
+    .view-application-btn {
+        grid-column: 3;
+        grid-row: 1 / span 2;
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE — MOBILE
+========================================================= */
+
+@media (max-width: 640px) {
+
+    .applications-page {
+        padding: 18px 14px;
+    }
+
+    .applications-header {
+        margin-bottom: 22px;
+    }
+
+    .applications-header h1 {
+        font-size: 24px;
+        letter-spacing: -0.4px;
+    }
+
+    .applications-header p {
+        font-size: 13px;
+    }
+
+    .applications-summary {
+        margin-bottom: 18px;
+    }
+
+    .application-summary-card {
+        width: 100%;
+        min-width: 0;
+        padding: 17px 18px;
+    }
+
+    .application-summary-card strong {
+        font-size: 25px;
+    }
+
+    .applications-list {
+        gap: 10px;
+    }
+
+    .application-card {
+        display: grid;
+        grid-template-columns: 42px minmax(0, 1fr);
+        gap: 14px;
+
+        padding: 16px;
+
+        border-radius: 14px;
+    }
+
+    .application-job-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 11px;
+        font-size: 16px;
+    }
+
+    .application-job-info h3 {
+        font-size: 14px;
+    }
+
+    .application-status-wrapper {
+        grid-column: 2;
+        justify-content: flex-start;
+    }
+
+    .application-status {
+        min-width: auto;
+        padding: 5px 9px;
+        font-size: 10px;
+    }
+
+    .view-application-btn {
+        grid-column: 1 / -1;
+        grid-row: auto;
+
+        width: 100%;
+        height: 38px;
+    }
+
+    .applications-empty {
+        min-height: 330px;
+        padding: 35px 18px;
+    }
+
+}
+
+
+/* =========================================================
+   VERY SMALL SCREENS
+========================================================= */
+
+@media (max-width: 400px) {
+
+    .applications-header h1 {
+        font-size: 22px;
+    }
+
+    .application-card {
+        gap: 11px;
+        padding: 14px;
+    }
+
+    .application-company,
+    .application-date {
+        font-size: 11px;
+    }
+
+}

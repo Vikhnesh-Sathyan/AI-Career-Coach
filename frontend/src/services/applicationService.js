@@ -68,3 +68,16 @@ export const updateApplicationStatus = async (
     return response.data;
 
 };
+
+export const getAllApplications = async () => {
+
+    const response =
+        await api.get(
+            "/applications/admin"
+        );
+
+    return response.data;
+
+};
+
+

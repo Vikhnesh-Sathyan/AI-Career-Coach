@@ -3,6 +3,7 @@ import express from "express";
 import {
     applyForJob,
     getMyApplications,
+    getAllApplications,
     getJobApplications,
     updateApplicationStatus
 } from "../controllers/applicationController.js";
@@ -37,6 +38,16 @@ router.get(
     getMyApplications
 );
 
+// ==========================================
+// ADMIN — GET ALL APPLICATIONS
+// ==========================================
+
+router.get(
+    "/admin",
+    protect,
+    adminOnly,
+    getAllApplications
+);
 
 // ==========================================
 // ADMIN — GET APPLICATIONS FOR ONE JOB

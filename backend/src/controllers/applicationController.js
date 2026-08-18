@@ -414,3 +414,57 @@ export const updateApplicationStatus = async (req, res) => {
 
 };
 
+
+
+// ==========================================
+// GET ALL APPLICATIONS - ADMIN
+// ==========================================
+
+export const getAllApplications = async (req, res) => {
+
+    try {
+
+        const applications =
+            await Application.find()
+                .populate(
+                    "applicant",
+                    "name email"
+                )
+                .populate(
+                    "job",
+                    "title company location status"
+                )
+                .sort({
+                    createdAt: -1
+                });
+
+
+        res.status(200).json({
+
+            success: true,
+
+            data: applications
+
+        });
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Get All Applications Error:",
+            error
+        );
+
+        res.status(500).json({
+
+            success: false,
+
+            message:
+                "Failed to load applications."
+
+        });
+
+    }
+
+};

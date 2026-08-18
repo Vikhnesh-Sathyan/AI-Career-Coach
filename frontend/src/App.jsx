@@ -24,7 +24,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import AdminUsers from "./pages/AdminUsers";
 import AdminSupport from "./pages/AdminSupport";
 import AdminJobs from "./pages/AdminJobs";
-
+import AdminApplications from "./pages/AdminApplications";
 
 import AdminProtectedRoute
     from "./components/admin/AdminProtectedRoute";
@@ -198,6 +198,16 @@ function App() {
                             to="/login"
                             replace
                         />
+                    }
+                />
+                <Route
+                     path="/admin/applications"
+                     element={
+                        <AdminProtectedRoute>
+
+                          <AdminApplications />
+
+                        </AdminProtectedRoute>
                     }
                 />
 

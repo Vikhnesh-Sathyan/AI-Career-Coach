@@ -1,19 +1,20 @@
 import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 import {
     FaArrowLeft,
     FaBriefcase,
+    FaBuilding,
+    FaCalendarAlt,
+    FaGraduationCap,
     FaMapMarkerAlt,
     FaClock,
-    FaGraduationCap,
-    FaMoneyBillWave,
-    FaCalendarAlt,
+    FaCheckCircle,
     FaExternalLinkAlt
 } from "react-icons/fa";
 
-import { useNavigate, useParams } from "react-router-dom";
-
 import { getJobById } from "../services/jobService";
+import { applyForJob } from "../services/applicationService";
 
 import "../styles/jobdetails.css";
 
@@ -25,14 +26,27 @@ function JobDetails() {
     const navigate = useNavigate();
 
 
+    // ==========================================
+    // STATE
+    // ==========================================
+
     const [job, setJob] =
         useState(null);
 
     const [loading, setLoading] =
         useState(true);
 
+    const [applying, setApplying] =
+        useState(false);
+
     const [error, setError] =
         useState("");
+
+    const [success, setSuccess] =
+        useState("");
+
+    const [alreadyApplied, setAlreadyApplied] =
+        useState(false);
 
 
     // ==========================================
@@ -46,7 +60,6 @@ function JobDetails() {
             setLoading(true);
 
             setError("");
-
 
             const data =
                 await getJobById(id);
@@ -62,7 +75,7 @@ function JobDetails() {
 
                 setError(
                     data.message ||
-                    "Unable to load job."
+                    "Failed to load job."
                 );
 
             }
@@ -72,14 +85,13 @@ function JobDetails() {
         catch (error) {
 
             console.error(
-                "Failed to load job:",
+                "Load Job Error:",
                 error
             );
 
-
             setError(
                 error.response?.data?.message ||
-                "Unable to load job. Please try again."
+                "Failed to load job."
             );
 
         }
@@ -98,6 +110,113 @@ function JobDetails() {
         loadJob();
 
     }, [id]);
+
+
+    // ==========================================
+    // APPLY FOR JOB
+    // ==========================================
+
+    const handleApply = async () => {
+
+        try {
+
+            setApplying(true);
+
+            setError("");
+
+            setSuccess("");
+
+
+            const data =
+                await applyForJob(id);
+
+
+            if (data.success) {
+
+                setSuccess(
+                    "Application submitted successfully!"
+                );
+
+                setAlreadyApplied(true);
+
+            }
+
+            else {
+
+                setError(
+                    data.message ||
+                    "Failed to submit application."
+                );
+
+            }
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Apply Job Error:",
+                error
+            );
+
+
+            const message =
+                error.response?.data?.message ||
+                "Failed to submit application.";
+
+
+            setError(message);
+
+
+            // ==========================================
+            // DUPLICATE APPLICATION
+            // ==========================================
+
+            if (
+                message
+                    .toLowerCase()
+                    .includes("already applied")
+            ) {
+
+                setAlreadyApplied(true);
+
+            }
+
+        }
+
+        finally {
+
+            setApplying(false);
+
+        }
+
+    };
+
+
+    // ==========================================
+    // FORMAT DATE
+    // ==========================================
+
+    const formatDate = (date) => {
+
+        if (!date) {
+
+            return "No deadline";
+
+        }
+
+
+        return new Date(date)
+            .toLocaleDateString(
+                "en-IN",
+                {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric"
+                }
+            );
+
+    };
 
 
     // ==========================================
@@ -129,7 +248,7 @@ function JobDetails() {
     // ERROR
     // ==========================================
 
-    if (error || !job) {
+    if (error && !job) {
 
         return (
 
@@ -137,19 +256,13 @@ function JobDetails() {
 
                 <div className="job-details-message error">
 
-                    <FaBriefcase />
-
                     <h3>
-                        Job not found
+                        Unable to load job
                     </h3>
 
                     <p>
-                        {
-                            error ||
-                            "This job is no longer available."
-                        }
+                        {error}
                     </p>
-
 
                     <button
                         onClick={() =>
@@ -168,6 +281,13 @@ function JobDetails() {
     }
 
 
+    if (!job) {
+
+        return null;
+
+    }
+
+
     // ==========================================
     // JOB STATUS
     // ==========================================
@@ -181,9 +301,9 @@ function JobDetails() {
         <div className="job-details-page">
 
 
-            {/* =================================
+            {/* ==========================================
                 BACK BUTTON
-            ================================= */}
+            ========================================== */}
 
             <button
                 className="back-to-jobs"
@@ -201,345 +321,348 @@ function JobDetails() {
             </button>
 
 
-            {/* =================================
+
+            {/* ==========================================
                 JOB HEADER
-            ================================= */}
+            ========================================== */}
 
             <div className="job-details-header">
 
+                <div className="job-details-title-section">
 
-                <div className="job-company-icon">
 
-                    <FaBriefcase />
+                    <div className="job-details-icon">
+
+                        <FaBriefcase />
+
+                    </div>
+
+
+                    <div>
+
+                        <div className="job-title-row">
+
+                            <h1>
+                                {job.title}
+                            </h1>
+
+
+                            <span
+                                className={
+                                    `job-status ${
+                                        isOpen
+                                            ? "open"
+                                            : "closed"
+                                    }`
+                                }
+                            >
+                                {job.status}
+                            </span>
+
+                        </div>
+
+
+                        <div className="job-company">
+
+                            <FaBuilding />
+
+                            <span>
+                                {job.company}
+                            </span>
+
+                        </div>
+
+                    </div>
 
                 </div>
 
 
-                <div className="job-header-info">
+
+                {/* ==========================================
+                    JOB META
+                ========================================== */}
+
+                <div className="job-meta">
 
 
-                    <div className="job-title-row">
+                    {job.location && (
 
-
-                        <h1>
-                            {job.title}
-                        </h1>
-
-
-                        <span
-                            className={
-                                isOpen
-                                    ? "details-job-status open"
-                                    : "details-job-status closed"
-                            }
-                        >
-
-                            {isOpen
-                                ? "Open"
-                                : "Closed"
-                            }
-
-                        </span>
-
-
-                    </div>
-
-
-                    <h2>
-                        {job.company}
-                    </h2>
-
-
-                    <div className="job-meta">
-
-
-                        <span>
+                        <div className="job-meta-item">
 
                             <FaMapMarkerAlt />
 
-                            {job.location || "Remote"}
+                            <span>
+                                {job.location}
+                            </span>
 
-                        </span>
+                        </div>
+
+                    )}
 
 
-                        <span>
+                    {job.employmentType && (
+
+                        <div className="job-meta-item">
 
                             <FaClock />
 
-                            {job.employmentType}
+                            <span>
+                                {job.employmentType}
+                            </span>
 
-                        </span>
+                        </div>
+
+                    )}
 
 
-                        <span>
+                    {job.experience && (
+
+                        <div className="job-meta-item">
 
                             <FaGraduationCap />
 
-                            {job.experience || "Fresher"}
+                            <span>
+                                {job.experience}
+                            </span>
 
-                        </span>
+                        </div>
 
-
-                    </div>
+                    )}
 
                 </div>
 
             </div>
 
 
-            {/* =================================
+
+            {/* ==========================================
                 MAIN CONTENT
-            ================================= */}
+            ========================================== */}
 
             <div className="job-details-layout">
 
 
-                <main className="job-details-main">
+                {/* ==========================================
+                    LEFT SIDE
+                ========================================== */}
+
+                <div className="job-details-main">
 
 
-                    {/* =================================
-                        DESCRIPTION
-                    ================================= */}
+                    {/* DESCRIPTION */}
 
                     <section className="job-details-section">
 
-                        <h3>
+                        <h2>
                             Job Description
-                        </h3>
+                        </h2>
 
-
-                        <p className="full-job-description">
+                        <div className="job-description">
 
                             {job.description}
-
-                        </p>
-
-                    </section>
-
-
-                    {/* =================================
-                        SKILLS
-                    ================================= */}
-
-                    {
-                        job.skills?.length > 0 && (
-
-                            <section className="job-details-section">
-
-                                <h3>
-                                    Required Skills
-                                </h3>
-
-
-                                <div className="details-skills">
-
-                                    {
-                                        job.skills.map(
-                                            (skill, index) => (
-
-                                                <span
-                                                    key={index}
-                                                >
-                                                    {skill}
-                                                </span>
-
-                                            )
-                                        )
-                                    }
-
-                                </div>
-
-                            </section>
-
-                        )
-                    }
-
-
-                    {/* =================================
-                        ADDITIONAL INFORMATION
-                    ================================= */}
-
-                    <section className="job-details-section">
-
-                        <h3>
-                            Additional Information
-                        </h3>
-
-
-                        <div className="additional-info">
-
-
-                            {/* SALARY */}
-
-                            {
-                                job.salary && (
-
-                                    <div className="info-item">
-
-                                        <FaMoneyBillWave />
-
-                                        <div>
-
-                                            <span>
-                                                Salary
-                                            </span>
-
-                                            <strong>
-                                                {job.salary}
-                                            </strong>
-
-                                        </div>
-
-                                    </div>
-
-                                )
-                            }
-
-
-                            {/* EMPLOYMENT TYPE */}
-
-                            <div className="info-item">
-
-                                <FaBriefcase />
-
-                                <div>
-
-                                    <span>
-                                        Employment Type
-                                    </span>
-
-                                    <strong>
-                                        {job.employmentType}
-                                    </strong>
-
-                                </div>
-
-                            </div>
-
-
-                            {/* EXPERIENCE */}
-
-                            <div className="info-item">
-
-                                <FaGraduationCap />
-
-                                <div>
-
-                                    <span>
-                                        Experience
-                                    </span>
-
-                                    <strong>
-                                        {
-                                            job.experience ||
-                                            "Fresher"
-                                        }
-                                    </strong>
-
-                                </div>
-
-                            </div>
-
-
-                            {/* DEADLINE */}
-
-                            {
-                                job.applicationDeadline && (
-
-                                    <div className="info-item">
-
-                                        <FaCalendarAlt />
-
-                                        <div>
-
-                                            <span>
-                                                Application Deadline
-                                            </span>
-
-                                            <strong>
-
-                                                {
-                                                    new Date(
-                                                        job.applicationDeadline
-                                                    ).toLocaleDateString()
-                                                }
-
-                                            </strong>
-
-                                        </div>
-
-                                    </div>
-
-                                )
-                            }
-
 
                         </div>
 
                     </section>
 
-                </main>
 
 
-                {/* =================================
-                    APPLY CARD
-                ================================= */}
+                    {/* SKILLS */}
 
-                <aside className="job-apply-card">
+                    {job.skills &&
+                        job.skills.length > 0 && (
 
+                            <section
+                                className="job-details-section"
+                            >
 
-                    <h3>
-
-                        {
-                            isOpen
-                                ? "Interested in this job?"
-                                : "Applications are closed"
-                        }
-
-                    </h3>
+                                <h2>
+                                    Required Skills
+                                </h2>
 
 
-                    <p>
+                                <div className="job-skills">
 
-                        {
-                            isOpen
-                                ? "Review the job requirements and apply through the provided application link."
-                                : "This position is no longer accepting applications."
-                        }
+                                    {job.skills.map(
+                                        (skill, index) => (
 
-                    </p>
+                                            <span
+                                                key={index}
+                                                className="job-skill"
+                                            >
+                                                {skill}
+                                            </span>
+
+                                        )
+                                    )}
+
+                                </div>
+
+                            </section>
+
+                        )}
 
 
-                    {/* =================================
-                        OPEN JOB
-                    ================================= */}
 
-                    {
-                        isOpen ? (
+                    {/* SALARY */}
 
-                            job.jobUrl ? (
+                    {job.salary && (
 
-                                <a
-                                    href={job.jobUrl}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="apply-job-btn"
+                        <section
+                            className="job-details-section"
+                        >
+
+                            <h2>
+                                Salary
+                            </h2>
+
+                            <p className="job-salary">
+
+                                {job.salary}
+
+                            </p>
+
+                        </section>
+
+                    )}
+
+
+
+                    {/* DEADLINE */}
+
+                    {job.applicationDeadline && (
+
+                        <section
+                            className="job-details-section"
+                        >
+
+                            <h2>
+                                Application Deadline
+                            </h2>
+
+                            <div className="job-deadline">
+
+                                <FaCalendarAlt />
+
+                                <span>
+
+                                    {formatDate(
+                                        job.applicationDeadline
+                                    )}
+
+                                </span>
+
+                            </div>
+
+                        </section>
+
+                    )}
+
+                </div>
+
+
+
+                {/* ==========================================
+                    RIGHT SIDE
+                ========================================== */}
+
+                <aside className="job-details-sidebar">
+
+
+                    <div className="apply-card">
+
+
+                        <h2>
+                            Interested in this job?
+                        </h2>
+
+
+                        <p>
+
+                            Apply directly through
+                            AI Career Coach and track
+                            your application status.
+
+                        </p>
+
+
+
+                        {/* ==========================================
+                            SUCCESS MESSAGE
+                        ========================================== */}
+
+                        {success && (
+
+                            <div className="application-success">
+
+                                <FaCheckCircle />
+
+                                <span>
+                                    {success}
+                                </span>
+
+                            </div>
+
+                        )}
+
+
+
+                        {/* ==========================================
+                            ERROR MESSAGE
+                        ========================================== */}
+
+                        {error && job && (
+
+                            <div className="application-error">
+
+                                {error}
+
+                            </div>
+
+                        )}
+
+
+
+                        {/* ==========================================
+                            APPLY BUTTON
+                        ========================================== */}
+
+                        {isOpen ? (
+
+                            alreadyApplied ? (
+
+                                <button
+                                    className="already-applied-btn"
+                                    disabled
                                 >
 
-                                    Apply Now
+                                    <FaCheckCircle />
 
-                                    <FaExternalLinkAlt />
+                                    Already Applied
 
-                                </a>
+                                </button>
 
                             ) : (
 
                                 <button
-                                    className="apply-job-btn disabled"
-                                    disabled
+                                    className="apply-job-btn"
+                                    onClick={handleApply}
+                                    disabled={applying}
                                 >
 
-                                    Application Link Unavailable
+                                    {applying ? (
+
+                                        "Submitting..."
+
+                                    ) : (
+
+                                        <>
+                                            <FaCheckCircle />
+
+                                            Apply Now
+                                        </>
+
+                                    )}
 
                                 </button>
 
@@ -547,37 +670,63 @@ function JobDetails() {
 
                         ) : (
 
-                            /* =================================
-                               CLOSED JOB
-                            ================================= */
-
                             <button
-                                className="apply-job-btn disabled"
+                                className="closed-job-btn"
                                 disabled
                             >
 
-                                Applications Closed
+                                Job Closed
 
                             </button>
 
-                        )
-                    }
+                        )}
 
 
-                    <button
-                        className="secondary-back-btn"
-                        onClick={() =>
-                            navigate("/jobs")
-                        }
-                    >
 
-                        Browse More Jobs
+                        {/* ==========================================
+                            APPLICATIONS
+                        ========================================== */}
 
-                    </button>
+                        <button
+                            className="view-applications-btn"
+                            onClick={() =>
+                                navigate(
+                                    "/applications"
+                                )
+                            }
+                        >
 
+                            View My Applications
+
+                        </button>
+
+
+
+                        {/* ==========================================
+                            EXTERNAL URL
+                            OPTIONAL
+                        ========================================== */}
+
+                        {job.jobUrl && (
+
+                            <a
+                                href={job.jobUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="external-job-link"
+                            >
+
+                                <FaExternalLinkAlt />
+
+                                External Application
+
+                            </a>
+
+                        )}
+
+                    </div>
 
                 </aside>
-
 
             </div>
 

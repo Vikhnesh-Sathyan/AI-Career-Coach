@@ -1,20 +1,44 @@
-/* =========================================
-   ADMIN APPLICATIONS PAGE
-========================================= */
+/* =========================================================
+   ADMIN APPLICATIONS
+   Premium SaaS / Modern Admin Dashboard
+========================================================= */
 
 .admin-applications {
     width: 100%;
     min-height: 100%;
-    padding: 10px 5px 40px;
+    padding: 42px 46px 60px;
+
+    box-sizing: border-box;
+
+    color: #f8fafc;
+
+    background:
+        radial-gradient(
+            circle at 85% 0%,
+            rgba(59, 130, 246, 0.08),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 10% 20%,
+            rgba(124, 58, 237, 0.05),
+            transparent 28%
+        );
 }
 
 
-/* =========================================
+/* =========================================================
    HEADER
-========================================= */
+========================================================= */
 
 .admin-applications-header {
-    margin-bottom: 30px;
+    display: flex;
+
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 25px;
+
+    margin-bottom: 32px;
 }
 
 .admin-applications-header h1 {
@@ -22,103 +46,238 @@
 
     color: #f8fafc;
 
-    font-size: 32px;
-    font-weight: 700;
+    font-size: 34px;
+    line-height: 1.15;
+
+    font-weight: 750;
+
+    letter-spacing: -0.8px;
 }
 
 .admin-applications-header p {
     margin: 0;
 
-    color: #94a3b8;
+    color: #8495b0;
 
     font-size: 15px;
+    line-height: 1.6;
 }
 
 
-/* =========================================
-   SUMMARY
-========================================= */
+/* =========================================================
+   REFRESH BUTTON
+========================================================= */
+
+.refresh-applications-btn {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 9px;
+
+    min-height: 42px;
+
+    padding: 0 16px;
+
+    border: 1px solid
+        rgba(148, 163, 184, 0.16);
+
+    border-radius: 11px;
+
+    background:
+        rgba(255, 255, 255, 0.035);
+
+    color: #cbd5e1;
+
+    font-size: 13px;
+    font-weight: 650;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 5px 18px rgba(0, 0, 0, 0.10);
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease,
+        color 0.2s ease;
+}
+
+.refresh-applications-btn svg {
+    font-size: 13px;
+
+    color: #7aa7ff;
+}
+
+.refresh-applications-btn:hover {
+    transform: translateY(-1px);
+
+    border-color:
+        rgba(96, 165, 250, 0.32);
+
+    background:
+        rgba(59, 130, 246, 0.09);
+
+    color: #f8fafc;
+}
+
+.refresh-applications-btn:active {
+    transform: translateY(0);
+}
+
+
+/* =========================================================
+   SUMMARY STATISTICS
+========================================================= */
 
 .admin-applications-summary {
     display: grid;
 
     grid-template-columns:
-        repeat(4, 1fr);
+        repeat(4, minmax(0, 1fr));
 
     gap: 18px;
 
     margin-bottom: 30px;
 }
 
-.admin-application-stat {
-    min-height: 105px;
 
-    padding: 22px;
+/* =========================================================
+   STAT CARD
+========================================================= */
+
+.admin-application-stat {
+    position: relative;
+
+    min-height: 128px;
+
+    padding: 23px;
 
     box-sizing: border-box;
 
+    overflow: hidden;
+
     display: flex;
     flex-direction: column;
-    justify-content: center;
-
-    background: #0f172a;
+    justify-content: space-between;
 
     border: 1px solid
-        rgba(255, 255, 255, 0.07);
+        rgba(148, 163, 184, 0.12);
 
     border-radius: 17px;
 
-    transition: all 0.25s ease;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(20, 31, 53, 0.98),
+            rgba(13, 23, 42, 0.98)
+        );
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.12);
+
+    transition:
+        transform 0.25s ease,
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+
+/* subtle glow */
+
+.admin-application-stat::before {
+    content: "";
+
+    position: absolute;
+
+    width: 100px;
+    height: 100px;
+
+    top: -55px;
+    right: -40px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(59, 130, 246, 0.10);
+
+    filter: blur(8px);
+
+    pointer-events: none;
+}
+
+.admin-application-stat::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    height: 2px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(96, 165, 250, 0.55),
+            transparent
+        );
+
+    opacity: 0;
+
+    transition: opacity 0.25s ease;
 }
 
 .admin-application-stat:hover {
     transform: translateY(-3px);
 
     border-color:
-        rgba(59, 130, 246, 0.30);
+        rgba(96, 165, 250, 0.24);
 
     box-shadow:
-        0 12px 30px
-        rgba(0, 0, 0, 0.20);
+        0 15px 35px rgba(0, 0, 0, 0.18);
+}
+
+.admin-application-stat:hover::after {
+    opacity: 1;
 }
 
 .admin-application-stat span {
-    margin-bottom: 8px;
+    position: relative;
+    z-index: 1;
 
-    color: #94a3b8;
+    color: #8ea1bd;
 
     font-size: 13px;
+    font-weight: 550;
+
+    letter-spacing: 0.1px;
 }
 
 .admin-application-stat strong {
+    position: relative;
+    z-index: 1;
+
     color: #f8fafc;
 
-    font-size: 28px;
-    font-weight: 700;
+    font-size: 31px;
+    line-height: 1;
+
+    font-weight: 750;
+
+    letter-spacing: -0.5px;
 }
 
 
-/* =========================================
-   APPLICATION CONTAINER
-========================================= */
+/* =========================================================
+   TOOLBAR
+========================================================= */
 
-.admin-applications-list {
-    background: #0f172a;
-
-    border: 1px solid
-        rgba(255, 255, 255, 0.07);
-
-    border-radius: 20px;
-
-    padding: 25px;
-}
-
-
-/* =========================================
-   LIST HEADER
-========================================= */
-
-.admin-applications-list-header {
+.admin-applications-toolbar {
     display: flex;
 
     align-items: center;
@@ -126,95 +285,261 @@
 
     gap: 20px;
 
-    padding-bottom: 20px;
+    margin-bottom: 18px;
 
-    margin-bottom: 20px;
-
-    border-bottom: 1px solid
-        rgba(255, 255, 255, 0.07);
+    padding: 4px 2px;
 }
 
-.admin-applications-list-header h2 {
-    margin: 0;
+
+/* =========================================================
+   FILTER
+========================================================= */
+
+.applications-filter {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 5px;
+
+    border: 1px solid
+        rgba(148, 163, 184, 0.12);
+
+    border-radius: 11px;
+
+    background:
+        rgba(15, 23, 42, 0.72);
+
+    box-shadow:
+        0 5px 18px rgba(0, 0, 0, 0.08);
+}
+
+.applications-filter > svg {
+    margin-left: 8px;
+
+    color: #7185a3;
+
+    font-size: 12px;
+}
+
+.applications-filter select {
+    min-width: 165px;
+
+    padding: 9px 30px 9px 8px;
+
+    border: none;
+
+    outline: none;
+
+    appearance: auto;
+
+    background: transparent;
+
+    color: #cbd5e1;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.applications-filter select option {
+    background: #111b2f;
 
     color: #f8fafc;
+}
 
-    font-size: 21px;
-    font-weight: 650;
+.applications-filter select:focus {
+    color: #f8fafc;
 }
 
 
-/* =========================================
-   APPLICATION LIST
-========================================= */
+/* =========================================================
+   RESULT COUNT
+========================================================= */
 
-.admin-application-items {
+.application-result-count {
+    color: #6f829f;
+
+    font-size: 13px;
+    font-weight: 500;
+}
+
+
+/* =========================================================
+   APPLICATION LIST
+========================================================= */
+
+.admin-applications-list {
     display: flex;
 
     flex-direction: column;
 
-    gap: 12px;
+    gap: 13px;
 }
 
 
-/* =========================================
+/* =========================================================
    APPLICATION CARD
-========================================= */
+========================================================= */
 
-.admin-application-item {
+.admin-application-card {
+    position: relative;
+
     display: grid;
 
     grid-template-columns:
-        minmax(190px, 1.4fr)
-        minmax(180px, 1.2fr)
-        auto
-        auto;
+        minmax(230px, 1.15fr)
+        minmax(220px, 1fr)
+        145px
+        145px;
 
     align-items: center;
 
-    gap: 20px;
+    gap: 24px;
 
-    padding: 18px;
+    padding: 20px 22px;
 
-    background: #111c32;
+    box-sizing: border-box;
 
     border: 1px solid
-        rgba(255, 255, 255, 0.06);
+        rgba(148, 163, 184, 0.11);
 
-    border-radius: 14px;
+    border-radius: 16px;
 
-    transition: all 0.2s ease;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(16, 26, 46, 0.98),
+            rgba(13, 23, 41, 0.98)
+        );
+
+    box-shadow:
+        0 7px 25px rgba(0, 0, 0, 0.10);
+
+    transition:
+        transform 0.22s ease,
+        border-color 0.22s ease,
+        background 0.22s ease,
+        box-shadow 0.22s ease;
 }
 
-.admin-application-item:hover {
+.admin-application-card:hover {
     transform: translateY(-2px);
 
-    background: #14213a;
-
     border-color:
-        rgba(59, 130, 246, 0.25);
+        rgba(96, 165, 250, 0.20);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(18, 31, 54, 0.99),
+            rgba(14, 25, 45, 0.99)
+        );
+
+    box-shadow:
+        0 14px 35px rgba(0, 0, 0, 0.16);
 }
 
 
-/* =========================================
-   APPLICANT INFO
-========================================= */
+/* =========================================================
+   LEFT ACCENT
+========================================================= */
+
+.admin-application-card::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 16px;
+    bottom: 16px;
+
+    width: 2px;
+
+    border-radius: 4px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #3b82f6,
+            #8b5cf6
+        );
+
+    opacity: 0;
+
+    transition: opacity 0.22s ease;
+}
+
+.admin-application-card:hover::before {
+    opacity: 1;
+}
+
+
+/* =========================================================
+   APPLICANT INFORMATION
+========================================================= */
 
 .admin-applicant-info {
     min-width: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+}
+
+
+/* =========================================================
+   AVATAR
+========================================================= */
+
+.admin-applicant-avatar {
+    width: 45px;
+    height: 45px;
+
+    flex: 0 0 45px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(59, 130, 246, 0.20),
+            rgba(124, 58, 237, 0.20)
+        );
+
+    border: 1px solid
+        rgba(96, 165, 250, 0.18);
+
+    color: #9cc5ff;
+
+    font-size: 16px;
+    font-weight: 750;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 .admin-applicant-info h3 {
     margin: 0 0 5px;
 
-    color: #f8fafc;
+    overflow: hidden;
+
+    color: #f1f5f9;
 
     font-size: 15px;
-    font-weight: 600;
+    font-weight: 680;
 
     white-space: nowrap;
-
-    overflow: hidden;
 
     text-overflow: ellipsis;
 }
@@ -222,243 +547,280 @@
 .admin-applicant-info p {
     margin: 0;
 
-    color: #94a3b8;
+    overflow: hidden;
 
-    font-size: 13px;
+    color: #7185a3;
+
+    font-size: 12px;
 
     white-space: nowrap;
-
-    overflow: hidden;
 
     text-overflow: ellipsis;
 }
 
 
-/* =========================================
-   JOB INFO
-========================================= */
+/* =========================================================
+   JOB INFORMATION
+========================================================= */
 
 .admin-application-job {
     min-width: 0;
 }
 
-.admin-application-job h3 {
-    margin: 0 0 5px;
+.admin-application-job-title {
+    display: flex;
 
-    color: #e2e8f0;
+    align-items: center;
+
+    gap: 9px;
+
+    min-width: 0;
+
+    margin-bottom: 7px;
+}
+
+.admin-application-job-title svg {
+    flex-shrink: 0;
+
+    color: #6fa4ff;
+
+    font-size: 13px;
+}
+
+.admin-application-job-title strong {
+    overflow: hidden;
+
+    color: #e7edf6;
 
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 650;
 
     white-space: nowrap;
-
-    overflow: hidden;
 
     text-overflow: ellipsis;
 }
 
-.admin-application-job p {
-    margin: 0;
+.admin-application-company {
+    display: flex;
 
-    color: #64748b;
+    align-items: center;
+
+    gap: 8px;
+
+    color: #7185a3;
 
     font-size: 12px;
 }
 
+.admin-application-company svg {
+    color: #536780;
 
-/* =========================================
-   APPLICATION DATE
-========================================= */
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   DATE
+========================================================= */
 
 .admin-application-date {
-    color: #94a3b8;
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    color: #7185a3;
 
     font-size: 12px;
 
     white-space: nowrap;
 }
 
-
-/* =========================================
-   STATUS
-========================================= */
-
-.admin-application-status {
-    min-width: 95px;
-
-    padding: 7px 12px;
-
-    display: inline-flex;
-
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 20px;
+.admin-application-date svg {
+    color: #5d7290;
 
     font-size: 12px;
-
-    font-weight: 600;
 }
 
 
-/* Applied */
+/* =========================================================
+   STATUS
+========================================================= */
 
-.admin-application-status.applied {
-    background:
-        rgba(59, 130, 246, 0.12);
+.admin-application-status {
+    display: flex;
 
-    color: #60a5fa;
+    justify-content: flex-end;
 }
 
 
-/* Shortlisted */
+/* =========================================================
+   STATUS SELECT
+========================================================= */
 
-.admin-application-status.shortlisted {
+.admin-status-select {
+    width: 135px;
+
+    padding: 9px 11px;
+
+    border: 1px solid
+        rgba(148, 163, 184, 0.15);
+
+    border-radius: 9px;
+
+    outline: none;
+
+    background: #172238;
+
+    color: #dbe5f3;
+
+    font-size: 12px;
+    font-weight: 650;
+
+    cursor: pointer;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.admin-status-select:hover {
+    border-color:
+        rgba(148, 163, 184, 0.28);
+}
+
+.admin-status-select:focus {
+    border-color:
+        rgba(96, 165, 250, 0.55);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(59, 130, 246, 0.10);
+}
+
+.admin-status-select option {
+    background: #111b2f;
+
+    color: #f8fafc;
+}
+
+
+/* =========================================================
+   STATUS COLORS
+========================================================= */
+
+.admin-status-select.applied {
+    border-color:
+        rgba(96, 165, 250, 0.28);
+
     background:
-        rgba(168, 85, 247, 0.12);
+        rgba(37, 99, 235, 0.10);
+
+    color: #7fb2ff;
+}
+
+.admin-status-select.shortlisted {
+    border-color:
+        rgba(168, 85, 247, 0.30);
+
+    background:
+        rgba(126, 34, 206, 0.10);
 
     color: #c084fc;
 }
 
+.admin-status-select.interview {
+    border-color:
+        rgba(234, 179, 8, 0.30);
 
-/* Interview */
-
-.admin-application-status.interview {
     background:
-        rgba(234, 179, 8, 0.12);
+        rgba(161, 98, 7, 0.10);
 
     color: #facc15;
 }
 
+.admin-status-select.selected {
+    border-color:
+        rgba(34, 197, 94, 0.30);
 
-/* Selected */
-
-.admin-application-status.selected {
     background:
-        rgba(34, 197, 94, 0.12);
+        rgba(21, 128, 61, 0.10);
 
     color: #4ade80;
 }
 
+.admin-status-select.rejected {
+    border-color:
+        rgba(239, 68, 68, 0.30);
 
-/* Rejected */
-
-.admin-application-status.rejected {
     background:
-        rgba(239, 68, 68, 0.12);
+        rgba(185, 28, 28, 0.10);
 
     color: #f87171;
 }
 
 
-/* =========================================
-   STATUS SELECT
-========================================= */
-
-.admin-application-status-select {
-    min-width: 130px;
-
-    padding: 9px 12px;
-
-    border-radius: 9px;
-
-    border: 1px solid
-        rgba(255, 255, 255, 0.08);
-
-    outline: none;
-
-    background: #0f172a;
-
-    color: #e2e8f0;
-
-    font-size: 12px;
-
-    cursor: pointer;
-
-    transition: all 0.2s ease;
-}
-
-.admin-application-status-select:hover {
-    border-color:
-        rgba(59, 130, 246, 0.30);
-}
-
-.admin-application-status-select:focus {
-    border-color: #2563eb;
-
-    box-shadow:
-        0 0 0 3px
-        rgba(37, 99, 235, 0.10);
-}
-
-
-/* =========================================
+/* =========================================================
    EMPTY STATE
-========================================= */
+========================================================= */
 
 .admin-applications-empty {
-    min-height: 280px;
+    min-height: 320px;
 
     display: flex;
 
     flex-direction: column;
 
     align-items: center;
-
     justify-content: center;
 
     text-align: center;
+
+    padding: 40px;
+
+    border: 1px dashed
+        rgba(148, 163, 184, 0.16);
+
+    border-radius: 18px;
+
+    background:
+        rgba(15, 23, 42, 0.55);
 }
 
 .admin-applications-empty svg {
-    margin-bottom: 18px;
+    margin-bottom: 17px;
 
-    color: #64748b;
+    color: #526781;
 
-    font-size: 42px;
+    font-size: 39px;
 }
 
 .admin-applications-empty h3 {
-    margin: 0 0 8px;
+    margin: 0 0 7px;
 
     color: #e2e8f0;
 
     font-size: 18px;
+    font-weight: 680;
 }
 
 .admin-applications-empty p {
     margin: 0;
 
-    color: #64748b;
+    color: #657995;
 
-    font-size: 14px;
+    font-size: 13px;
 }
 
 
-/* =========================================
-   LOADING
-========================================= */
+/* =========================================================
+   LOADING / ERROR
+========================================================= */
 
-.admin-applications-loading {
-    min-height: 300px;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    color: #94a3b8;
-
-    font-size: 14px;
-}
-
-
-/* =========================================
-   ERROR
-========================================= */
-
-.admin-applications-error {
-    min-height: 300px;
+.admin-applications-message {
+    min-height: 400px;
 
     display: flex;
 
@@ -470,154 +832,304 @@
     text-align: center;
 }
 
-.admin-applications-error svg {
-    margin-bottom: 15px;
+.admin-applications-message > svg {
+    margin-bottom: 16px;
 
-    color: #f87171;
+    color: #6b8fc7;
 
-    font-size: 40px;
+    font-size: 32px;
+
+    animation:
+        admin-spin 1.2s linear infinite;
 }
 
-.admin-applications-error h3 {
-    margin: 0 0 8px;
+.admin-applications-message p {
+    margin: 0;
 
-    color: #e2e8f0;
-
-    font-size: 18px;
-}
-
-.admin-applications-error p {
-    margin: 0 0 18px;
-
-    color: #94a3b8;
+    color: #8194ae;
 
     font-size: 14px;
 }
 
-.admin-applications-error button {
-    border: none;
+.admin-applications-message.error > svg {
+    color: #f87171;
 
-    padding: 10px 18px;
+    animation: none;
+}
+
+.admin-applications-message.error h3 {
+    margin: 0 0 8px;
+
+    color: #e2e8f0;
+
+    font-size: 19px;
+}
+
+.admin-applications-message.error p {
+    max-width: 500px;
+
+    margin-bottom: 18px;
+
+    color: #8294ad;
+
+    line-height: 1.6;
+}
+
+.admin-applications-message.error button {
+    padding: 10px 17px;
+
+    border: 1px solid
+        rgba(96, 165, 250, 0.25);
 
     border-radius: 9px;
 
-    background: #2563eb;
+    background:
+        rgba(59, 130, 246, 0.10);
 
-    color: white;
+    color: #7eb0ff;
 
     font-size: 13px;
-    font-weight: 600;
+    font-weight: 650;
 
     cursor: pointer;
 
-    transition: all 0.2s ease;
+    transition: 0.2s ease;
 }
 
-.admin-applications-error button:hover {
-    background: #1d4ed8;
+.admin-applications-message.error button:hover {
+    background:
+        rgba(59, 130, 246, 0.18);
 
-    transform: translateY(-1px);
+    border-color:
+        rgba(96, 165, 250, 0.42);
 }
 
 
-/* =========================================
-   RESPONSIVE
-========================================= */
+/* =========================================================
+   SCROLLBAR
+========================================================= */
 
-@media (max-width: 1100px) {
+.admin-applications ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+.admin-applications ::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.admin-applications ::-webkit-scrollbar-thumb {
+    background: #263754;
+
+    border-radius: 10px;
+}
+
+.admin-applications ::-webkit-scrollbar-thumb:hover {
+    background: #365074;
+}
+
+
+/* =========================================================
+   RESPONSIVE — TABLET
+========================================================= */
+
+@media (max-width: 1150px) {
+
+    .admin-applications {
+        padding: 36px 30px 50px;
+    }
 
     .admin-applications-summary {
         grid-template-columns:
-            repeat(2, 1fr);
+            repeat(2, minmax(0, 1fr));
     }
 
-    .admin-application-item {
+    .admin-application-card {
         grid-template-columns:
-            minmax(180px, 1fr)
-            minmax(180px, 1fr)
-            auto;
+            minmax(220px, 1fr)
+            minmax(190px, 1fr)
+            120px
+            135px;
+
+        gap: 17px;
+
+        padding: 18px;
+    }
+
+    .admin-status-select {
+        width: 125px;
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVE — SMALL TABLET
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .admin-applications-header {
+        flex-direction: column;
+    }
+
+    .refresh-applications-btn {
+        align-self: flex-start;
+    }
+
+    .admin-application-card {
+        grid-template-columns:
+            minmax(210px, 1fr)
+            minmax(180px, 1fr);
+
+        gap: 18px;
     }
 
     .admin-application-date {
-        display: none;
-    }
-}
-
-
-@media (max-width: 800px) {
-
-    .admin-applications-summary {
-        grid-template-columns: 1fr;
-    }
-
-    .admin-application-item {
-        grid-template-columns:
-            1fr
-            auto;
-    }
-
-    .admin-application-job {
         grid-column: 1;
     }
 
     .admin-application-status {
         grid-column: 2;
-        grid-row: 1;
+
+        grid-row: 2;
+
+        justify-content: flex-end;
     }
-
-    .admin-application-status-select {
-        grid-column: 1 / -1;
-
-        width: 100%;
-    }
-
 }
 
 
-@media (max-width: 600px) {
+/* =========================================================
+   RESPONSIVE — MOBILE
+========================================================= */
+
+@media (max-width: 650px) {
 
     .admin-applications {
-        padding: 10px 5px 30px;
+        padding: 28px 18px 45px;
     }
 
     .admin-applications-header h1 {
-        font-size: 27px;
+        font-size: 28px;
+
+        letter-spacing: -0.5px;
     }
 
     .admin-applications-header p {
-        font-size: 13px;
-        line-height: 1.6;
+        font-size: 14px;
     }
 
-    .admin-applications-list {
-        padding: 18px;
-    }
-
-    .admin-applications-list-header h2 {
-        font-size: 18px;
-    }
-
-    .admin-application-item {
-        padding: 16px;
-
+    .admin-applications-summary {
         grid-template-columns: 1fr;
+
+        gap: 12px;
     }
 
+    .admin-application-stat {
+        min-height: 105px;
+
+        padding: 20px;
+    }
+
+    .admin-applications-toolbar {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 12px;
+    }
+
+    .applications-filter {
+        width: 100%;
+
+        box-sizing: border-box;
+    }
+
+    .applications-filter select {
+        width: 100%;
+    }
+
+    .application-result-count {
+        padding-left: 3px;
+    }
+
+    .admin-application-card {
+        grid-template-columns: 1fr;
+
+        gap: 17px;
+
+        padding: 20px;
+    }
+
+    .admin-applicant-info,
     .admin-application-job {
+        width: 100%;
+    }
+
+    .admin-application-date {
         grid-column: auto;
     }
 
     .admin-application-status {
         grid-column: auto;
+
         grid-row: auto;
 
-        justify-self: flex-start;
+        justify-content: flex-start;
     }
 
-    .admin-application-status-select {
-        grid-column: auto;
-
+    .admin-status-select {
         width: 100%;
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVE — SMALL MOBILE
+========================================================= */
+
+@media (max-width: 420px) {
+
+    .admin-applications {
+        padding: 24px 13px 40px;
+    }
+
+    .admin-applications-header h1 {
+        font-size: 25px;
+    }
+
+    .admin-application-stat strong {
+        font-size: 28px;
+    }
+
+    .admin-applicant-avatar {
+        width: 41px;
+        height: 41px;
+
+        flex-basis: 41px;
+    }
+
+    .admin-applicant-info h3 {
+        font-size: 14px;
+    }
+
+    .admin-application-job-title strong {
+        font-size: 13px;
+    }
+}
+
+
+/* =========================================================
+   ANIMATION
+========================================================= */
+
+@keyframes admin-spin {
+
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
     }
 
 }

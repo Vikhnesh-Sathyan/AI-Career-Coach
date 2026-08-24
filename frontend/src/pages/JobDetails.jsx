@@ -10,11 +10,16 @@ import {
     FaMapMarkerAlt,
     FaClock,
     FaCheckCircle,
-    FaExternalLinkAlt
+    FaExternalLinkAlt,
+    FaTimesCircle
 } from "react-icons/fa";
 
 import { getJobById } from "../services/jobService";
-import { applyForJob } from "../services/applicationService";
+
+import {
+    applyForJob,
+    getMyApplications
+} from "../services/applicationService";
 
 import "../styles/jobdetails.css";
 
@@ -39,14 +44,17 @@ function JobDetails() {
     const [applying, setApplying] =
         useState(false);
 
+    const [applicationLoading, setApplicationLoading] =
+        useState(true);
+
     const [error, setError] =
         useState("");
 
     const [success, setSuccess] =
         useState("");
 
-    const [alreadyApplied, setAlreadyApplied] =
-        useState(false);
+    const [applicationStatus, setApplicationStatus] =
+        useState(null);
 
 
     // ==========================================
@@ -105,9 +113,112 @@ function JobDetails() {
     };
 
 
+    // ==========================================
+    // CHECK EXISTING APPLICATION
+    // ==========================================
+
+    const checkApplication = async () => {
+
+        try {
+
+            setApplicationLoading(true);
+
+            const data =
+                await getMyApplications();
+
+
+            if (data.success) {
+
+                const applications =
+                    data.data || [];
+
+
+                // ==========================================
+                // FIND APPLICATION FOR CURRENT JOB
+                // ==========================================
+
+                const currentApplication =
+                    applications.find(
+                        (application) => {
+
+                            const applicationJob =
+                                application.job;
+
+                            if (!applicationJob) {
+                                return false;
+                            }
+
+
+                            const applicationJobId =
+                                typeof applicationJob === "object"
+                                    ? applicationJob._id
+                                    : applicationJob;
+
+
+                            return (
+                                applicationJobId === id
+                            );
+
+                        }
+                    );
+
+
+                if (currentApplication) {
+
+                    setApplicationStatus(
+                        currentApplication.status
+                    );
+
+                }
+
+                else {
+
+                    setApplicationStatus(null);
+
+                }
+
+            }
+
+            else {
+
+                setApplicationStatus(null);
+
+            }
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Check Application Error:",
+                error
+            );
+
+            // Do not block the job page
+            // if application checking fails.
+
+            setApplicationStatus(null);
+
+        }
+
+        finally {
+
+            setApplicationLoading(false);
+
+        }
+
+    };
+
+
+    // ==========================================
+    // LOAD PAGE DATA
+    // ==========================================
+
     useEffect(() => {
 
         loadJob();
+
+        checkApplication();
 
     }, [id]);
 
@@ -137,7 +248,14 @@ function JobDetails() {
                     "Application submitted successfully!"
                 );
 
-                setAlreadyApplied(true);
+
+                // ==========================================
+                // UPDATE LOCAL APPLICATION STATUS
+                // ==========================================
+
+                setApplicationStatus(
+                    "Applied"
+                );
 
             }
 
@@ -178,7 +296,9 @@ function JobDetails() {
                     .includes("already applied")
             ) {
 
-                setAlreadyApplied(true);
+                setApplicationStatus(
+                    "Applied"
+                );
 
             }
 
@@ -215,6 +335,64 @@ function JobDetails() {
                     year: "numeric"
                 }
             );
+
+    };
+
+
+    // ==========================================
+    // GET APPLICATION STATUS CLASS
+    // ==========================================
+
+    const getApplicationStatusClass = () => {
+
+        switch (applicationStatus) {
+
+            case "Shortlisted":
+                return "shortlisted";
+
+            case "Interview":
+                return "interview";
+
+            case "Selected":
+                return "selected";
+
+            case "Rejected":
+                return "rejected";
+
+            case "Applied":
+            default:
+                return "applied";
+
+        }
+
+    };
+
+
+    // ==========================================
+    // GET APPLICATION STATUS MESSAGE
+    // ==========================================
+
+    const getApplicationStatusMessage = () => {
+
+        switch (applicationStatus) {
+
+            case "Shortlisted":
+                return "You have been shortlisted for this position.";
+
+            case "Interview":
+                return "Your application has moved to the interview stage.";
+
+            case "Selected":
+                return "Congratulations! You have been selected for this position.";
+
+            case "Rejected":
+                return "Your application was not selected for this position.";
+
+            case "Applied":
+            default:
+                return "Your application has been submitted successfully.";
+
+        }
 
     };
 
@@ -296,6 +474,14 @@ function JobDetails() {
         job.status === "Open";
 
 
+    // ==========================================
+    // APPLICATION EXISTS
+    // ==========================================
+
+    const hasApplication =
+        Boolean(applicationStatus);
+
+
     return (
 
         <div className="job-details-page">
@@ -356,7 +542,9 @@ function JobDetails() {
                                     }`
                                 }
                             >
+
                                 {job.status}
+
                             </span>
 
                         </div>
@@ -579,126 +767,186 @@ function JobDetails() {
 
                         <p>
 
-                            Apply directly through
-                            AI Career Coach and track
-                            your application status.
+                            {hasApplication
+                                ? getApplicationStatusMessage()
+                                : "Apply directly through AI Career Coach and track your application status."
+                            }
 
                         </p>
 
 
 
                         {/* ==========================================
-                            SUCCESS MESSAGE
+                            APPLICATION LOADING
                         ========================================== */}
 
-                        {success && (
+                        {applicationLoading ? (
 
-                            <div className="application-success">
+                            <div className="application-loading">
 
-                                <FaCheckCircle />
-
-                                <span>
-                                    {success}
-                                </span>
+                                Checking application status...
 
                             </div>
 
-                        )}
+                        ) : hasApplication ? (
 
+                            <>
+                                {/* ==========================================
+                                    EXISTING APPLICATION STATUS
+                                ========================================== */}
 
-
-                        {/* ==========================================
-                            ERROR MESSAGE
-                        ========================================== */}
-
-                        {error && job && (
-
-                            <div className="application-error">
-
-                                {error}
-
-                            </div>
-
-                        )}
-
-
-
-                        {/* ==========================================
-                            APPLY BUTTON
-                        ========================================== */}
-
-                        {isOpen ? (
-
-                            alreadyApplied ? (
-
-                                <button
-                                    className="already-applied-btn"
-                                    disabled
+                                <div
+                                    className={
+                                        `application-status-card ${getApplicationStatusClass()}`
+                                    }
                                 >
 
-                                    <FaCheckCircle />
+                                    {applicationStatus === "Rejected" ? (
 
-                                    Already Applied
-
-                                </button>
-
-                            ) : (
-
-                                <button
-                                    className="apply-job-btn"
-                                    onClick={handleApply}
-                                    disabled={applying}
-                                >
-
-                                    {applying ? (
-
-                                        "Submitting..."
+                                        <FaTimesCircle />
 
                                     ) : (
 
-                                        <>
-                                            <FaCheckCircle />
-
-                                            Apply Now
-                                        </>
+                                        <FaCheckCircle />
 
                                     )}
 
+                                    <div>
+
+                                        <strong>
+                                            {applicationStatus === "Applied"
+                                                ? "Already Applied"
+                                                : applicationStatus
+                                            }
+                                        </strong>
+
+                                        <span>
+                                            Application Status
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+
+                                {/* ==========================================
+                                    VIEW APPLICATIONS
+                                ========================================== */}
+
+                                <button
+                                    className="view-applications-btn"
+                                    onClick={() =>
+                                        navigate(
+                                            "/applications"
+                                        )
+                                    }
+                                >
+
+                                    View My Applications
+
                                 </button>
 
-                            )
+                            </>
 
                         ) : (
 
-                            <button
-                                className="closed-job-btn"
-                                disabled
-                            >
+                            <>
+                                {/* ==========================================
+                                    SUCCESS MESSAGE
+                                ========================================== */}
 
-                                Job Closed
+                                {success && (
 
-                            </button>
+                                    <div className="application-success">
+
+                                        <FaCheckCircle />
+
+                                        <span>
+                                            {success}
+                                        </span>
+
+                                    </div>
+
+                                )}
+
+
+                                {/* ==========================================
+                                    ERROR MESSAGE
+                                ========================================== */}
+
+                                {error && job && (
+
+                                    <div className="application-error">
+
+                                        {error}
+
+                                    </div>
+
+                                )}
+
+
+                                {/* ==========================================
+                                    APPLY BUTTON
+                                ========================================== */}
+
+                                {isOpen ? (
+
+                                    <button
+                                        className="apply-job-btn"
+                                        onClick={handleApply}
+                                        disabled={applying}
+                                    >
+
+                                        {applying ? (
+
+                                            "Submitting..."
+
+                                        ) : (
+
+                                            <>
+                                                <FaCheckCircle />
+
+                                                Apply Now
+                                            </>
+
+                                        )}
+
+                                    </button>
+
+                                ) : (
+
+                                    <button
+                                        className="closed-job-btn"
+                                        disabled
+                                    >
+
+                                        Job Closed
+
+                                    </button>
+
+                                )}
+
+
+                                {/* ==========================================
+                                    VIEW APPLICATIONS
+                                ========================================== */}
+
+                                <button
+                                    className="view-applications-btn"
+                                    onClick={() =>
+                                        navigate(
+                                            "/applications"
+                                        )
+                                    }
+                                >
+
+                                    View My Applications
+
+                                </button>
+
+                            </>
 
                         )}
-
-
-
-                        {/* ==========================================
-                            APPLICATIONS
-                        ========================================== */}
-
-                        <button
-                            className="view-applications-btn"
-                            onClick={() =>
-                                navigate(
-                                    "/applications"
-                                )
-                            }
-                        >
-
-                            View My Applications
-
-                        </button>
 
 
 

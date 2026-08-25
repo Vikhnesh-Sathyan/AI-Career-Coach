@@ -1,4 +1,3 @@
-
 import "../../styles/adminsidebar.css";
 
 import { NavLink } from "react-router-dom";
@@ -14,7 +13,8 @@ import {
     FaChartLine,
     FaGem,
     FaCog,
-    FaLifeRing
+    FaLifeRing,
+    FaClipboardList
 } from "react-icons/fa";
 
 
@@ -49,6 +49,16 @@ const menus = [
         name: "Jobs",
         icon: <FaBriefcase />,
         path: "/admin/jobs"
+    },
+
+    // ==========================================
+    // APPLICATIONS
+    // ==========================================
+
+    {
+        name: "Applications",
+        icon: <FaClipboardList />,
+        path: "/admin/applications"
     },
 
     {

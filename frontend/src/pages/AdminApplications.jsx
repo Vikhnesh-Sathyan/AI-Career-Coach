@@ -163,7 +163,7 @@ function AdminApplications() {
 
     };
 
-
+    
     // ==========================================
     // FILTER APPLICATIONS
     // ==========================================
@@ -422,7 +422,91 @@ function AdminApplications() {
 
 
                 </div>
+                {/* =================================
+    APPLICATION STATUS CHART
+================================= */}
 
+<div className="application-status-chart">
+
+    <h2>Application Status</h2>
+
+    <div className="status-chart">
+
+        {[
+            "Applied",
+            "Shortlisted",
+            "Interview",
+            "Selected",
+            "Rejected"
+        ].map((status) => {
+
+            const count =
+                applications.filter(
+                    application =>
+                        application.status === status
+                ).length;
+
+            const maxCount = Math.max(
+                ...[
+                    "Applied",
+                    "Shortlisted",
+                    "Interview",
+                    "Selected",
+                    "Rejected"
+                ].map(status =>
+                    applications.filter(
+                        application =>
+                            application.status === status
+                    ).length
+                ),
+                1
+            );
+
+            const height =
+                count === 0
+                    ? 5
+                    : Math.max(
+                        10,
+                        (count / maxCount) * 100
+                    );
+
+            return (
+                <div
+                    className="status-chart-item"
+                    key={status}
+                >
+
+                    <span className="status-chart-value">
+                        {count}
+                    </span>
+
+                    <div className="status-chart-bar-container">
+
+                        <div
+                            className={`status-chart-bar ${
+                                status
+                                    .toLowerCase()
+                                    .replace(" ", "-")
+                            }`}
+                            style={{
+                                height: `${height}%`
+                            }}
+                        />
+
+                    </div>
+
+                    <span className="status-chart-label">
+                        {status}
+                    </span>
+
+                </div>
+            );
+
+        })}
+
+    </div>
+
+</div>
 
                 {/* =================================
                     FILTER

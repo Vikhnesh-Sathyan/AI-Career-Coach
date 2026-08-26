@@ -15,7 +15,7 @@ import adminRoutes from "./src/routes/adminRoutes.js";
 import supportRoutes from "./src/routes/supportRoutes.js";
 import jobPostingRoutes from "./src/routes/jobPostingRoutes.js";
 import applicationRoutes from "./src/routes/applicationRoutes.js";
-
+import analyticsRoutes from "./src/routes/analyticsRoutes.js";
 
 dotenv.config();
 
@@ -42,6 +42,7 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/support", supportRoutes);
 app.use("/api/jobs", jobPostingRoutes);
 app.use("/api/applications",applicationRoutes);
+app.use("/api/admin/analytics",analyticsRoutes);
 
 // Test Route
 app.get("/", (req, res) => {

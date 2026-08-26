@@ -40,12 +40,6 @@ const menus = [
     },
 
     {
-        name: "Resume",
-        icon: <FaFileAlt />,
-        path: "/admin/resumes"
-    },
-
-    {
         name: "Jobs",
         icon: <FaBriefcase />,
         path: "/admin/jobs"

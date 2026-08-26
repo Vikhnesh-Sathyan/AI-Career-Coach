@@ -1,5 +1,6 @@
 import User from "../models/User.js";
 import JobApplication from "../models/JobApplication.js";
+import Job from "../models/Job.js";
 
 // ==========================================
 // GET ADMIN DASHBOARD STATS
@@ -24,6 +25,23 @@ export const getAdminStats = async (req, res) => {
             await User.countDocuments({
                 "subscription.plan": "Premium"
             });
+
+        // -------------------------------
+        // JOBS
+        // -------------------------------
+
+        const totalJobs =
+            await Job.countDocuments();
+
+        const openJobs =
+            await Job.countDocuments({
+        status: "Open"
+    });
+
+        const closedJobs =
+            await Job.countDocuments({
+        status: "Closed"
+    });
 
 
         // -------------------------------
@@ -87,30 +105,35 @@ export const getAdminStats = async (req, res) => {
         res.status(200).json({
 
             success: true,
+data: {
 
-            data: {
+    totalUsers,
 
-                totalUsers,
+    premiumUsers,
 
-                premiumUsers,
+    totalJobs,
 
-                totalApplications,
+    openJobs,
 
-                applied,
+    closedJobs,
 
-                shortlisted,
+    totalApplications,
 
-                assessment,
+    applied,
 
-                interviews,
+    shortlisted,
 
-                offers,
+    assessment,
 
-                rejected,
+    interviews,
 
-                accepted
+    offers,
 
-            }
+    rejected,
+
+    accepted
+
+}
 
         });
 

@@ -26,29 +26,35 @@ function AdminDashboard() {
     // ADMIN DATA
     // =========================================
 
-    const [adminData, setAdminData] = useState({
+ const [adminData, setAdminData] = useState({
 
-        totalUsers: 0,
+    totalUsers: 0,
 
-        premiumUsers: 0,
+    premiumUsers: 0,
 
-        totalApplications: 0,
+    totalJobs: 0,
 
-        applied: 0,
+    openJobs: 0,
 
-        shortlisted: 0,
+    closedJobs: 0,
 
-        assessment: 0,
+    totalApplications: 0,
 
-        interviews: 0,
+    applied: 0,
 
-        offers: 0,
+    shortlisted: 0,
 
-        rejected: 0,
+    assessment: 0,
 
-        accepted: 0
+    interviews: 0,
 
-    });
+    offers: 0,
+
+    rejected: 0,
+
+    accepted: 0
+
+});
 
 
     const [loading, setLoading] = useState(true);
@@ -81,43 +87,52 @@ function AdminDashboard() {
                     await getAdminStats(token);
 
 
-                if (response?.success) {
+   if (response?.success) {
 
-                    setAdminData({
+    setAdminData({
 
-                        totalUsers:
-                            response.data?.totalUsers ?? 0,
+        totalUsers:
+            response.data?.totalUsers ?? 0,
 
-                        premiumUsers:
-                            response.data?.premiumUsers ?? 0,
+        premiumUsers:
+            response.data?.premiumUsers ?? 0,
 
-                        totalApplications:
-                            response.data?.totalApplications ?? 0,
+        totalJobs:
+            response.data?.totalJobs ?? 0,
 
-                        applied:
-                            response.data?.applied ?? 0,
+        openJobs:
+            response.data?.openJobs ?? 0,
 
-                        shortlisted:
-                            response.data?.shortlisted ?? 0,
+        closedJobs:
+            response.data?.closedJobs ?? 0,
 
-                        assessment:
-                            response.data?.assessment ?? 0,
+        totalApplications:
+            response.data?.totalApplications ?? 0,
 
-                        interviews:
-                            response.data?.interviews ?? 0,
+        applied:
+            response.data?.applied ?? 0,
 
-                        offers:
-                            response.data?.offers ?? 0,
+        shortlisted:
+            response.data?.shortlisted ?? 0,
 
-                        rejected:
-                            response.data?.rejected ?? 0,
+        assessment:
+            response.data?.assessment ?? 0,
 
-                        accepted:
-                            response.data?.accepted ?? 0
+        interviews:
+            response.data?.interviews ?? 0,
 
-                    });
+        offers:
+            response.data?.offers ?? 0,
 
-                }
+        rejected:
+            response.data?.rejected ?? 0,
+
+        accepted:
+            response.data?.accepted ?? 0
+
+    });
+
+}
 
             }
 
@@ -606,8 +621,183 @@ function AdminDashboard() {
                 <section
                     className="admin-main-grid"
                 >
+                {/* =================================
+    JOBS OVERVIEW
+================================= */}
+
+<motion.section
+
+    className="admin-jobs-chart"
+
+    initial={{
+        opacity: 0,
+        y: 25
+    }}
+
+    animate={{
+        opacity: 1,
+        y: 0
+    }}
+
+    transition={{
+        duration: 0.6,
+        delay: 0.6
+    }}
+
+>
+
+    <div className="section-heading">
+
+        <div>
+
+            <span>
+                JOB MANAGEMENT
+            </span>
+
+            <h2>
+                Jobs Overview
+            </h2>
+
+        </div>
+
+        <Link
+            to="/admin/jobs"
+            className="jobs-chart-link"
+        >
+            View Jobs →
+        </Link>
+
+    </div>
 
 
+    <div className="jobs-chart">
+
+        <div className="jobs-chart-item">
+
+            <div className="jobs-chart-value">
+                {adminData.totalJobs}
+            </div>
+
+            <div className="jobs-chart-bar-container">
+
+                <motion.div
+
+                    className="jobs-chart-bar total"
+
+                    initial={{
+                        height: 0
+                    }}
+
+                    animate={{
+                        height:
+                            `${adminData.totalJobs > 0 ? 100 : 8}%`
+                    }}
+
+                    transition={{
+                        duration: 0.8
+                    }}
+
+                />
+
+            </div>
+
+            <span>
+                Total Jobs
+            </span>
+
+        </div>
+
+
+        <div className="jobs-chart-item">
+
+            <div className="jobs-chart-value">
+                {adminData.openJobs}
+            </div>
+
+            <div className="jobs-chart-bar-container">
+
+                <motion.div
+
+                    className="jobs-chart-bar open"
+
+                    initial={{
+                        height: 0
+                    }}
+
+                    animate={{
+                        height:
+                            adminData.totalJobs === 0
+                                ? "8%"
+                                : `${Math.max(
+                                    8,
+                                    (adminData.openJobs /
+                                        adminData.totalJobs) *
+                                        100
+                                )}%`
+                    }}
+
+                    transition={{
+                        duration: 0.8,
+                        delay: 0.1
+                    }}
+
+                />
+
+            </div>
+
+            <span>
+                Open Jobs
+            </span>
+
+        </div>
+
+
+        <div className="jobs-chart-item">
+
+            <div className="jobs-chart-value">
+                {adminData.closedJobs}
+            </div>
+
+            <div className="jobs-chart-bar-container">
+
+                <motion.div
+
+                    className="jobs-chart-bar closed"
+
+                    initial={{
+                        height: 0
+                    }}
+
+                    animate={{
+                        height:
+                            adminData.totalJobs === 0
+                                ? "8%"
+                                : `${Math.max(
+                                    8,
+                                    (adminData.closedJobs /
+                                        adminData.totalJobs) *
+                                        100
+                                )}%`
+                    }}
+
+                    transition={{
+                        duration: 0.8,
+                        delay: 0.2
+                    }}
+
+                />
+
+            </div>
+
+            <span>
+                Closed Jobs
+            </span>
+
+        </div>
+
+    </div>
+
+</motion.section>
                     {/* =================================
                         APPLICATION PIPELINE
                     ================================= */}

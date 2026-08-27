@@ -1,10 +1,17 @@
 import express from "express";
 
 import {
+
     getAdminStats,
+
+    getAdminAnalytics,
+
     getAdminUsers,
+
     updateUserStatus,
+
     deleteUser
+
 } from "../controllers/adminController.js";
 
 import {
@@ -33,6 +40,22 @@ router.get(
     getAdminStats
 );
 
+
+// ==========================================
+// ADMIN ANALYTICS
+// ==========================================
+
+router.get(
+
+    "/analytics",
+
+    protect,
+
+    adminOnly,
+
+    getAdminAnalytics
+
+);
 
 // ==========================================
 // GET ALL USERS

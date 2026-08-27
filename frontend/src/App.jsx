@@ -25,6 +25,7 @@ import AdminUsers from "./pages/AdminUsers";
 import AdminSupport from "./pages/AdminSupport";
 import AdminJobs from "./pages/AdminJobs";
 import AdminApplications from "./pages/AdminApplications";
+import AdminAnalytics from "./pages/Analytics";
 
 import AdminProtectedRoute
     from "./components/admin/AdminProtectedRoute";
@@ -186,6 +187,11 @@ function App() {
                         </AdminProtectedRoute>
                     }
                 />
+
+                    <Route
+                    path="/admin/analytics" 
+                        element={<AdminAnalytics />}
+                    />
 
                 {/* =========================
                     FALLBACK

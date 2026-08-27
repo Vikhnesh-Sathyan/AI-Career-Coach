@@ -158,6 +158,356 @@ data: {
     }
 };
 
+// ==========================================
+// GET ADMIN ANALYTICS
+// ==========================================
+
+export const getAdminAnalytics = async (
+    req,
+    res
+) => {
+
+    try {
+
+        // ======================================
+        // OVERVIEW
+        // ======================================
+
+        const totalUsers =
+            await User.countDocuments();
+
+
+        const premiumUsers =
+            await User.countDocuments({
+                "subscription.plan": "Premium"
+            });
+
+
+        const totalJobs =
+            await Job.countDocuments();
+
+
+        const openJobs =
+            await Job.countDocuments({
+                status: "Open"
+            });
+
+
+        const closedJobs =
+            await Job.countDocuments({
+                status: "Closed"
+            });
+
+
+        const totalApplications =
+            await JobApplication.countDocuments();
+
+
+        // ======================================
+        // APPLICATION STATUS
+        // ======================================
+
+        const applicationStatuses = [
+            "Applied",
+            "Shortlisted",
+            "Assessment",
+            "Interview",
+            "Offer",
+            "Selected",
+            "Rejected"
+        ];
+
+
+        const applicationsByStatus = {};
+
+
+        for (
+            const status of applicationStatuses
+        ) {
+
+            applicationsByStatus[status] =
+                await JobApplication.countDocuments({
+                    status
+                });
+
+        }
+
+
+        // ======================================
+        // MONTHLY APPLICATIONS
+        // LAST 6 MONTHS
+        // ======================================
+
+        const sixMonthsAgo = new Date();
+
+        sixMonthsAgo.setMonth(
+            sixMonthsAgo.getMonth() - 5
+        );
+
+        sixMonthsAgo.setDate(1);
+
+        sixMonthsAgo.setHours(
+            0,
+            0,
+            0,
+            0
+        );
+
+
+        const monthlyData =
+            await JobApplication.aggregate([
+
+                {
+
+                    $match: {
+
+                        createdAt: {
+
+                            $gte:
+                                sixMonthsAgo
+
+                        }
+
+                    }
+
+                },
+
+
+                {
+
+                    $group: {
+
+                        _id: {
+
+                            year: {
+                                $year:
+                                    "$createdAt"
+                            },
+
+                            month: {
+                                $month:
+                                    "$createdAt"
+                            }
+
+                        },
+
+
+                        count: {
+                            $sum: 1
+                        }
+
+                    }
+
+                },
+
+
+                {
+
+                    $sort: {
+
+                        "_id.year": 1,
+
+                        "_id.month": 1
+
+                    }
+
+                }
+
+            ]);
+
+
+        // ======================================
+        // FORMAT ALL 6 MONTHS
+        // ======================================
+
+        const monthlyApplications = [];
+
+
+        for (
+            let i = 5;
+            i >= 0;
+            i--
+        ) {
+
+            const date = new Date();
+
+            date.setMonth(
+                date.getMonth() - i
+            );
+
+
+            const year =
+                date.getFullYear();
+
+
+            const month =
+                date.getMonth() + 1;
+
+
+            const existingMonth =
+                monthlyData.find(
+
+                    item =>
+
+                        item._id.year === year &&
+
+                        item._id.month === month
+
+                );
+
+
+            monthlyApplications.push({
+
+                month:
+
+                    date.toLocaleString(
+                        "en-US",
+                        {
+                            month:
+                                "short"
+                        }
+                    ),
+
+
+                count:
+
+                    existingMonth
+                        ? existingMonth.count
+                        : 0
+
+            });
+
+        }
+
+
+        // ======================================
+        // TOP HIRING COMPANIES
+        // ======================================
+
+        const topCompanies =
+            await Job.aggregate([
+
+                {
+
+                    $match: {
+
+                        company: {
+
+                            $exists: true,
+
+                            $ne: ""
+
+                        }
+
+                    }
+
+                },
+
+
+                {
+
+                    $group: {
+
+                        _id:
+                            "$company",
+
+
+                        jobs: {
+
+                            $sum: 1
+
+                        }
+
+                    }
+
+                },
+
+
+                {
+
+                    $sort: {
+
+                        jobs: -1
+
+                    }
+
+                },
+
+
+                {
+
+                    $limit: 5
+
+                }
+
+            ]);
+
+
+        // ======================================
+        // RESPONSE
+        // ======================================
+
+        res.status(200).json({
+
+            success: true,
+
+
+            data: {
+
+                overview: {
+
+                    totalUsers,
+
+                    premiumUsers,
+
+                    totalJobs,
+
+                    openJobs,
+
+                    closedJobs,
+
+                    totalApplications
+
+                },
+
+
+                applicationsByStatus,
+
+
+                monthlyApplications,
+
+
+                topCompanies
+
+            }
+
+        });
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Admin Analytics Error:",
+            error
+        );
+
+
+        res.status(500).json({
+
+            success: false,
+
+
+            message:
+                "Failed to load admin analytics"
+
+        });
+
+    }
+
+};
+
+
 
 // ==========================================
 // GET ALL USERS FOR ADMIN

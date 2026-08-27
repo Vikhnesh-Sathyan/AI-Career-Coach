@@ -569,17 +569,41 @@ function Analytics() {
                                         allowDecimals={false}
                                     />
 
-                                    <Tooltip />
-
-                                    <Bar
-                                        dataKey="count"
-                                        radius={[
-                                            8,
-                                            8,
-                                            0,
-                                            0
-                                        ]}
-                                    />
+<Tooltip
+    contentStyle={{
+        background: "#111827",
+        border: "1px solid rgba(139, 92, 246, 0.35)",
+        borderRadius: "12px",
+        color: "#ffffff"
+    }}
+    labelStyle={{
+        color: "#c4b5fd"
+    }}
+    itemStyle={{
+        color: "#ffffff"
+    }}
+/>
+<Bar
+    dataKey="count"
+    radius={[8, 8, 0, 0]}
+>
+    {
+        applicationStatusData.map((entry, index) => (
+            <Cell
+                key={`bar-${index}`}
+                fill={[
+                    "#6366f1",
+                    "#8b5cf6",
+                    "#06b6d4",
+                    "#f59e0b",
+                    "#ec4899",
+                    "#22c55e",
+                    "#ef4444"
+                ][index]}
+            />
+        ))
+    }
+</Bar>
 
                                 </BarChart>
 
@@ -641,11 +665,14 @@ function Analytics() {
                                                     index
                                                 ) => (
 
-                                                    <Cell
-                                                        key={
-                                                            `cell-${index}`
-                                                        }
-                                                    />
+                                                <Cell
+    key={`cell-${index}`}
+    fill={
+        index === 0
+            ? "#06b6d4"
+            : "#f43f5e"
+    }
+/>
 
                                                 )
                                             )
@@ -654,8 +681,20 @@ function Analytics() {
                                     </Pie>
 
 
-                                    <Tooltip />
-
+<Tooltip
+    contentStyle={{
+        background: "#111827",
+        border: "1px solid rgba(139, 92, 246, 0.35)",
+        borderRadius: "12px",
+        color: "#ffffff"
+    }}
+    labelStyle={{
+        color: "#c4b5fd"
+    }}
+    itemStyle={{
+        color: "#ffffff"
+    }}
+/>
 
                                     <Legend />
 
@@ -724,17 +763,20 @@ function Analytics() {
                                 <Tooltip />
 
 
-                                <Line
-                                    type="monotone"
-                                    dataKey="count"
-                                    strokeWidth={3}
-                                    dot={{
-                                        r: 4
-                                    }}
-                                    activeDot={{
-                                        r: 7
-                                    }}
-                                />
+                             <Line
+    type="monotone"
+    dataKey="count"
+    stroke="#8b5cf6"
+    strokeWidth={3}
+    dot={{
+        r: 4,
+        fill: "#8b5cf6"
+    }}
+    activeDot={{
+        r: 7,
+        fill: "#06b6d4"
+    }}
+/>
 
                             </LineChart>
 

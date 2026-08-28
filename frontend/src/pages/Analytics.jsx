@@ -91,6 +91,12 @@ function Analytics() {
                 await getAdminAnalytics();
 
 
+            console.log(
+                "Analytics response:",
+                response
+            );
+
+
             if (response?.success) {
 
                 setAnalytics(
@@ -119,6 +125,7 @@ function Analytics() {
 
 
             setError(
+                error?.response?.data?.message ||
                 "Failed to load analytics."
             );
 
@@ -155,7 +162,7 @@ function Analytics() {
 
             count:
                 analytics
-                    .applicationsByStatus
+                    ?.applicationsByStatus
                     ?.Applied || 0
         },
 
@@ -164,7 +171,7 @@ function Analytics() {
 
             count:
                 analytics
-                    .applicationsByStatus
+                    ?.applicationsByStatus
                     ?.Shortlisted || 0
         },
 
@@ -173,7 +180,7 @@ function Analytics() {
 
             count:
                 analytics
-                    .applicationsByStatus
+                    ?.applicationsByStatus
                     ?.Assessment || 0
         },
 
@@ -182,7 +189,7 @@ function Analytics() {
 
             count:
                 analytics
-                    .applicationsByStatus
+                    ?.applicationsByStatus
                     ?.Interview || 0
         },
 
@@ -191,7 +198,7 @@ function Analytics() {
 
             count:
                 analytics
-                    .applicationsByStatus
+                    ?.applicationsByStatus
                     ?.Offer || 0
         },
 
@@ -200,7 +207,7 @@ function Analytics() {
 
             count:
                 analytics
-                    .applicationsByStatus
+                    ?.applicationsByStatus
                     ?.Selected || 0
         },
 
@@ -209,9 +216,26 @@ function Analytics() {
 
             count:
                 analytics
-                    .applicationsByStatus
+                    ?.applicationsByStatus
                     ?.Rejected || 0
         }
+
+    ];
+
+
+    // ==========================================
+    // BAR COLORS
+    // ==========================================
+
+    const applicationColors = [
+
+        "#6366f1",
+        "#a855f7",
+        "#06b6d4",
+        "#f59e0b",
+        "#ec4899",
+        "#22c55e",
+        "#ef4444"
 
     ];
 
@@ -223,22 +247,38 @@ function Analytics() {
     const jobStatusData = [
 
         {
+
             name: "Open",
 
             value:
                 analytics
-                    .overview
+                    ?.overview
                     ?.openJobs || 0
+
         },
 
         {
+
             name: "Closed",
 
             value:
                 analytics
-                    .overview
+                    ?.overview
                     ?.closedJobs || 0
+
         }
+
+    ];
+
+
+    // ==========================================
+    // PIE COLORS
+    // ==========================================
+
+    const jobColors = [
+
+        "#06b6d4",
+        "#f43f5e"
 
     ];
 
@@ -298,6 +338,7 @@ function Analytics() {
                             {error}
                         </p>
 
+
                         <button
                             onClick={loadAnalytics}
                         >
@@ -346,7 +387,9 @@ function Analytics() {
 
 
                         <h1>
+
                             Platform Analytics
+
                         </h1>
 
 
@@ -403,8 +446,8 @@ function Analytics() {
 
                                 {
                                     analytics
-                                        .overview
-                                        .totalUsers
+                                        ?.overview
+                                        ?.totalUsers || 0
                                 }
 
                             </h2>
@@ -435,8 +478,8 @@ function Analytics() {
 
                                 {
                                     analytics
-                                        .overview
-                                        .premiumUsers
+                                        ?.overview
+                                        ?.premiumUsers || 0
                                 }
 
                             </h2>
@@ -467,8 +510,8 @@ function Analytics() {
 
                                 {
                                     analytics
-                                        .overview
-                                        .totalJobs
+                                        ?.overview
+                                        ?.totalJobs || 0
                                 }
 
                             </h2>
@@ -499,8 +542,8 @@ function Analytics() {
 
                                 {
                                     analytics
-                                        .overview
-                                        .totalApplications
+                                        ?.overview
+                                        ?.totalApplications || 0
                                 }
 
                             </h2>
@@ -528,17 +571,13 @@ function Analytics() {
 
                         <div className="analytics-chart-heading">
 
-                            <div>
+                            <span>
+                                APPLICATION PIPELINE
+                            </span>
 
-                                <span>
-                                    APPLICATION PIPELINE
-                                </span>
-
-                                <h2>
-                                    Applications by Status
-                                </h2>
-
-                            </div>
+                            <h2>
+                                Applications by Status
+                            </h2>
 
                         </div>
 
@@ -554,56 +593,107 @@ function Analytics() {
                                     data={
                                         applicationStatusData
                                     }
+                                    margin={{
+                                        top: 10,
+                                        right: 10,
+                                        left: -15,
+                                        bottom: 5
+                                    }}
                                 >
 
                                     <CartesianGrid
                                         strokeDasharray="3 3"
-                                        vertical={false}
+                                        stroke="rgba(148, 163, 184, 0.18)"
                                     />
+
 
                                     <XAxis
                                         dataKey="status"
+                                        tick={{
+                                            fill: "#cbd5e1",
+                                            fontSize: 13
+                                        }}
+                                        axisLine={{
+                                            stroke:
+                                                "#475569"
+                                        }}
                                     />
+
 
                                     <YAxis
                                         allowDecimals={false}
+                                        tick={{
+                                            fill: "#cbd5e1"
+                                        }}
+                                        axisLine={{
+                                            stroke:
+                                                "#475569"
+                                        }}
                                     />
 
-<Tooltip
-    contentStyle={{
-        background: "#111827",
-        border: "1px solid rgba(139, 92, 246, 0.35)",
-        borderRadius: "12px",
-        color: "#ffffff"
-    }}
-    labelStyle={{
-        color: "#c4b5fd"
-    }}
-    itemStyle={{
-        color: "#ffffff"
-    }}
-/>
-<Bar
-    dataKey="count"
-    radius={[8, 8, 0, 0]}
->
-    {
-        applicationStatusData.map((entry, index) => (
-            <Cell
-                key={`bar-${index}`}
-                fill={[
-                    "#6366f1",
-                    "#8b5cf6",
-                    "#06b6d4",
-                    "#f59e0b",
-                    "#ec4899",
-                    "#22c55e",
-                    "#ef4444"
-                ][index]}
-            />
-        ))
-    }
-</Bar>
+
+                                    <Tooltip
+                                        contentStyle={{
+                                            background:
+                                                "#111827",
+
+                                            border:
+                                                "1px solid rgba(139, 92, 246, 0.45)",
+
+                                            borderRadius:
+                                                "12px",
+
+                                            color:
+                                                "#ffffff"
+                                        }}
+
+                                        labelStyle={{
+                                            color:
+                                                "#c4b5fd"
+                                        }}
+
+                                        itemStyle={{
+                                            color:
+                                                "#ffffff"
+                                        }}
+                                    />
+
+
+                                    <Bar
+                                        dataKey="count"
+                                        name="Applications"
+                                        radius={[
+                                            8,
+                                            8,
+                                            0,
+                                            0
+                                        ]}
+                                    >
+
+                                        {
+                                            applicationStatusData.map(
+                                                (
+                                                    entry,
+                                                    index
+                                                ) => (
+
+                                                    <Cell
+                                                        key={
+                                                            `bar-${index}`
+                                                        }
+
+                                                        fill={
+                                                            applicationColors[
+                                                                index
+                                                            ]
+                                                        }
+                                                    />
+
+                                                )
+                                            )
+                                        }
+
+                                    </Bar>
 
                                 </BarChart>
 
@@ -622,17 +712,13 @@ function Analytics() {
 
                         <div className="analytics-chart-heading">
 
-                            <div>
+                            <span>
+                                JOB STATUS
+                            </span>
 
-                                <span>
-                                    JOB STATUS
-                                </span>
-
-                                <h2>
-                                    Open vs Closed Jobs
-                                </h2>
-
-                            </div>
+                            <h2>
+                                Open vs Closed Jobs
+                            </h2>
 
                         </div>
 
@@ -647,15 +733,32 @@ function Analytics() {
                                 <PieChart>
 
                                     <Pie
+
                                         data={
                                             jobStatusData
                                         }
+
                                         dataKey="value"
+
                                         nameKey="name"
+
                                         cx="50%"
-                                        cy="50%"
-                                        outerRadius={100}
-                                        label
+
+                                        cy="45%"
+
+                                        innerRadius={55}
+
+                                        outerRadius={80}
+
+                                        paddingAngle={4}
+
+                                        label={({
+                                            name,
+                                            value
+                                        }) =>
+                                            `${name}: ${value}`
+                                        }
+
                                     >
 
                                         {
@@ -665,14 +768,19 @@ function Analytics() {
                                                     index
                                                 ) => (
 
-                                                <Cell
-    key={`cell-${index}`}
-    fill={
-        index === 0
-            ? "#06b6d4"
-            : "#f43f5e"
-    }
-/>
+                                                    <Cell
+
+                                                        key={
+                                                            `job-${index}`
+                                                        }
+
+                                                        fill={
+                                                            jobColors[
+                                                                index
+                                                            ]
+                                                        }
+
+                                                    />
 
                                                 )
                                             )
@@ -681,22 +789,29 @@ function Analytics() {
                                     </Pie>
 
 
-<Tooltip
-    contentStyle={{
-        background: "#111827",
-        border: "1px solid rgba(139, 92, 246, 0.35)",
-        borderRadius: "12px",
-        color: "#ffffff"
-    }}
-    labelStyle={{
-        color: "#c4b5fd"
-    }}
-    itemStyle={{
-        color: "#ffffff"
-    }}
-/>
+                                    <Tooltip
 
-                                    <Legend />
+                                        contentStyle={{
+                                            background:
+                                                "#111827",
+
+                                            border:
+                                                "1px solid rgba(139, 92, 246, 0.45)",
+
+                                            borderRadius:
+                                                "12px",
+
+                                            color:
+                                                "#ffffff"
+                                        }}
+
+                                    />
+
+
+                                    <Legend
+                                        verticalAlign="bottom"
+                                        height={36}
+                                    />
 
                                 </PieChart>
 
@@ -718,17 +833,13 @@ function Analytics() {
 
                     <div className="analytics-chart-heading">
 
-                        <div>
+                        <span>
+                            APPLICATION TREND
+                        </span>
 
-                            <span>
-                                APPLICATION TREND
-                            </span>
-
-                            <h2>
-                                Monthly Applications
-                            </h2>
-
-                        </div>
+                        <h2>
+                            Monthly Applications
+                        </h2>
 
                     </div>
 
@@ -741,42 +852,93 @@ function Analytics() {
                         >
 
                             <LineChart
+
                                 data={
                                     analytics
-                                        .monthlyApplications
+                                        ?.monthlyApplications || []
                                 }
+
+                                margin={{
+                                    top: 10,
+                                    right: 20,
+                                    left: -15,
+                                    bottom: 5
+                                }}
+
                             >
 
                                 <CartesianGrid
                                     strokeDasharray="3 3"
+                                    stroke="rgba(148, 163, 184, 0.18)"
                                     vertical={false}
                                 />
 
+
                                 <XAxis
+
                                     dataKey="month"
+
+                                    tick={{
+                                        fill:
+                                            "#cbd5e1"
+                                    }}
+
                                 />
+
 
                                 <YAxis
+
                                     allowDecimals={false}
+
+                                    tick={{
+                                        fill:
+                                            "#cbd5e1"
+                                    }}
+
                                 />
 
-                                <Tooltip />
+
+                                <Tooltip
+
+                                    contentStyle={{
+                                        background:
+                                            "#111827",
+
+                                        border:
+                                            "1px solid rgba(139, 92, 246, 0.45)",
+
+                                        borderRadius:
+                                            "12px"
+                                    }}
+
+                                />
 
 
-                             <Line
-    type="monotone"
-    dataKey="count"
-    stroke="#8b5cf6"
-    strokeWidth={3}
-    dot={{
-        r: 4,
-        fill: "#8b5cf6"
-    }}
-    activeDot={{
-        r: 7,
-        fill: "#06b6d4"
-    }}
-/>
+                                <Line
+
+                                    type="monotone"
+
+                                    dataKey="count"
+
+                                    name="Applications"
+
+                                    stroke="#8b5cf6"
+
+                                    strokeWidth={3}
+
+                                    dot={{
+                                        r: 4,
+                                        fill:
+                                            "#8b5cf6"
+                                    }}
+
+                                    activeDot={{
+                                        r: 7,
+                                        fill:
+                                            "#06b6d4"
+                                    }}
+
+                                />
 
                             </LineChart>
 
@@ -794,30 +956,28 @@ function Analytics() {
                 <section className="analytics-bottom-grid">
 
 
-                    {/* TOP COMPANIES */}
+                    {/* ==================================
+                        TOP COMPANIES
+                    ================================== */}
 
                     <div className="analytics-table-card">
 
                         <div className="analytics-chart-heading">
 
-                            <div>
+                            <span>
+                                JOB MARKET
+                            </span>
 
-                                <span>
-                                    JOB MARKET
-                                </span>
-
-                                <h2>
-                                    Top Hiring Companies
-                                </h2>
-
-                            </div>
+                            <h2>
+                                Top Hiring Companies
+                            </h2>
 
                         </div>
 
 
                         {
                             analytics
-                                .topCompanies
+                                ?.topCompanies
                                 ?.length > 0 ? (
 
                                 <div className="analytics-company-list">
@@ -832,11 +992,14 @@ function Analytics() {
                                                 ) => (
 
                                                     <div
+
                                                         className="analytics-company-item"
+
                                                         key={
                                                             company._id ||
                                                             index
                                                         }
+
                                                     >
 
                                                         <span className="company-rank">
@@ -863,13 +1026,15 @@ function Analytics() {
                                                             <small>
 
                                                                 {
-                                                                    company.jobs
+                                                                    company.jobs || 0
                                                                 }
 
                                                                 {" "}
 
                                                                 {
-                                                                    company.jobs === 1
+                                                                    (
+                                                                        company.jobs || 0
+                                                                    ) === 1
                                                                         ? "job"
                                                                         : "jobs"
                                                                 }
@@ -900,23 +1065,21 @@ function Analytics() {
                     </div>
 
 
-                    {/* JOB SUMMARY */}
+                    {/* ==================================
+                        JOB SUMMARY
+                    ================================== */}
 
                     <div className="analytics-table-card">
 
                         <div className="analytics-chart-heading">
 
-                            <div>
+                            <span>
+                                JOB OVERVIEW
+                            </span>
 
-                                <span>
-                                    JOB OVERVIEW
-                                </span>
-
-                                <h2>
-                                    Job Availability
-                                </h2>
-
-                            </div>
+                            <h2>
+                                Job Availability
+                            </h2>
 
                         </div>
 
@@ -934,8 +1097,8 @@ function Analytics() {
 
                                     {
                                         analytics
-                                            .overview
-                                            .totalJobs
+                                            ?.overview
+                                            ?.totalJobs || 0
                                     }
 
                                 </strong>
@@ -953,8 +1116,8 @@ function Analytics() {
 
                                     {
                                         analytics
-                                            .overview
-                                            .openJobs
+                                            ?.overview
+                                            ?.openJobs || 0
                                     }
 
                                 </strong>
@@ -972,8 +1135,8 @@ function Analytics() {
 
                                     {
                                         analytics
-                                            .overview
-                                            .closedJobs
+                                            ?.overview
+                                            ?.closedJobs || 0
                                     }
 
                                 </strong>
@@ -991,13 +1154,14 @@ function Analytics() {
 
                                     {
                                         analytics
-                                            .overview
-                                            .premiumUsers
+                                            ?.overview
+                                            ?.premiumUsers || 0
                                     }
 
                                 </strong>
 
                             </div>
+
 
                         </div>
 

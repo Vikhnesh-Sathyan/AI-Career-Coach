@@ -79,18 +79,30 @@ const userSchema = new mongoose.Schema(
             },
         },
 
-        // Subscription
-        subscription: {
-            plan: {
-                type: String,
-                default: "Free",
-            },
+    // Subscription
+subscription: {
+    plan: {
+        type: String,
+        enum: ["Free", "Premium"],
+        default: "Free",
+    },
 
-            status: {
-                type: String,
-                default: "active",
-            },
-        },
+    status: {
+        type: String,
+        enum: ["active", "expired", "cancelled"],
+        default: "active",
+    },
+
+    startDate: {
+        type: Date,
+        default: null,
+    },
+
+    expiryDate: {
+        type: Date,
+        default: null,
+    },
+},
     },
 
     {

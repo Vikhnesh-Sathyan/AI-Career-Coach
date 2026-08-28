@@ -12,11 +12,12 @@ export const getPremiumStatus = async (
 
     try {
 
-        const user = await User.findById(
-            req.user.id
-        ).select(
-            "name email subscription"
-        );
+        const user =
+            await User.findById(
+                req.user._id
+            ).select(
+                "name email subscription"
+            );
 
 
         if (!user) {
@@ -25,7 +26,8 @@ export const getPremiumStatus = async (
 
                 success: false,
 
-                message: "User not found."
+                message:
+                    "User not found."
 
             });
 
@@ -85,9 +87,10 @@ export const upgradeToPremium = async (
 
     try {
 
-        const user = await User.findById(
-            req.user.id
-        );
+        const user =
+            await User.findById(
+                req.user._id
+            );
 
 
         if (!user) {
@@ -96,7 +99,8 @@ export const upgradeToPremium = async (
 
                 success: false,
 
-                message: "User not found."
+                message:
+                    "User not found."
 
             });
 
@@ -203,7 +207,8 @@ export const getPremiumPlans = async (
 
                 price: 0,
 
-                duration: "Unlimited",
+                duration:
+                    "Unlimited",
 
                 features: [
 
@@ -219,6 +224,7 @@ export const getPremiumPlans = async (
 
             },
 
+
             {
 
                 id: "premium",
@@ -227,7 +233,8 @@ export const getPremiumPlans = async (
 
                 price: 299,
 
-                duration: "30 days",
+                duration:
+                    "30 days",
 
                 features: [
 

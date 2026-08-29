@@ -9,10 +9,12 @@ import {
     FaCog,
     FaSignOutAlt,
     FaRobot,
-    FaHistory
+    FaHistory,
+    FaCrown
 } from "react-icons/fa";
 
 import { NavLink } from "react-router-dom";
+
 
 function Sidebar() {
 
@@ -37,9 +39,9 @@ function Sidebar() {
         },
 
         {
-             icon: <FaHistory />,
-             title: "Match History",
-             path: "/match-history"
+            icon: <FaHistory />,
+            title: "Match History",
+            path: "/match-history"
         },
 
         {
@@ -54,29 +56,56 @@ function Sidebar() {
             path: "/jobs"
         },
 
+        // ===============================
+        // PREMIUM
+        // ===============================
+
+        {
+            icon: <FaCrown />,
+            title: "Premium",
+            path: "/premium",
+            premium: true
+        },
+
         {
             icon: <FaCog />,
             title: "Settings",
             path: "/settings"
         },
+
         {
-              icon:<FaHistory />,
-              title:"Interview History",
-              path:"/interview-history"
-    }
+            icon: <FaHistory />,
+            title: "Interview History",
+            path: "/interview-history"
+        }
+
     ];
+
 
     return (
 
         <aside className="sidebar">
 
+            {/* ===============================
+                LOGO
+            =============================== */}
+
             <div className="sidebar-logo">
 
-                <FaRobot className="robot-icon" />
+                <FaRobot
+                    className="robot-icon"
+                />
 
-                <span>AI Coach</span>
+                <span>
+                    AI Coach
+                </span>
 
             </div>
+
+
+            {/* ===============================
+                MENU
+            =============================== */}
 
             <nav className="sidebar-menu">
 
@@ -89,14 +118,25 @@ function Sidebar() {
                             to={item.path}
                             className={({ isActive }) =>
                                 isActive
-                                    ? "menu-item active"
-                                    : "menu-item"
+                                    ? `menu-item active ${
+                                        item.premium
+                                            ? "premium-menu-item"
+                                            : ""
+                                      }`
+                                    : `menu-item ${
+                                        item.premium
+                                            ? "premium-menu-item"
+                                            : ""
+                                      }`
                             }
                         >
 
                             {item.icon}
 
-                            <span>{item.title}</span>
+                            <span>
+                                {item.title}
+                            </span>
+
 
                         </NavLink>
 
@@ -106,11 +146,18 @@ function Sidebar() {
 
             </nav>
 
+
+            {/* ===============================
+                LOGOUT
+            =============================== */}
+
             <div className="logout-btn">
 
                 <FaSignOutAlt />
 
-                <span>Logout</span>
+                <span>
+                    Logout
+                </span>
 
             </div>
 
@@ -119,5 +166,6 @@ function Sidebar() {
     );
 
 }
+
 
 export default Sidebar;

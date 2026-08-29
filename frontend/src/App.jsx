@@ -18,6 +18,7 @@ import Interviews from "./pages/Interviews";
 import InterviewHistory from "./pages/InterviewHistory";
 import Help from "./pages/Help";
 import Jobs from "./pages/Jobs";
+import Premium from "./pages/Premium";
 import JobDetails from "./pages/JobDetails";
 import Applications from "./pages/Applications";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -124,7 +125,12 @@ function App() {
                 <Route
                     path="/jobs"
                     element={<Jobs />}
+                
                 />
+                <Route
+    path="/premium"
+    element={<Premium />}
+/>
                 <Route
                     path="/help"
                     element={<Help />}

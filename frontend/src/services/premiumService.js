@@ -103,3 +103,29 @@ export const cancelPremium = async () => {
     }
 
 };
+
+// ==========================================
+// CHECK PREMIUM FEATURE ACCESS
+// ==========================================
+
+export const checkPremiumFeature =
+    async () => {
+
+        try {
+
+            const response =
+                await api.get(
+                    "/premium/premium-feature"
+                );
+
+            return response.data;
+
+        }
+
+        catch (error) {
+
+            throw error;
+
+        }
+
+    };

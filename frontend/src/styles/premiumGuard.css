@@ -1,0 +1,243 @@
+/* ======================================
+   PREMIUM GUARD
+====================================== */
+
+.premium-guard {
+
+    min-height: 450px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+
+    padding: 40px;
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #111827,
+            #1e293b
+        );
+
+    color: white;
+
+}
+
+
+/* ======================================
+   LOCK BOX
+====================================== */
+
+.premium-lock-box {
+
+    width: 80px;
+
+    height: 80px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    margin-bottom: 20px;
+
+    background:
+        rgba(
+            251,
+            191,
+            36,
+            0.12
+        );
+
+    border:
+        1px solid
+        rgba(
+            251,
+            191,
+            36,
+            0.3
+        );
+
+}
+
+
+.premium-lock-icon {
+
+    font-size: 32px;
+
+    color: #fbbf24;
+
+}
+
+
+/* ======================================
+   LABEL
+====================================== */
+
+.premium-guard-label {
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.5px;
+
+    color: #fbbf24;
+
+    margin-bottom: 12px;
+
+}
+
+
+/* ======================================
+   TEXT
+====================================== */
+
+.premium-guard h2 {
+
+    font-size: 28px;
+
+    margin-bottom: 12px;
+
+}
+
+
+.premium-guard p {
+
+    max-width: 400px;
+
+    color: #94a3b8;
+
+    line-height: 1.6;
+
+    margin-bottom: 25px;
+
+}
+
+
+/* ======================================
+   BUTTON
+====================================== */
+
+.premium-upgrade-btn {
+
+    border: none;
+
+    padding:
+        13px
+        24px;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f59e0b,
+            #fbbf24
+        );
+
+    color: #111827;
+
+    transition: 0.3s;
+
+}
+
+
+.premium-upgrade-btn:hover {
+
+    transform:
+        translateY(-3px);
+
+    box-shadow:
+        0
+        10px
+        25px
+        rgba(
+            251,
+            191,
+            36,
+            0.25
+        );
+
+}
+
+
+/* ======================================
+   LOADING
+====================================== */
+
+.premium-guard-loading {
+
+    min-height: 300px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 15px;
+
+    color: #94a3b8;
+
+}
+
+
+.premium-spinner {
+
+    font-size: 28px;
+
+    color: #8b5cf6;
+
+    animation:
+        premiumSpin
+        1s
+        linear
+        infinite;
+
+}
+
+
+@keyframes premiumSpin {
+
+    from {
+
+        transform:
+            rotate(0deg);
+
+    }
+
+
+    to {
+
+        transform:
+            rotate(360deg);
+
+    }
+
+}

@@ -1,4 +1,3 @@
-
 import "../../styles/resumeupload.css";
 
 import { motion } from "framer-motion";
@@ -6,35 +5,57 @@ import { FaCloudUploadAlt } from "react-icons/fa";
 import { useRef, useState } from "react";
 
 import ResumeCard from "./ResumeCard";
-import ATSCard from "./ATSCard";
+import ATSCard from "../ats/ATSCard";
 import SkillsCard from "./SkillsCard";
 import SuggestionsCard from "./SuggestionsCard";
-import LoadingAnalysis from "./LoadingAnalysis";
+import LoadingAnalysis from "../ats/LoadingAnalysis";
+import ResumeOverview from "./ResumeOverview";
+import ResumeHealth from "./ResumeHealth";
 
 import { uploadResume } from "../../services/resumeService";
 
-import ResumeOverview from "./ResumeOverview";
-
-import ResumeHealth from "./ResumeHealth";
-
-
 function ResumeUpload() {
+
+    // ==========================================
+    // REFERENCES
+    // ==========================================
 
     const inputRef = useRef();
 
-    const [file, setFile] = useState(null);
 
-    const [loading, setLoading] = useState(false);
+    // ==========================================
+    // STATES
+    // ==========================================
 
-    const [showAnalysis, setShowAnalysis] = useState(false);
+    const [file, setFile] =
+        useState(null);
 
-    const [analysis, setAnalysis] = useState(null);
-    
+    const [loading, setLoading] =
+        useState(false);
+
+    const [showAnalysis, setShowAnalysis] =
+        useState(false);
+
+    const [analysis, setAnalysis] =
+        useState(null);
+
+
+    // ==========================================
+    // HANDLE FILE SELECTION
+    // ==========================================
+
     const handleFile = (e) => {
 
-        if (e.target.files.length > 0) {
+        const selectedFile =
+            e.target.files?.[0];
 
-            setFile(e.target.files[0]);
+
+        if (selectedFile) {
+
+            setFile(selectedFile);
+
+            // Reset previous analysis
+            setAnalysis(null);
 
             setShowAnalysis(false);
 
@@ -44,72 +65,122 @@ function ResumeUpload() {
 
     };
 
+
+    // ==========================================
+    // ANALYSE RESUME
+    // ==========================================
+
     const handleAnalyse = async () => {
 
-    if (!file) {
+        if (!file) {
 
-        alert("Please select a resume.");
+            alert(
+                "Please select a resume."
+            );
 
-        return;
+            return;
 
-    }
+        }
 
-    try {
 
-        setLoading(true);
+        try {
 
-        const formData = new FormData();
+            setLoading(true);
 
-        formData.append("resume", file);
+            setShowAnalysis(false);
 
-        const response = await uploadResume(formData);
 
-        setAnalysis(response);
+            const formData =
+                new FormData();
 
-        setTimeout(() => {
+
+            formData.append(
+                "resume",
+                file
+            );
+
+
+            const response =
+                await uploadResume(
+                    formData
+                );
+
+
+            // Save analysis result
+            setAnalysis(response);
+
+
+            // Small loading animation delay
+            setTimeout(() => {
+
+                setLoading(false);
+
+                setShowAnalysis(true);
+
+            }, 1500);
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Resume analysis error:",
+                error
+            );
+
 
             setLoading(false);
 
-            setShowAnalysis(true);
+            setShowAnalysis(false);
 
-        }, 1500);
 
-    }
+            alert(
+                error.response?.data?.message ||
+                "Resume upload failed."
+            );
 
-    catch (error) {
+        }
 
-        console.log(error);
+    };
 
-        setLoading(false);
 
-        alert("Upload Failed");
-
-    }
-
-};
     return (
 
         <>
+
+            {/* ==================================
+                RESUME UPLOAD CARD
+            ================================== */}
 
             <motion.div
 
                 className="upload-card"
 
-                initial={{ opacity: 0, y: 40 }}
+                initial={{
+                    opacity: 0,
+                    y: 40
+                }}
 
-                animate={{ opacity: 1, y: 0 }}
+                animate={{
+                    opacity: 1,
+                    y: 0
+                }}
 
-                transition={{ duration: .6 }}
+                transition={{
+                    duration: 0.6
+                }}
 
             >
 
-                <FaCloudUploadAlt className="upload-icon" />
+                <FaCloudUploadAlt
+                    className="upload-icon"
+                />
+
 
                 <h2>
-
                     Upload Resume
-
                 </h2>
+
 
                 <p>
 
@@ -120,6 +191,7 @@ function ResumeUpload() {
                     or click below to browse.
 
                 </p>
+
 
                 <input
 
@@ -135,11 +207,16 @@ function ResumeUpload() {
 
                 />
 
+
                 <button
 
                     className="browse-btn"
 
-                    onClick={() => inputRef.current.click()}
+                    type="button"
+
+                    onClick={() =>
+                        inputRef.current?.click()
+                    }
 
                 >
 
@@ -149,6 +226,11 @@ function ResumeUpload() {
 
             </motion.div>
 
+
+            {/* ==================================
+                SELECTED RESUME
+            ================================== */}
+
             <ResumeCard
 
                 file={file}
@@ -157,31 +239,60 @@ function ResumeUpload() {
 
             />
 
+
+            {/* ==================================
+                LOADING
+            ================================== */}
+
             {
 
-                loading &&
+                loading && (
 
-                    <LoadingAnalysis/>
+                    <LoadingAnalysis />
+
+                )
 
             }
+
+
+            {/* ==================================
+                RESUME ANALYSIS
+            ================================== */}
 
             {
 
                 showAnalysis &&
+                analysis && (
 
-                <div className="analysis-grid">
+                    <div className="analysis-grid">
 
-                    <ResumeOverview analysis={analysis}/>
+                        <ResumeOverview
+                            analysis={analysis}
+                        />
 
-                    <ATSCard analysis={analysis}/>
 
-                    <SkillsCard analysis={analysis}/>
+                        <ATSCard
+                            analysis={analysis}
+                        />
 
-                    <ResumeHealth analysis={analysis}/>
 
-                    <SuggestionsCard analysis={analysis}/>
+                        <SkillsCard
+                            analysis={analysis}
+                        />
 
-                </div>
+
+                        <ResumeHealth
+                            analysis={analysis}
+                        />
+
+
+                        <SuggestionsCard
+                            analysis={analysis}
+                        />
+
+                    </div>
+
+                )
 
             }
 
@@ -190,5 +301,6 @@ function ResumeUpload() {
     );
 
 }
+
 
 export default ResumeUpload;

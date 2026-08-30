@@ -15,7 +15,7 @@ import {
 
 import {
     checkPremiumFeature
-} from "../services/premiumService";
+} from "../../services/premiumService";
 
 import "../styles/premiumGuard.css";
 

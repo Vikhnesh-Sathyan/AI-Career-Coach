@@ -1,6 +1,6 @@
 import "../styles/atspage.css";
 
-import ATSCard from "../components/resume/ATSCard";
+import ATSCard from "../components/ats/ATSCard";
 
 function ATS() {
 

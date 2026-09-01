@@ -160,3 +160,86 @@ export const uploadResume = async (req, res) => {
     }
 
 };
+
+// ==========================================
+// GET LATEST RESUME ANALYSIS
+// ==========================================
+
+export const getLatestResumeAnalysis =
+    async (req, res) => {
+
+        try {
+
+            const resume =
+                await Resume.findOne({
+
+                    user: req.user._id
+
+                })
+                .sort({
+
+                    createdAt: -1
+
+                });
+
+
+            if (!resume) {
+
+                return res.status(404).json({
+
+                    success: false,
+
+                    message:
+                        "No resume analysis found."
+
+                });
+
+            }
+
+
+            return res.status(200).json({
+
+                success: true,
+
+                data: {
+
+                    ...resume.analysis,
+
+                    atsScore:
+                        resume.atsScore,
+
+                    skills:
+                        resume.skills,
+
+                    resumeId:
+                        resume._id,
+
+                    fileName:
+                        resume.fileName
+
+                }
+
+            });
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Get Latest Resume Error:",
+                error
+            );
+
+
+            return res.status(500).json({
+
+                success: false,
+
+                message:
+                    "Failed to fetch resume analysis."
+
+            });
+
+        }
+
+    };

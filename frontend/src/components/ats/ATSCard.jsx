@@ -8,6 +8,11 @@ import {
 } from "react-circular-progressbar";
 
 import {
+    FaCheckCircle,
+    FaLightbulb
+} from "react-icons/fa";
+
+import {
     useEffect,
     useState
 } from "react";
@@ -22,93 +27,118 @@ function ATSCard({ analysis }) {
     // FINAL ATS SCORE
     // ==========================================
 
-    const finalScore =
-        analysis?.atsScore || 0;
+    const finalScore = Math.min(
+        Number(analysis?.atsScore) || 0,
+        100
+    );
 
 
     // ==========================================
     // ANIMATED SCORE
     // ==========================================
 
-    const [score, setScore] =
-        useState(0);
+    const [score, setScore] = useState(0);
 
 
     useEffect(() => {
 
         setScore(0);
 
+        if (finalScore === 0) {
+            return;
+        }
 
         let current = 0;
 
-
         const timer = setInterval(() => {
 
-            current++;
+            current += 1;
 
-            setScore(current);
+            if (current >= finalScore) {
 
-
-            if (
-                current >= finalScore
-            ) {
+                setScore(finalScore);
 
                 clearInterval(timer);
 
+                return;
+
             }
+
+            setScore(current);
 
         }, 20);
 
 
-        return () =>
+        return () => {
             clearInterval(timer);
-
+        };
 
     }, [finalScore]);
 
 
     // ==========================================
-    // DYNAMIC STATS
+    // ATS DETAILS
     // ==========================================
 
     const stats = [
 
         {
-            title:
-                "Keyword Match",
+            title: "Keyword Match",
 
-            value:
-                analysis?.keywordMatch || 0
+            value: Math.min(
+                Number(analysis?.keywordMatch) || 0,
+                100
+            )
         },
 
-
         {
-            title:
-                "Formatting",
+            title: "Formatting",
 
-            value:
-                analysis?.formatting || 0
+            value: Math.min(
+                Number(analysis?.formatting) || 0,
+                100
+            )
         },
 
-
         {
-            title:
-                "Readability",
+            title: "Readability",
 
-            value:
-                analysis?.readability || 0
+            value: Math.min(
+                Number(analysis?.readability) || 0,
+                100
+            )
         },
 
-
         {
-            title:
-                "Projects",
+            title: "Projects",
 
-            value:
-                analysis?.projects || 0
+            value: Math.min(
+                Number(analysis?.projects) || 0,
+                100
+            )
         }
 
     ];
+
+
+    // ==========================================
+    // DETECTED SKILLS
+    // ==========================================
+
+    const skills =
+        Array.isArray(analysis?.skills)
+            ? analysis.skills
+            : [];
+
+
+    // ==========================================
+    // SUGGESTIONS
+    // ==========================================
+
+    const suggestions =
+        Array.isArray(analysis?.suggestions)
+            ? analysis.suggestions
+            : [];
 
 
     // ==========================================
@@ -120,11 +150,8 @@ function ATSCard({ analysis }) {
         if (finalScore >= 80) {
 
             return {
-                text:
-                    "Excellent Resume",
-
-                className:
-                    "excellent"
+                text: "Excellent Resume",
+                className: "excellent"
             };
 
         }
@@ -133,11 +160,8 @@ function ATSCard({ analysis }) {
         if (finalScore >= 60) {
 
             return {
-                text:
-                    "Good Resume",
-
-                className:
-                    "good"
+                text: "Good Resume",
+                className: "good"
             };
 
         }
@@ -146,24 +170,16 @@ function ATSCard({ analysis }) {
         if (finalScore >= 40) {
 
             return {
-                text:
-                    "Needs Improvement",
-
-                className:
-                    "average"
+                text: "Needs Improvement",
+                className: "average"
             };
 
         }
 
 
         return {
-
-            text:
-                "Needs Improvement",
-
-            className:
-                "poor"
-
+            text: "Needs Improvement",
+            className: "poor"
         };
 
     };
@@ -172,6 +188,10 @@ function ATSCard({ analysis }) {
     const scoreStatus =
         getScoreLabel();
 
+
+    // ==========================================
+    // UI
+    // ==========================================
 
     return (
 
@@ -195,13 +215,11 @@ function ATSCard({ analysis }) {
 
         >
 
-
-            {/* ==============================
-                ATS HEADER
-            ============================== */}
+            {/* =================================
+                ATS SCORE
+            ================================= */}
 
             <div className="ats-top">
-
 
                 <div className="progress-wrapper">
 
@@ -209,24 +227,23 @@ function ATSCard({ analysis }) {
 
                         value={score}
 
+                        maxValue={100}
+
                         strokeWidth={10}
 
                         styles={buildStyles({
 
-                            pathColor:
-                                "#8b5cf6",
+                            pathColor: "#8b5cf6",
 
-                            trailColor:
-                                "#334155"
+                            trailColor: "#334155",
+
+                            strokeLinecap: "round"
 
                         })}
 
                     />
 
-
-                    <div
-                        className="progress-text"
-                    >
+                    <div className="progress-text">
 
                         {score}%
 
@@ -241,111 +258,184 @@ function ATSCard({ analysis }) {
                         ATS Score
                     </h2>
 
-
                     <span
                         className={
                             scoreStatus.className
                         }
                     >
 
-                        {
-                            scoreStatus.text
-                        }
+                        {scoreStatus.text}
 
                     </span>
 
                 </div>
 
-
             </div>
 
 
-
-            {/* ==============================
+            {/* =================================
                 SCORE DETAILS
-            ============================== */}
+            ================================= */}
 
             <div className="score-details">
 
+                {stats.map((item) => (
 
-                {
+                    <div
+                        key={item.title}
+                        className="score-item"
+                    >
 
-                    stats.map(
-                        (item) => (
+                        <div className="score-header">
 
-                            <div
+                            <span>
+                                {item.title}
+                            </span>
 
-                                key={
-                                    item.title
-                                }
+                            <strong>
+                                {item.value}%
+                            </strong>
 
-                                className="
-                                    score-item
-                                "
-
-                            >
-
-
-                                <div
-                                    className="
-                                        score-header
-                                    "
-                                >
-
-                                    <span>
-
-                                        {
-                                            item.title
-                                        }
-
-                                    </span>
+                        </div>
 
 
-                                    <strong>
+                        <div className="progress-line">
 
-                                        {
-                                            item.value
-                                        }%
+                            <motion.div
 
-                                    </strong>
+                                className="progress-fill"
 
-                                </div>
+                                initial={{
+                                    width: 0
+                                }}
 
+                                animate={{
+                                    width:
+                                        `${item.value}%`
+                                }}
 
-                                <div
-                                    className="
-                                        progress-line
-                                    "
-                                >
+                                transition={{
+                                    duration: 0.8
+                                }}
 
-                                    <div
+                            />
 
-                                        className="
-                                            progress-fill
-                                        "
+                        </div>
 
-                                        style={{
+                    </div>
 
-                                            width:
-                                                `${item.value}%`
-
-                                        }}
-
-                                    />
-
-                                </div>
-
-
-                            </div>
-
-                        )
-                    )
-
-                }
-
+                ))}
 
             </div>
 
+
+            {/* =================================
+                DETECTED SKILLS
+            ================================= */}
+
+            <div className="ats-section">
+
+                <div className="ats-section-title">
+
+                    <FaCheckCircle />
+
+                    <h3>
+                        Detected Skills
+                    </h3>
+
+                </div>
+
+
+                {skills.length > 0 ? (
+
+                    <div className="ats-skills">
+
+                        {skills.map(
+                            (skill, index) => (
+
+                                <span
+                                    key={`${skill}-${index}`}
+                                    className="ats-skill"
+                                >
+
+                                    {skill}
+
+                                </span>
+
+                            )
+                        )}
+
+                    </div>
+
+                ) : (
+
+                    <p className="ats-empty-text">
+
+                        No technical skills detected.
+
+                    </p>
+
+                )}
+
+            </div>
+
+
+            {/* =================================
+                IMPROVEMENT SUGGESTIONS
+            ================================= */}
+
+            <div className="ats-section">
+
+                <div className="ats-section-title">
+
+                    <FaLightbulb />
+
+                    <h3>
+                        Improvement Suggestions
+                    </h3>
+
+                </div>
+
+
+                {suggestions.length > 0 ? (
+
+                    <div className="ats-suggestions">
+
+                        {suggestions.map(
+                            (suggestion, index) => (
+
+                                <div
+                                    key={index}
+                                    className="ats-suggestion"
+                                >
+
+                                    <span>
+                                        {index + 1}
+                                    </span>
+
+                                    <p>
+                                        {suggestion}
+                                    </p>
+
+                                </div>
+
+                            )
+                        )}
+
+                    </div>
+
+                ) : (
+
+                    <p className="ats-empty-text">
+
+                        Your resume looks good.
+                        No major suggestions at the moment.
+
+                    </p>
+
+                )}
+
+            </div>
 
         </motion.div>
 

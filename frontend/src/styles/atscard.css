@@ -139,3 +139,95 @@
     }
 
 }
+
+
+/* ==========================================
+   ATS EXTRA SECTIONS
+========================================== */
+
+.ats-section {
+    margin-top: 28px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(148, 163, 184, 0.15);
+}
+
+.ats-section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.ats-section-title svg {
+    color: #8b5cf6;
+}
+
+.ats-section-title h3 {
+    margin: 0;
+    font-size: 17px;
+}
+
+
+/* ==========================================
+   SKILLS
+========================================== */
+
+.ats-skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.ats-skill {
+    padding: 7px 13px;
+    border-radius: 20px;
+    background: rgba(139, 92, 246, 0.12);
+    border: 1px solid rgba(139, 92, 246, 0.25);
+    color: #c4b5fd;
+    font-size: 13px;
+}
+
+
+/* ==========================================
+   SUGGESTIONS
+========================================== */
+
+.ats-suggestions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.ats-suggestion {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: rgba(30, 41, 59, 0.55);
+}
+
+.ats-suggestion > span {
+    min-width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(139, 92, 246, 0.2);
+    color: #c4b5fd;
+    font-size: 12px;
+}
+
+.ats-suggestion p {
+    margin: 2px 0 0;
+    color: #cbd5e1;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.ats-empty-text {
+    margin: 0;
+    color: #94a3b8;
+    font-size: 14px;
+}

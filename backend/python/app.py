@@ -67,35 +67,156 @@ SKILLS = (
 )
 
 
+
 # -------------------------------
 # ATS Score
 # -------------------------------
 
-def calculate_ats(skills):
+def calculate_ats(skills, text):
 
-    score = 50
+    # -------------------------------
+    # Keyword Match
+    # -------------------------------
 
-    score += len(skills) * 4
+    keyword_match = min(
+        len(skills) * 5,
+        100
+    )
 
-    if score > 100:
-        score = 100
+
+    # -------------------------------
+    # Formatting
+    # -------------------------------
+
+    formatting = 0
+
+    if len(text.strip()) > 500:
+        formatting += 40
+
+    if "\n" in text:
+        formatting += 20
+
+    if "experience" in text.lower():
+        formatting += 20
+
+    if "education" in text.lower():
+        formatting += 20
+
+    formatting = min(formatting, 100)
+
+
+    # -------------------------------
+    # Readability
+    # -------------------------------
+
+    readability = 0
+
+    words = text.split()
+
+    if len(words) >= 100:
+        readability += 40
+
+    if len(words) >= 250:
+        readability += 30
+
+    if len(words) >= 400:
+        readability += 30
+
+    readability = min(readability, 100)
+
+
+    # -------------------------------
+    # Projects
+    # -------------------------------
+
+    projects = 0
+
+    lower_text = text.lower()
+
+    if "project" in lower_text:
+        projects += 50
+
+    if (
+        "developed" in lower_text
+        or "implemented" in lower_text
+        or "built" in lower_text
+    ):
+        projects += 50
+
+    projects = min(projects, 100)
+
+
+    # -------------------------------
+    # Overall ATS Score
+    # -------------------------------
+
+    score = round(
+        (
+            keyword_match
+            + formatting
+            + readability
+            + projects
+        ) / 4
+    )
+
+
+    # -------------------------------
+    # Suggestions
+    # -------------------------------
 
     suggestions = []
 
-    if "Git" not in skills:
-        suggestions.append("Add Git to your resume.")
 
-    if "REST API" not in skills:
-        suggestions.append("Mention REST API experience.")
+    if keyword_match < 70:
 
-    if not any(db in skills for db in DATABASE_SKILLS):
-        suggestions.append("Add database technologies.")
+        suggestions.append(
+            "Add more relevant technical keywords."
+        )
 
-    if len(skills) < 8:
-        suggestions.append("Add more technical skills.")
 
-    return score, suggestions
+    if formatting < 70:
 
+        suggestions.append(
+            "Improve resume formatting and section structure."
+        )
+
+
+    if readability < 70:
+
+        suggestions.append(
+            "Improve resume readability with clear and concise content."
+        )
+
+
+    if projects < 70:
+
+        suggestions.append(
+            "Add more project details and technical contributions."
+        )
+
+
+    if "git" not in lower_text:
+
+        suggestions.append(
+            "Add Git experience if applicable."
+        )
+
+
+    if "rest api" not in lower_text:
+
+        suggestions.append(
+            "Mention REST API experience if applicable."
+        )
+
+
+    return (
+        score,
+        keyword_match,
+        formatting,
+        readability,
+        projects,
+        suggestions
+    )
 
 # -------------------------------
 # Resume Analysis API
@@ -224,7 +345,17 @@ def analyze():
         # ATS Score
         # -----------------------
 
-        score, suggestions = calculate_ats(found_skills)
+        (
+    score,
+    keyword_match,
+    formatting,
+    readability,
+    projects,
+    suggestions
+) = calculate_ats(
+    found_skills,
+    text
+)
 
         return jsonify({
 
@@ -239,6 +370,14 @@ def analyze():
             "skills": found_skills,
 
             "atsScore": score,
+            
+            "keywordMatch": keyword_match,
+            
+            "formatting": formatting,
+            
+            "readability": readability,
+
+            "projects": projects,
 
             "suggestions": suggestions
 

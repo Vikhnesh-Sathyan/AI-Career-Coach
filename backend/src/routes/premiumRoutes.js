@@ -8,7 +8,11 @@ import {
     premiumOnly
 } from "../middleware/premiumMiddleware.js";
 
-import User from "../models/User.js";
+import {
+    getPremiumStatus,
+    upgradeToPremium,
+    getPremiumPlans
+} from "../controllers/premiumController.js";
 
 
 const router = express.Router();
@@ -21,50 +25,17 @@ const router = express.Router();
 router.get(
     "/status",
     protect,
-    async (req, res) => {
-
-        try {
-
-            return res.status(200).json({
-
-                success: true,
-
-                data: {
-
-                    plan:
-                        req.user.subscription?.plan ||
-                        "Free",
-
-                    status:
-                        req.user.subscription?.status ||
-                        "active"
-
-                }
-
-            });
-
-        }
-
-        catch (error) {
-
-            console.error(
-                "Get Premium Status Error:",
-                error
-            );
+    getPremiumStatus
+);
 
 
-            return res.status(500).json({
+// ==========================================
+// GET PREMIUM PLANS
+// ==========================================
 
-                success: false,
-
-                message:
-                    "Failed to get subscription status."
-
-            });
-
-        }
-
-    }
+router.get(
+    "/plans",
+    getPremiumPlans
 );
 
 
@@ -75,83 +46,7 @@ router.get(
 router.post(
     "/upgrade",
     protect,
-    async (req, res) => {
-
-        try {
-
-            const user =
-                await User.findById(
-                    req.user._id
-                );
-
-
-            if (!user) {
-
-                return res.status(404).json({
-
-                    success: false,
-
-                    message:
-                        "User not found."
-
-                });
-
-            }
-
-
-            user.subscription = {
-
-                plan: "Premium",
-
-                status: "active"
-
-            };
-
-
-            await user.save();
-
-
-            return res.status(200).json({
-
-                success: true,
-
-                message:
-                    "Successfully upgraded to Premium.",
-
-                data: {
-
-                    plan:
-                        user.subscription.plan,
-
-                    status:
-                        user.subscription.status
-
-                }
-
-            });
-
-        }
-
-        catch (error) {
-
-            console.error(
-                "Premium Upgrade Error:",
-                error
-            );
-
-
-            return res.status(500).json({
-
-                success: false,
-
-                message:
-                    "Premium upgrade failed."
-
-            });
-
-        }
-
-    }
+    upgradeToPremium
 );
 
 
@@ -163,7 +58,7 @@ router.get(
     "/premium-feature",
     protect,
     premiumOnly,
-    async (req, res) => {
+    (req, res) => {
 
         return res.status(200).json({
 

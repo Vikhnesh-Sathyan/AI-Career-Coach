@@ -45,7 +45,7 @@ export const upgradeToPremium = async () => {
     try {
 
         const response =
-            await api.put(
+            await api.post(
                 "/premium/upgrade"
             );
 

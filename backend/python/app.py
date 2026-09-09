@@ -72,150 +72,323 @@ SKILLS = (
 # ATS Score
 # -------------------------------
 
+# -------------------------------
+# Advanced ATS Score
+# -------------------------------
+
 def calculate_ats(skills, text):
 
-    # -------------------------------
-    # Keyword Match
-    # -------------------------------
+    lower_text = text.lower()
 
-    keyword_match = min(
-        len(skills) * 5,
+    # ==========================================
+    # 1. KEYWORD MATCH
+    # ==========================================
+
+    if len(SKILLS) > 0:
+
+        keyword_match = round(
+            (len(skills) / len(SKILLS)) * 100
+        )
+
+    else:
+
+        keyword_match = 0
+
+    keyword_match = min(keyword_match, 100)
+
+
+    # ==========================================
+    # 2. CONTACT INFORMATION
+    # ==========================================
+
+    email_exists = bool(
+        re.search(
+            r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}",
+            text
+        )
+    )
+
+    phone_exists = bool(
+        re.search(
+            r"\+?\d[\d\s-]{8,}",
+            text
+        )
+    )
+
+
+    contact_score = 0
+
+    if email_exists:
+        contact_score += 50
+
+    if phone_exists:
+        contact_score += 50
+
+
+    # ==========================================
+    # 3. IMPORTANT SECTIONS
+    # ==========================================
+
+    section_keywords = {
+
+        "summary": [
+            "summary",
+            "profile",
+            "objective"
+        ],
+
+        "education": [
+            "education",
+            "academic"
+        ],
+
+        "experience": [
+            "experience",
+            "work experience",
+            "employment"
+        ],
+
+        "skills": [
+            "skills",
+            "technical skills"
+        ],
+
+        "projects": [
+            "projects",
+            "academic projects",
+            "personal projects"
+        ]
+
+    }
+
+
+    detected_sections = []
+
+    for section, keywords in section_keywords.items():
+
+        for keyword in keywords:
+
+            if keyword in lower_text:
+
+                detected_sections.append(section)
+
+                break
+
+
+    detected_sections = list(
+        dict.fromkeys(detected_sections)
+    )
+
+
+    # ==========================================
+    # 4. FORMATTING SCORE
+    # ==========================================
+
+    formatting = 0
+
+    if "skills" in detected_sections:
+        formatting += 20
+
+    if "education" in detected_sections:
+        formatting += 20
+
+    if "experience" in detected_sections:
+        formatting += 20
+
+    if "projects" in detected_sections:
+        formatting += 20
+
+    if "summary" in detected_sections:
+        formatting += 20
+
+
+    formatting = min(
+        formatting,
         100
     )
 
 
-    # -------------------------------
-    # Formatting
-    # -------------------------------
-
-    formatting = 0
-
-    if len(text.strip()) > 500:
-        formatting += 40
-
-    if "\n" in text:
-        formatting += 20
-
-    if "experience" in text.lower():
-        formatting += 20
-
-    if "education" in text.lower():
-        formatting += 20
-
-    formatting = min(formatting, 100)
-
-
-    # -------------------------------
-    # Readability
-    # -------------------------------
-
-    readability = 0
+    # ==========================================
+    # 5. READABILITY SCORE
+    # ==========================================
 
     words = text.split()
 
-    if len(words) >= 100:
-        readability += 40
+    word_count = len(words)
 
-    if len(words) >= 250:
-        readability += 30
-
-    if len(words) >= 400:
-        readability += 30
-
-    readability = min(readability, 100)
+    readability = 50
 
 
-    # -------------------------------
-    # Projects
-    # -------------------------------
+    if word_count >= 200:
+        readability += 20
 
-    projects = 0
+    if word_count >= 400:
+        readability += 15
 
-    lower_text = text.lower()
-
-    if "project" in lower_text:
-        projects += 50
-
-    if (
-        "developed" in lower_text
-        or "implemented" in lower_text
-        or "built" in lower_text
-    ):
-        projects += 50
-
-    projects = min(projects, 100)
+    if word_count >= 600:
+        readability += 15
 
 
-    # -------------------------------
-    # Overall ATS Score
-    # -------------------------------
+    if word_count > 1200:
+        readability -= 20
 
-    score = round(
-        (
-            keyword_match
-            + formatting
-            + readability
-            + projects
-        ) / 4
+
+    readability = max(
+        0,
+        min(readability, 100)
     )
 
 
-    # -------------------------------
-    # Suggestions
-    # -------------------------------
+    # ==========================================
+    # 6. PROJECT SCORE
+    # ==========================================
+
+    projects = 0
+
+
+    if "projects" in detected_sections:
+
+        projects += 50
+
+
+    project_action_words = [
+
+        "developed",
+        "built",
+        "created",
+        "implemented",
+        "designed",
+        "integrated"
+
+    ]
+
+
+    found_project_words = 0
+
+
+    for word in project_action_words:
+
+        if word in lower_text:
+
+            found_project_words += 1
+
+
+    if found_project_words >= 2:
+
+        projects += 50
+
+
+    projects = min(
+        projects,
+        100
+    )
+
+
+    # ==========================================
+    # 7. SUGGESTIONS
+    # ==========================================
 
     suggestions = []
 
 
-    if keyword_match < 70:
+    if not email_exists:
 
         suggestions.append(
-            "Add more relevant technical keywords."
+            "Add a professional email address."
         )
 
 
-    if formatting < 70:
+    if not phone_exists:
 
         suggestions.append(
-            "Improve resume formatting and section structure."
+            "Add a phone number."
         )
 
 
-    if readability < 70:
+    if "summary" not in detected_sections:
 
         suggestions.append(
-            "Improve resume readability with clear and concise content."
+            "Add a professional summary or career objective."
         )
 
 
-    if projects < 70:
+    if "skills" not in detected_sections:
 
         suggestions.append(
-            "Add more project details and technical contributions."
+            "Add a dedicated technical skills section."
         )
 
 
-    if "git" not in lower_text:
+    if "education" not in detected_sections:
 
         suggestions.append(
-            "Add Git experience if applicable."
+            "Add your education section."
         )
 
 
-    if "rest api" not in lower_text:
+    if "projects" not in detected_sections:
 
         suggestions.append(
-            "Mention REST API experience if applicable."
+            "Add relevant projects with technologies used."
         )
+
+
+    if "experience" not in detected_sections:
+
+        suggestions.append(
+            "Add internship or work experience if applicable."
+        )
+
+
+    if len(skills) < 5:
+
+        suggestions.append(
+            "Add more relevant technical skills."
+        )
+
+
+    # ==========================================
+    # 8. OVERALL ATS SCORE
+    # ==========================================
+
+    score = round(
+
+        (
+            keyword_match * 0.30
+            +
+            formatting * 0.20
+            +
+            readability * 0.15
+            +
+            projects * 0.15
+            +
+            contact_score * 0.20
+
+        )
+
+    )
+
+
+    score = max(
+        0,
+        min(score, 100)
+    )
 
 
     return (
+
         score,
+
         keyword_match,
+
         formatting,
+
         readability,
+
         projects,
+
         suggestions
+
     )
 
 # -------------------------------

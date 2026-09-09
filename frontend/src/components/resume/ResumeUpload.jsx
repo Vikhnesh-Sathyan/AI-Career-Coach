@@ -70,78 +70,58 @@ function ResumeUpload() {
     // ANALYSE RESUME
     // ==========================================
 
-    const handleAnalyse = async () => {
+const handleAnalyse = async () => {
 
-        if (!file) {
+    if (!file) {
 
-            alert(
-                "Please select a resume."
-            );
+        alert("Please select a resume.");
 
-            return;
+        return;
+    }
 
-        }
+    try {
 
+        setLoading(true);
 
-        try {
+        const formData = new FormData();
 
-            setLoading(true);
+        formData.append("resume", file);
 
-            setShowAnalysis(false);
+        const response =
+            await uploadResume(formData);
 
+        // DEBUG
+        console.log(
+            "Resume Analysis Response:",
+            response
+        );
 
-            const formData =
-                new FormData();
+        setAnalysis(response);
 
-
-            formData.append(
-                "resume",
-                file
-            );
-
-
-            const response =
-                await uploadResume(
-                    formData
-                );
-
-
-            // Save analysis result
-            setAnalysis(response);
-
-
-            // Small loading animation delay
-            setTimeout(() => {
-
-                setLoading(false);
-
-                setShowAnalysis(true);
-
-            }, 1500);
-
-        }
-
-        catch (error) {
-
-            console.error(
-                "Resume analysis error:",
-                error
-            );
-
+        setTimeout(() => {
 
             setLoading(false);
 
-            setShowAnalysis(false);
+            setShowAnalysis(true);
 
+        }, 1500);
 
-            alert(
-                error.response?.data?.message ||
-                "Resume upload failed."
-            );
+    }
 
-        }
+    catch (error) {
 
-    };
+        console.error(
+            "Resume Upload Error:",
+            error
+        );
+
+        setLoading(false);
+
+        alert("Upload Failed");
+
+    }
+
+};
 
 
     return (

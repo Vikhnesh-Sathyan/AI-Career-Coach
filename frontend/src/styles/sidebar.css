@@ -1,12 +1,12 @@
 .sidebar{
 
-    width:270px;
+    width:260x;
     height:100vh;
 
     position:fixed;
     left:0;
     top:0;
-
+    overflow-x: hidden;
     display:flex;
     flex-direction:column;
     justify-content:space-between;

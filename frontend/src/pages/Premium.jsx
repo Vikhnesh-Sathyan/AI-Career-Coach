@@ -58,6 +58,8 @@ function Premium() {
                 const response =
                     await getPremiumStatus();
 
+                console.log("PREMIUM STATUS RESPONSE:", response);
+
 
                 if (
                     response?.success

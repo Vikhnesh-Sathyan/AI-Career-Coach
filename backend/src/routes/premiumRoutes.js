@@ -11,9 +11,9 @@ import {
 import {
     getPremiumStatus,
     upgradeToPremium,
-    getPremiumPlans
+    getPremiumPlans,
+    cancelPremium
 } from "../controllers/premiumController.js";
-
 
 const router = express.Router();
 
@@ -49,6 +49,15 @@ router.post(
     upgradeToPremium
 );
 
+// ==========================================
+// CANCEL PREMIUM
+// ==========================================
+
+router.put(
+    "/cancel",
+    protect,
+    cancelPremium
+);
 
 // ==========================================
 // TEST PREMIUM FEATURE

@@ -285,3 +285,89 @@ export const getPremiumPlans = async (
     }
 
 };
+
+// ==========================================
+// CANCEL PREMIUM
+// ==========================================
+
+export const cancelPremium = async (
+    req,
+    res
+) => {
+
+    try {
+
+        const user =
+            await User.findById(
+                req.user._id
+            );
+
+
+        if (!user) {
+
+            return res.status(404).json({
+
+                success: false,
+
+                message:
+                    "User not found."
+
+            });
+
+        }
+
+
+        // ======================================
+        // CHANGE PREMIUM → FREE
+        // ======================================
+
+        user.subscription = {
+
+            plan: "Free",
+
+            status: "active"
+
+        };
+
+
+        await user.save();
+
+
+        return res.status(200).json({
+
+            success: true,
+
+            message:
+                "Premium cancelled. Switched to Free.",
+
+            data: {
+
+                subscription:
+                    user.subscription
+
+            }
+
+        });
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Premium cancel error:",
+            error
+        );
+
+
+        return res.status(500).json({
+
+            success: false,
+
+            message:
+                "Failed to cancel Premium."
+
+        });
+
+    }
+
+};

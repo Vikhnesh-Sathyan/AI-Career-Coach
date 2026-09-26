@@ -11,14 +11,14 @@ import { useNavigate } from "react-router-dom";
 
 import {
     getPremiumStatus,
-    upgradeToPremium
+    upgradeToPremium,
+    cancelPremium
 } from "../services/premiumService";
 
 import "../styles/premium.css";
 
 
 function Premium() {
-
 
     const navigate =
         useNavigate();
@@ -43,6 +43,10 @@ function Premium() {
         useState(false);
 
 
+    const [cancelling, setCancelling] =
+        useState(false);
+
+
     // ===============================
     // LOAD PREMIUM STATUS
     // ===============================
@@ -58,12 +62,14 @@ function Premium() {
                 const response =
                     await getPremiumStatus();
 
-                console.log("PREMIUM STATUS RESPONSE:", response);
+
+                console.log(
+                    "PREMIUM STATUS RESPONSE:",
+                    response
+                );
 
 
-                if (
-                    response?.success
-                ) {
+                if (response?.success) {
 
                     setSubscription(
                         response.data.subscription
@@ -114,13 +120,12 @@ function Premium() {
                     await upgradeToPremium();
 
 
-                if (
-                    response?.success
-                ) {
+                if (response?.success) {
 
                     setSubscription(
                         response.data.subscription
                     );
+
 
                     alert(
                         "Successfully upgraded to Premium!"
@@ -150,6 +155,63 @@ function Premium() {
             finally {
 
                 setUpgrading(false);
+
+            }
+
+        };
+
+
+    // ===============================
+    // CANCEL PREMIUM
+    // ===============================
+
+    const handleCancel =
+        async () => {
+
+            try {
+
+                setCancelling(true);
+
+
+                const response =
+                    await cancelPremium();
+
+
+                if (response?.success) {
+
+                    setSubscription(
+                        response.data.subscription
+                    );
+
+
+                    alert(
+                        "Premium cancelled successfully."
+                    );
+
+                }
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "Cancel Premium Error:",
+                    error
+                );
+
+
+                alert(
+                    error?.response
+                        ?.data
+                        ?.message ||
+                    "Failed to cancel Premium."
+                );
+
+            }
+
+            finally {
+
+                setCancelling(false);
 
             }
 
@@ -287,7 +349,9 @@ function Premium() {
             <div className="premium-plans">
 
 
-                {/* FREE PLAN */}
+                {/* =============================
+                    FREE PLAN
+                ============================= */}
 
                 <div className="plan-card free-plan">
 
@@ -347,7 +411,6 @@ function Premium() {
 
                         </li>
 
-
                     </ul>
 
 
@@ -358,13 +421,13 @@ function Premium() {
                         }
                     >
 
-                        {subscription?.plan ===
-                        "Free"
+                        {
+                            subscription?.plan ===
+                            "Free"
 
-                            ? "Current Plan"
+                                ? "Current Plan"
 
-                            : "Free Plan"
-
+                                : "Free Plan"
                         }
 
                     </button>
@@ -372,7 +435,9 @@ function Premium() {
                 </div>
 
 
-                {/* PREMIUM PLAN */}
+                {/* =============================
+                    PREMIUM PLAN
+                ============================= */}
 
                 <div className="plan-card premium-plan">
 
@@ -489,22 +554,44 @@ function Premium() {
 
                         <FaCrown />
 
-                        {isPremium
+                        {
+                            isPremium
 
-                            ? "Premium Active"
+                                ? "Premium Active"
 
-                            : upgrading
+                                : upgrading
 
-                                ? "Upgrading..."
+                                    ? "Upgrading..."
 
-                                : "Upgrade to Premium"
-
+                                    : "Upgrade to Premium"
                         }
 
                     </button>
 
-                </div>
 
+                    {/* =============================
+                        CANCEL PREMIUM
+                    ============================= */}
+
+                    {isPremium && (
+
+                        <button
+                            className="cancel-premium-btn"
+                            onClick={handleCancel}
+                            disabled={cancelling}
+                        >
+
+                            {
+                                cancelling
+                                    ? "Cancelling..."
+                                    : "Cancel Premium"
+                            }
+
+                        </button>
+
+                    )}
+
+                </div>
 
             </div>
 

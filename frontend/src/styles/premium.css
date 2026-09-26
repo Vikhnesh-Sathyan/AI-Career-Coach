@@ -1515,6 +1515,71 @@
     }
 }
 
+/* ==========================================
+   CANCEL PREMIUM BUTTON
+========================================== */
+
+.cancel-premium-btn {
+    width: 100%;
+    margin-top: 12px;
+    padding: 18px 24px;
+
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 18px;
+
+    background: rgba(255, 255, 255, 0.05);
+
+    color: #d7d9e8;
+
+    font-size: 18px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.25s ease,
+        border-color 0.25s ease,
+        color 0.25s ease,
+        transform 0.2s ease;
+}
+
+
+/* ==========================================
+   HOVER
+========================================== */
+
+.cancel-premium-btn:hover {
+    background: rgba(255, 255, 255, 0.10);
+
+    border-color: rgba(255, 255, 255, 0.28);
+
+    color: #ffffff;
+
+    transform: translateY(-1px);
+}
+
+
+/* ==========================================
+   CLICK
+========================================== */
+
+.cancel-premium-btn:active {
+    transform: translateY(0);
+}
+
+
+/* ==========================================
+   DISABLED / CANCELLING
+========================================== */
+
+.cancel-premium-btn:disabled {
+    opacity: 0.6;
+
+    cursor: not-allowed;
+
+    transform: none;
+}
+
 
 /* ============================================================
    SMALL MOBILE

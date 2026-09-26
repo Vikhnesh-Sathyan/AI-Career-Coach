@@ -196,6 +196,15 @@ cd backend
 npm install
 npm run dev
 
+Environment Variables
+
+Create a .env file inside the backend directory:
+
+PORT=5000
+MONGO_URI=your_mongodb_connection
+JWT_SECRET=your_jwt_secret
+CLIENT_URL=http://localhost:5173
+
 👨‍💻 Developer
 Vikhnesh Sathyan
 

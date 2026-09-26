@@ -1,311 +1,206 @@
-# 🤖 AI Career Coach
+# 🚀 CareerCoach
 
-An AI-powered career development platform designed to help users **analyze resumes, improve ATS compatibility, prepare for interviews, match job descriptions, and track their career progress**.
+### AI-Powered Career Development Platform
 
-The project is being developed as a full-stack application using **React, Node.js, Express.js, MongoDB, and AI-powered tools**.
+CareerCoach is a full-stack career development platform that brings **resume analysis, ATS scoring, job discovery, application tracking, and interview preparation** into one place.
 
----
-
-## 🚀 Features
-
-### 🔐 Authentication & Authorization
-
-* User Registration
-* User Login
-* JWT-based Authentication
-* Password Hashing with bcrypt
-* Protected Routes
-* Role-Based Access Control
-* User and Admin Roles
-* Admin Protected Routes
-
-### 👤 User Dashboard
-
-* Personalized Career Dashboard
-* Career Progress Overview
-* ATS Score Overview
-* Job Application Statistics
-* Interview Statistics
-* Skills Overview
-* Career Level / Progress Tracking
-
-### 📄 Resume & ATS
-
-* Resume Management
-* Resume Analysis
-* ATS Score Analysis
-* Resume Skill Extraction
-* Resume Improvement Suggestions
-
-### 💼 Job & Career Tools
-
-* Job Description Matching
-* Job Skill Matching
-* Match Score
-* Match History
-* Job Application Tracking
-
-### 🎤 Interview Preparation
-
-* Interview Preparation
-* Interview Questions
-* Interview Practice
-* Interview History
-* Answer Evaluation
-
-### ⚙️ User Settings
-
-* Profile Management
-* Career Preferences
-* Notification Settings
-* Security Settings
-* Subscription UI
-* Free / Premium Plan Interface
-
-### 🛡️ Admin Panel
-
-* Admin Dashboard
-* Role-Based Admin Access
-* User Management
-* User Statistics
-* User Search
-* User Filtering
-* User Status Management UI
-* Admin User Actions
-* Admin Settings
-* Admin Navigation & Controls
-
-> The admin user management module is currently implemented with static data and can be connected to the backend API later.
+The goal is to help job seekers improve their resumes, find relevant opportunities, prepare for interviews, and manage their job-search journey from a single platform.
 
 ---
 
-## 🛠️ Tech Stack
+## ✨ Features
 
-### Frontend
-
-* React.js
-* React Router
-* JavaScript
-* CSS
-* Framer Motion
-* React Icons
-* Lucide React
-* Axios
-
-### Backend
-
-* Node.js
-* Express.js
-* REST APIs
-* JWT Authentication
-* bcryptjs
-
-### Database
-
-* MongoDB
-* Mongoose
-
-### AI / Resume Processing
-
-* Python
-* Flask
-* PyMuPDF
-* spaCy
+| Module | Features |
+|---|---|
+| 🔐 Authentication | JWT authentication, protected routes, role-based access |
+| 📄 Resume | Resume upload, resume management, skill extraction |
+| 📊 ATS Analysis | ATS score, keyword match, formatting, readability, project analysis |
+| 💡 Resume Insights | Detected skills and improvement suggestions |
+| 💼 Jobs | Job listing, job details, job discovery |
+| 📝 Applications | Apply to jobs, duplicate application prevention |
+| 📌 Job Tracker | Track applications and application status |
+| 🎤 Interviews | Interview practice and preparation |
+| 🕐 Interview History | Review previous interview attempts |
+| 💎 Premium | Free/Premium subscription management |
+| 🛡️ Premium Security | Premium-only backend access using middleware |
 
 ---
 
-## 📂 Project Structure
+## 🧠 Career Journey
 
 ```text
-AI-Career-Coach
+Register / Login
+       ↓
+Upload Resume
+       ↓
+ATS & Resume Analysis
+       ↓
+Improve Resume
+       ↓
+Browse Jobs
+       ↓
+Apply
+       ↓
+Track Applications
+       ↓
+Practice Interviews
+       ↓
+Review Interview History
+
+📊 ATS Resume Analysis
+
+CareerCoach analyzes uploaded resumes and provides:
+
+ATS Score
+Keyword Match
+Formatting Score
+Readability Score
+Project Score
+Detected Technical Skills
+Resume Improvement Suggestions
+
+The resume analysis uses Python/NLP-based resume processing to extract useful information from uploaded resumes.
+
+💼 Job & Application Tracking
+
+Users can browse available jobs, view detailed job information, and apply directly.
+
+Jobs
+ ↓
+Job Details
+ ↓
+Apply
+ ↓
+Application Created
+ ↓
+My Applications
+ ↓
+Track Status
+
+Application statuses include:
+Applied · Shortlisted · Interview · Selected · Rejected
+
+🎤 Interview Preparation
+
+CareerCoach provides interview preparation tools where users can practice interview questions and maintain their interview history.
+
+This allows users to review previous attempts and continuously improve their interview preparation.
+
+💎 Premium
+
+CareerCoach includes a subscription system with Free and Premium plans.
+
+Free
+Resume Management
+Job Tracking
+Basic ATS Score
+Basic Career Tools
+Premium
+Advanced ATS Analysis
+AI Resume Suggestions
+Advanced Job Matching
+Interview Preparation Tools
+Priority Career Insights
+
+Subscription Flow
+
+Free
+ ↓
+Upgrade to Premium
+ ↓
+Premium Active
+ ↓
+Premium Features
+ ↓
+Cancel Premium
+ ↓
+Free
+
+🔐 Security & Architecture
+
+React Frontend
+      ↓
+REST API
+      ↓
+Express Routes
+      ↓
+JWT Authentication
+      ↓
+Authorization / Premium Middleware
+      ↓
+Controllers
+      ↓
+Mongoose Models
+      ↓
+MongoDB
+
+🛠️ Tech Stack
+
+Frontend
+
+React.js · JavaScript · React Router · Axios · Framer Motion · CSS
+
+Backend
+
+Node.js · Express.js · MongoDB · Mongoose · JWT · REST APIs
+
+AI / NLP
+
+Python · NLP · Resume Processing · Skill Extraction
+
+Tools
+
+Git · GitHub · Postman · MongoDB
+
+📂 Project Structure
+
+CareerCoach/
 │
-├── backend
-│   ├── src
-│   │   ├── config
-│   │   │   └── db.js
-│   │   │
-│   │   ├── controllers
-│   │   │
-│   │   ├── middleware
-│   │   │   └── authMiddleware.js
-│   │   │
-│   │   ├── models
-│   │   │   └── User.js
-│   │   │
-│   │   └── routes
-│   │
-│   ├── package.json
-│   └── server.js
+├── frontend/
+│   └── src/
+│       ├── components/
+│       ├── pages/
+│       ├── services/
+│       └── styles/
 │
-├── frontend
-│   ├── src
-│   │   ├── assets
-│   │   │
-│   │   ├── components
-│   │   │   ├── admin
-│   │   │   ├── auth
-│   │   │   └── dashboard
-│   │   │
-│   │   ├── pages
-│   │   │   ├── Login.jsx
-│   │   │   ├── Register.jsx
-│   │   │   ├── Dashboard.jsx
-│   │   │   ├── Resume.jsx
-│   │   │   ├── ATS.jsx
-│   │   │   ├── JobMatcher.jsx
-│   │   │   ├── Interviews.jsx
-│   │   │   ├── JobTracker.jsx
-│   │   │   ├── Settings.jsx
-│   │   │   ├── AdminDashboard.jsx
-│   │   │   └── AdminUsers.jsx
-│   │   │
-│   │   ├── services
-│   │   │
-│   │   ├── styles
-│   │   │
-│   │   ├── App.jsx
-│   │   └── main.jsx
-│   │
-│   └── package.json
+├── backend/
+│   ├── controllers/
+│   ├── middleware/
+│   ├── models/
+│   ├── routes/
+│   └── config/
 │
-├── .gitignore
+├── ai/
+│   └── resume-analysis/
+│
 └── README.md
-```
 
----
+⚙️ Setup
 
-## 🔑 Role-Based Access
+Clone the repository
 
-The application supports two user roles:
+git clone https://github.com/YOUR_USERNAME/CareerCoach.git
+cd CareerCoach
 
-```text
-User
-  │
-  ├── Dashboard
-  ├── Resume
-  ├── ATS
-  ├── Job Matcher
-  ├── Interviews
-  ├── Job Tracker
-  └── Settings
+Frontend
 
-
-Admin
-  │
-  ├── Admin Dashboard
-  ├── User Management
-  └── Admin Settings
-```
-
-New registrations are assigned the default:
-
-```text
-role: user
-```
-
-Administrators can be assigned the `admin` role through the database during development.
-
----
-
-## ⚙️ Installation
-
-### 1. Clone Repository
-
-```bash
-git clone https://github.com/Vikhnesh-Sathyan/AI-Career-Coach.git
-```
-
-### 2. Backend
-
-```bash
-cd backend
-npm install
-npm run dev
-```
-
-Create a `.env` file:
-
-```env
-PORT=5000
-MONGODB_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret
-```
-
-### 3. Frontend
-
-Open another terminal:
-
-```bash
 cd frontend
 npm install
 npm run dev
-```
 
----
+Backend
 
-## 🔒 Environment Variables
+Open another terminal:
 
-Do not commit sensitive environment variables to GitHub.
+cd backend
+npm install
+npm run dev
 
-```text
-.env
-```
+👨‍💻 Developer
+Vikhnesh Sathyan
 
-should remain inside `.gitignore`.
+MCA Graduate | Full-Stack Developer
 
-Required backend variables:
+React · JavaScript · Node.js · Express · MongoDB · Python · NLP
 
-```env
-PORT=
-MONGODB_URI=
-JWT_SECRET=
-```
-
----
-
-
-
-## 🎯 Future Improvements
-
-* AI-powered resume analysis
-* Advanced ATS scoring
-* AI-generated resume suggestions
-* AI interview evaluation
-* Dynamic admin user management
-* Real-time dashboard analytics
-* Job recommendation system
-* Resume PDF processing
-* Advanced career insights
-* Production deployment
-
----
-
-## 📚 Learning Goals
-
-This project is also being developed as a practical full-stack learning project to strengthen skills in:
-
-* React.js
-* Node.js
-* Express.js
-* MongoDB
-* REST API development
-* Authentication & Authorization
-* JWT
-* Role-Based Access Control
-* Frontend state management
-* API integration
-* AI integration
-* Full-stack application architecture
-
----
-
-## 👨‍💻 Author
-
-**Vikhnesh Sathyan**
-
-* GitHub: https://github.com/Vikhnesh-Sathyan
-* LinkedIn: https://linkedin.com/in/vikhnesh-sathyan-80a433221n
-
----
-
-⭐ If you find this project interesting, feel free to explore the repository and follow the development journey.
+⭐ CareerCoach — One platform for your complete career journey.
